@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for Kamel's graduation project",
+  "main": "server.js",
+  "author": "Kamel",
+  "license": "MIT",
+  "scripts": {
+    "lint": "esw -w --clear",
+    "dev": "NODE_ENV=dev nodemon ./src/server.js --exec \"node --require 'dotenv/config'\""
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "helmet": "^3.21.2",
+    "morgan": "^1.9.1",
+    "node-fetch": "^2.6.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-watch": "^6.0.1",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": "12.12.0"
+  }
+}
