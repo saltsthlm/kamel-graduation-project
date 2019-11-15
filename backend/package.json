@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "esw -w --clear",
     "dev": "NODE_ENV=dev nodemon ./src/server.js --exec \"node --require 'dotenv/config'\"",
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
