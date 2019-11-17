@@ -20,7 +20,7 @@ Run the start script:
 
 Open two browser tabs:
 
-    localhost:3000/#1
+    localhost:3000/#init
     localhost:3000
 
 In the first tab, wait for WebRTC meta data to appear at the top of the page and copy it.
