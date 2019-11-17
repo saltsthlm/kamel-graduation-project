@@ -1,15 +1,18 @@
 const express = require('express');
 const expressWs = require('express-ws');
 
-const app = express();
-expressWs(app);
+const wsInstance = expressWs(express());
+const { app } = wsInstance;
 
-app.get('/', (req, res) => res.send('Hi'));
+const getWsClients = (route) => wsInstance.getWss(route).clients;
 
-app.ws('/', (ws, req) => {
-  ws.on('message', (msg) => {
-    ws.send(`Server: ${msg}`);
-    setInterval(() => ws.send(`Server: ${new Date()}`), 1000);
+app.ws('/socket/:id', (ws, req) => {
+  ws.on('message', () => {
+    ws.send(`Welcome to Socket ${req.params.id}`);
+
+    const clients = getWsClients(req.url);
+    const time = new Date().toLocaleTimeString();
+    clients.forEach((client) => client.send(`New client registered at ${time}`));
   });
 });
 

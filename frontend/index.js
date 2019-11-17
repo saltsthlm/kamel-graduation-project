@@ -36,7 +36,7 @@ peer.on('data', (data) => {
 // This wil be used to initialize the WebRTC connection (see above)
 
 // Set-up a websocket connection to our backend
-const socket = new WebSocket('ws://localhost:8080');
+const socket = new WebSocket('ws://localhost:8080/socket/123');
 
 // when the socket connection opens, send a message to the server
 socket.onopen = () => {
