@@ -33,4 +33,7 @@ app.ws('/socket/:id', (ws, req) => {
   });
 });
 
+// just to make our sample unit test pass
+app.get('/', (req, res) => res.send('Hi'));
+
 module.exports = app;
