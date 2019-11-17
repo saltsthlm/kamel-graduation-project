@@ -15,3 +15,18 @@ Run the `init` script from the root directory:
 Run the start script:
 
     ./start.sh
+
+## Use the App
+
+Open two browser tabs:
+
+    localhost:3000/#1
+    localhost:3000
+
+In the first tab, wait for WebRTC meta data to appear at the top of the page and copy it.
+
+In the second tab, paste the meta data into the `Other ID` field, then click `connect`. Wait for meta data to appear at the top of the page and copy it.
+
+In the first tab, paste the meta data into the `Other ID` field, then click `connect`.
+
+You should now be able to send messages from one tab to the other.
