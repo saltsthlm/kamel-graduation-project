@@ -30,3 +30,15 @@ In the second tab, paste the meta data into the `Other ID` field, then click `co
 In the first tab, paste the meta data into the `Other ID` field, then click `connect`.
 
 You should now be able to send messages from one tab to the other.
+
+## Related Links
+
+WebRTC:
+- https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API
+- https://www.npmjs.com/package/simple-peer
+- https://www.youtube.com/watch?v=p2HzZkd2A40
+
+WebSockets:
+- https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
+- https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
+- https://www.npmjs.com/package/express-ws
