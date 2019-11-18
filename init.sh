@@ -5,7 +5,7 @@ cd backend
 yarn install
 cd ..
 
-cd frontend
+cd client
 yarn install
 cd ..
 

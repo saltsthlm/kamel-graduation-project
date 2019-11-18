@@ -2,7 +2,7 @@ const app = require('./app');
 
 const PORT = (process.env.NODE_ENV === 'production')
   ? process.env.PROD_PORT
-  : process.env.DEV_PORT;
+  : 8080;
 
 app.listen(PORT);
 
