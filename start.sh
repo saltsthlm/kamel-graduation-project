@@ -1,0 +1,1 @@
+yarn --cwd ./frontend run start & yarn --cwd ./backend run dev
