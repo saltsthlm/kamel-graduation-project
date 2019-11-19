@@ -6,7 +6,7 @@ import Chat from './components/Chat';
 
 
 function App() {
-  const [userId, setUserId] = useState(uuid());
+  const [userId] = useState(uuid());
   const [contactList, setContactList] = useState([]);
   const [socket, setSocket] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
@@ -27,7 +27,7 @@ function App() {
         setChatMessages((messages) => [...messages, parcel]);
       }
     }
-  }, [])
+  }, [userId])
 
   const sendMessage = (receiverId, message) => {
     const parcel = {
