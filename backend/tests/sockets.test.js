@@ -24,8 +24,6 @@ beforeEach(() => {
   client = new WebSocketClient();
 });
 
-console.log(process.env.GOOGLE_KEY);
-
 afterEach(() => {
   connect.close();
   server.close();
