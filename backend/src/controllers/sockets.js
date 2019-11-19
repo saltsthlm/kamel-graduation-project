@@ -3,7 +3,7 @@ const { translate } = require('../translate/translation');
 
 const onConnect = (ws, req) => {
   req.id = req.params.id;
-  client.addConnected(req.id, ws);
+  client.addConnected(req.params.id, ws);
   client.communicateConnected();
 };
 
