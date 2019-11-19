@@ -1,39 +1,59 @@
 const express = require('express');
 const expressWs = require('express-ws');
+const { translate } = require('./translate/translation');
 
-// create an express-websocket instance that will wrap the express app
+
 const wsInstance = expressWs(express());
-// `app` can be used like in any other express app from here on
 const { app } = wsInstance;
 
-// helper function to format a string message, not so important
-const newClientRegistered = (clientId) => {
-  const time = new Date().toLocaleTimeString();
-  return JSON.stringify({
-    message: `client width id ${clientId} registered at ${time}`,
+let connectedClients = [];
+
+const addConnectedClient = (clientId, ws) => {
+  connectedClients.push({
+    clientId,
+    ws,
   });
 };
 
-// this block will run every time a new socket connection is opened
+const removeConnectedClient = (clientId) => {
+  connectedClients = connectedClients.filter((client) => client.clientId !== clientId);
+};
+
+const deliverParcel = (parcel) => {
+  const { ws } = connectedClients.find((client) => client.clientId === parcel.receiverId);
+  ws.send(JSON.stringify(parcel));
+};
+
+const communicateConnectedClients = () => {
+  const parcel = {
+    type: 'UPDATE CONTACTLIST',
+    connectedClients: connectedClients.map((client) => client.clientId),
+  };
+  connectedClients.forEach((client) => deliverParcel({ ...parcel, receiverId: client.clientId }));
+};
+
 wsInstance.getWss().on('connection', (ws, req) => {
-  // send a welcome message to the client
-  ws.send(JSON.stringify({
-    message: `Welcome to Socket ${req.params.id}`,
-  }));
-  // send message to all connected clients saying that new client connected
-  const { clients } = wsInstance.getWss('/socket');
-  clients.forEach((client) => client.send(newClientRegistered(req.params.id)));
+  req.id = req.params.id;
+  addConnectedClient(req.id, ws);
+  communicateConnectedClients();
 });
 
-// this block will run every time data is sent through the socket connection,
-// execept for when the connection is opened (see above)
-app.ws('/socket/:id', (ws, req) => {
-  ws.on('message', (data) => {
+app.ws('/socket/:id', (ws) => {
+  ws.on('message', async (data) => {
+    const parcel = JSON.parse(data);
+    if (parcel.type === 'DIRECT MESSAGE') {
+      console.log(await translate(parcel.message, 'sv'));
+      deliverParcel(parcel);
+    }
     console.log(JSON.parse(data));
+  });
+
+  ws.on('close', (req) => {
+    removeConnectedClient(req.id);
+    communicateConnectedClients();
   });
 });
 
-// just to make our sample unit test pass
 app.get('/', (req, res) => res.send('Hi'));
 
 module.exports = app;

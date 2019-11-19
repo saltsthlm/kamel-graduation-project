@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import SimplePeer from 'simple-peer';
 
-
-const Peer = () => {
-
+const Peer = ({ userId }) => {
   const [signalId, setSignalId] = useState('');
   const [isInitiator, setIsInitiator] = useState(false);
 
