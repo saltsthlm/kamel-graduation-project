@@ -1,56 +1,32 @@
 const express = require('express');
 const expressWs = require('express-ws');
 const { translate } = require('./translate/translation');
+const client = require('./clientManagement/clientHandler');
 
 
 const wsInstance = expressWs(express());
 const { app } = wsInstance;
 
-let connectedClients = [];
-
-const addConnectedClient = (clientId, ws) => {
-  connectedClients.push({
-    clientId,
-    ws,
-  });
-};
-
-const removeConnectedClient = (clientId) => {
-  connectedClients = connectedClients.filter((client) => client.clientId !== clientId);
-};
-
-const deliverParcel = (parcel) => {
-  const { ws } = connectedClients.find((client) => client.clientId === parcel.receiverId);
-  ws.send(JSON.stringify(parcel));
-};
-
-const communicateConnectedClients = () => {
-  const parcel = {
-    type: 'UPDATE CONTACTLIST',
-    connectedClients: connectedClients.map((client) => client.clientId),
-  };
-  connectedClients.forEach((client) => deliverParcel({ ...parcel, receiverId: client.clientId }));
-};
 
 wsInstance.getWss().on('connection', (ws, req) => {
   req.id = req.params.id;
-  addConnectedClient(req.id, ws);
-  communicateConnectedClients();
+  client.addConnectedClient(req.id, ws);
+  client.communicateConnectedClients();
 });
 
 app.ws('/socket/:id', (ws) => {
   ws.on('message', async (data) => {
     const parcel = JSON.parse(data);
     if (parcel.type === 'DIRECT MESSAGE') {
-      console.log(await translate(parcel.message, 'sv'));
-      deliverParcel(parcel);
+      const translatedMessage = await translate(parcel.message, 'sv');
+      client.deliverParcel({ ...parcel, translatedMessage });
     }
     console.log(JSON.parse(data));
   });
 
   ws.on('close', (req) => {
-    removeConnectedClient(req.id);
-    communicateConnectedClients();
+    client.removeConnectedClient(req.id);
+    client.communicateConnectedClients();
   });
 });
 

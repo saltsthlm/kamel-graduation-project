@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import ContactList from './components/ContactList';
 import uuid from 'uuid/v4';
+import Chat from './components/Chat';
 
 
 function App() {
   const [userId, setUserId] = useState(uuid());
   const [contactList, setContactList] = useState([]);
   const [socket, setSocket] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
 
   useEffect(() => {
     const socket = new WebSocket(`ws://localhost:8080/socket/${userId}`);
@@ -22,7 +24,7 @@ function App() {
         setContactList(parcel.connectedClients);
       }
       if (parcel.type === 'DIRECT MESSAGE') {
-        console.log(parcel);
+        setChatMessages((messages) => [...messages, parcel]);
       }
     }
   }, [])
@@ -33,6 +35,7 @@ function App() {
       receiverId,
       senderId: userId,
       type: 'DIRECT MESSAGE',
+      timeStamp: Date.now(),
     };
     socket.send(JSON.stringify(parcel));
   };
@@ -42,6 +45,7 @@ function App() {
       <h3>Me</h3>
       <p>{userId}</p>
       <ContactList contactList={contactList} sendMessage={sendMessage} />
+      <Chat chatMessages={chatMessages} />
     </div>
   );
 }
