@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 
 function ContactList({ contactList, sendMessage }) {
   const establishConnection = event => {
-    sendMessage(event.target.innerText, "Hello");
+    sendMessage(
+      event.target.innerText,
+      "Hi my name is Leo and I like cupcakes filled with cheese"
+    );
   };
 
   return (

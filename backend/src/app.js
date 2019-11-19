@@ -1,5 +1,7 @@
 const express = require('express');
 const expressWs = require('express-ws');
+const { translate } = require('./translate/translation');
+
 
 const wsInstance = expressWs(express());
 const { app } = wsInstance;
@@ -37,9 +39,10 @@ wsInstance.getWss().on('connection', (ws, req) => {
 });
 
 app.ws('/socket/:id', (ws) => {
-  ws.on('message', (data) => {
+  ws.on('message', async (data) => {
     const parcel = JSON.parse(data);
     if (parcel.type === 'DIRECT MESSAGE') {
+      console.log(await translate(parcel.message, 'sv'));
       deliverParcel(parcel);
     }
     console.log(JSON.parse(data));
