@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Switch, Route } from "react-router-dom";
 import './App.css';
 import ContactList from './components/ContactList';
 import uuid from 'uuid/v4';
 import Chat from './components/Chat';
+import Navigation from './components/Navigation';
+
 
 const updateChatMessages = (messages, parcel) => {
   const messagesToReturn = {...messages};
@@ -53,11 +56,19 @@ function App() {
 
 
   return (
+
     <div className="App">
       <h3>Me</h3>
       <p>{userId}</p>
-      <ContactList contactList={contactList} sendMessage={sendMessage} setChatPartner={setChatPartner} />
-      <Chat chatMessages={chatMessages} chatPartner={chatPartner}  />
+      <Navigation/>
+      <Switch>
+          <Route path="/chat">
+            <Chat chatMessages={chatMessages} chatPartner={chatPartner}  />
+          </Route>
+          <Route path="/contacts">
+            <ContactList contactList={contactList} sendMessage={sendMessage} setChatPartner={setChatPartner} />
+          </Route>
+        </Switch>
     </div>
   );
 }

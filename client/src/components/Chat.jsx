@@ -8,7 +8,7 @@ function Chat({ chatMessages, chatPartner }) {
     <div className="chat">
       <ul>
         {messages.map((parcel, i) => (
-          <Block>
+          <Block listStyle='none'>
             <li key={i}>{parcel.translatedMessage}</li>
             <li key={i}>{parcel.message}</li>
             <li key={i}>{parcel.senderId}</li>
