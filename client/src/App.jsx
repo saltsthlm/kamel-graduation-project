@@ -17,21 +17,21 @@ function App() {
     };
     setSocket(socket);
   }, [userId])
-  
+
   return (
-  <Router>
-    <div className="App">
-      <h3>You are:{userId}</h3>
-      <Route>
-        <Navigation/>
-        <Switch>
+    <Router>
+      <div className="App">
+        <h3>You are:{userId}</h3>
+        <Route>
+          <Navigation />
+          <Switch>
             <Route path="/chat">
-              <Chat userId={userId} socket={socket}/>
+              <Chat userId={userId} socket={socket} />
             </Route>
-        </Switch>
-      </Route>
-    </div>
-  </Router>
+          </Switch>
+        </Route>
+      </div>
+    </Router>
   );
 }
 
