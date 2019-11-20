@@ -19,8 +19,7 @@ function App() {
   
   return (
     <div className="App">
-      <h3>Me</h3>
-      <p>{userId}</p>
+      <h3>You are:{userId}</h3>
       <Navigation/>
       <Switch>
           <Route path="/chat">
