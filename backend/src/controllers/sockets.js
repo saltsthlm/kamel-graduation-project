@@ -20,6 +20,13 @@ const onMessage = async (data) => {
     client.deliverParcel({ ...parcel, translatedMessage });
   }
 
+  if (parcel.type === 'REQUEST CONTACT LIST UPDATE') {
+    client.deliverParcel({
+      ...client.getContactListParcel(),
+      receiverId: parcel.senderId,
+    });
+  }
+
   console.log(JSON.parse(data));
 };
 
