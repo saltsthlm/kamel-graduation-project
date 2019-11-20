@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = require('../src/app');
 
 const socketId = uuid();
-const PORT = 8080;
+const PORT = 8888;
 let client;
 let server;
 let clientConnection;
@@ -50,6 +50,27 @@ describe('The /socket routes', () => {
           done();
         }
       });
+    });
+    client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
+  });
+
+  it('should send a list of connected clients on demand ', async (done) => {
+    client.on('connect', (connection) => {
+      clientConnection = connection;
+
+      connection.on('message', (message) => {
+        const parcel = JSON.parse(message.utf8Data);
+        if (parcel.type === 'UPDATE CONTACTLIST') {
+          assert.deepStrictEqual(parcel.connectedClients, [socketId]);
+          assert.deepStrictEqual(parcel.receiverId, socketId);
+          done();
+        }
+      });
+
+      connection.send(JSON.stringify({
+        ...testParcel,
+        type: 'REQUEST CONTACT LIST UPDATE',
+      }));
     });
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
