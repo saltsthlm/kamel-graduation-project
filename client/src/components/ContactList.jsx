@@ -1,15 +1,9 @@
 import React from "react";
 
-
-
-function ContactList({ contactList, setChatPartner,sendMessage }) {
+function ContactList({ contactList, setChatPartner }) {
 
   const establishConnection = event => {
     setChatPartner(event.target.innerText);
-    sendMessage(
-      event.target.innerText,
-      "Hi my name is Leo and I like cupcakes filled with cheese"
-    );
   };
 
   return (

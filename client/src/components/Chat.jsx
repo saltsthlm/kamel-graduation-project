@@ -8,7 +8,9 @@ function Chat({ userId, socket }) {
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState('');
 
-  const socketSetupCallback = useCallback(() => updateContactList(userId, socket), [userId, socket])
+  const socketSetupCallback = useCallback(() => (
+    updateContactList(userId, socket)
+  ), [userId, socket])
  
   useEffect(() => {
     if (socket) {
@@ -25,10 +27,10 @@ function Chat({ userId, socket }) {
     }
   }, [socket, socketSetupCallback])
 
-  const sendMessage = (receiverId, message) => {
+  const sendMessage = (message) => {
     const parcel = {
       message,
-      receiverId,
+      receiverId: chatPartner,
       senderId: userId,
       type: 'DIRECT MESSAGE',
       timeStamp: Date.now(),
@@ -36,10 +38,16 @@ function Chat({ userId, socket }) {
     socket.send(JSON.stringify(parcel));
   };
 
+  const getChatMessages = () => (
+    chatPartner && chatMessages[chatPartner]
+      ? chatMessages[chatPartner] 
+      : []
+  )
+
   return (
     <div className="chat">
-      <ChatBoard chatMessages={chatMessages} chatPartner={chatPartner}  sendMessage={sendMessage}/>
-      <ContactList contactList={contactList} setChatPartner={setChatPartner} sendMessage={sendMessage}/>
+      <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage}/>
+      <ContactList contactList={contactList} setChatPartner={setChatPartner} />
     </div>
   );
 }
