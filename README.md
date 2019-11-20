@@ -10,12 +10,6 @@ Run the `init` script from the root directory:
 
     ./init.sh
 
-## Start the App
-
-Run the start script:
-
-    ./start.sh
-
 ## Use the App
 
 Open two browser tabs:
