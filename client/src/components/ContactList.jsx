@@ -2,17 +2,7 @@ import React from "react";
 
 
 
-function ContactList({ contactList, setChatPartner, userId, socket }) {
-  const sendMessage = (receiverId, message) => {
-    const parcel = {
-      message,
-      receiverId,
-      senderId: userId,
-      type: 'DIRECT MESSAGE',
-      timeStamp: Date.now(),
-    };
-    socket.send(JSON.stringify(parcel));
-  };
+function ContactList({ contactList, setChatPartner,sendMessage }) {
 
   const establishConnection = event => {
     setChatPartner(event.target.innerText);
