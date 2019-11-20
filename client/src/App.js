@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch, Route } from "react-router-dom";
 import './App.css';
 import uuid from 'uuid/v4';
@@ -18,15 +19,19 @@ function App() {
   }, [userId])
   
   return (
+  <Router>
     <div className="App">
       <h3>You are:{userId}</h3>
-      <Navigation/>
-      <Switch>
-          <Route path="/chat">
-            <Chat userId={userId} socket={socket}/>
-          </Route>
+      <Route>
+        <Navigation/>
+        <Switch>
+            <Route path="/chat">
+              <Chat userId={userId} socket={socket}/>
+            </Route>
         </Switch>
+      </Route>
     </div>
+  </Router>
   );
 }
 
