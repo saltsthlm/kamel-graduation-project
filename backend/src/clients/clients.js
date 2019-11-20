@@ -16,11 +16,13 @@ const removeConnected = (clientId) => {
   connectedClients = connectedClients.filter((client) => client.clientId !== clientId);
 };
 
+const getContactListParcel = () => ({
+  type: 'UPDATE CONTACTLIST',
+  connectedClients: connectedClients.map((client) => client.clientId),
+});
+
 const communicateConnected = () => {
-  const parcel = {
-    type: 'UPDATE CONTACTLIST',
-    connectedClients: connectedClients.map((client) => client.clientId),
-  };
+  const parcel = getContactListParcel();
   connectedClients.forEach((client) => deliverParcel({
     ...parcel,
     receiverId: client.clientId,
@@ -33,4 +35,5 @@ module.exports = {
   communicateConnected,
   removeConnected,
   deliverParcel,
+  getContactListParcel,
 };
