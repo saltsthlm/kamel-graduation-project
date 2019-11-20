@@ -1,7 +1,8 @@
 import React from "react";
 import { Block } from "jsxstyle";
+import MessageEditor from './MessageEditor';
 
-function ChatBoard({ chatMessages, chatPartner }) {
+function ChatBoard({ chatMessages, chatPartner, sendMessage}) {
 
   const messages = (chatPartner && chatMessages[chatPartner]) ? chatMessages[chatPartner] : [];
   return (
@@ -18,6 +19,7 @@ function ChatBoard({ chatMessages, chatPartner }) {
           </Block>
         ))}
       </ul>
+      <MessageEditor sendMessage={sendMessage} chatPartner={chatPartner}/>
     </div>
   );
 }

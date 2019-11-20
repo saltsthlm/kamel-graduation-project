@@ -25,10 +25,21 @@ function Chat({ userId, socket }) {
     }
   }, [socket, socketSetupCallback])
 
+  const sendMessage = (receiverId, message) => {
+    const parcel = {
+      message,
+      receiverId,
+      senderId: userId,
+      type: 'DIRECT MESSAGE',
+      timeStamp: Date.now(),
+    };
+    socket.send(JSON.stringify(parcel));
+  };
+
   return (
     <div className="chat">
-      <ChatBoard chatMessages={chatMessages} chatPartner={chatPartner}  />
-      <ContactList contactList={contactList} setChatPartner={setChatPartner} socket={socket} userId={userId}/>
+      <ChatBoard chatMessages={chatMessages} chatPartner={chatPartner}  sendMessage={sendMessage}/>
+      <ContactList contactList={contactList} setChatPartner={setChatPartner} sendMessage={sendMessage}/>
     </div>
   );
 }
