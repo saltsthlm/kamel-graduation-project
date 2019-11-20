@@ -6,6 +6,8 @@ function ChatBoard({ chatMessages, chatPartner }) {
   const messages = (chatPartner && chatMessages[chatPartner]) ? chatMessages[chatPartner] : [];
   return (
     <div className="chat">
+     <h3>You are talking to:{chatPartner}</h3>
+     <p> Recieve messages: </p>
       <ul>
         {messages.map((parcel, i) => (
           <Block listStyle='none' key={i}>
