@@ -26,6 +26,3 @@ function ChatBoard({ chatMessages, chatPartner, sendMessage, setChatPartner, use
 }
 
 export default ChatBoard;
-
-   {/* <li key={Math.random()}>{parcel.senderId}</li>
-              <li key={Math.random()}>{parcel.receiverId}</li> */}
