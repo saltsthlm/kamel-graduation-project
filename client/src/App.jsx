@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 import Chat from './components/Chat';
 import Navigation from './components/Navigation';
 import Login from './components/Login';
@@ -34,15 +35,17 @@ function App() {
 
   return (
     <div className="App">
-      <Route>
-        <Navigation />
-        <Switch>
-          <Route path='/login'>
-            <Login setUserId={setUserId} userId={userId} setUserName={setUserName} />
-          </Route>
-          <PrivateRoute path='/' exact authed={userId} />
-        </Switch>
-      </Route>
+      <Router>
+        <Route>
+          <Navigation />
+          <Switch>
+            <Route path='/login'>
+              <Login setUserId={setUserId} userId={userId} setUserName={setUserName} />
+            </Route>
+            <PrivateRoute path='/' exact authed={userId} />
+          </Switch>
+        </Route>
+      </Router>
     </div>
   );
 }

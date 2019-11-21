@@ -18,6 +18,6 @@ describe('The Chat component', () => {
     const component = renderer.getRenderOutput();
     const children = component.props.children;
 
-    expect(children.length).toBe(2);
+    expect(children.length).toBe(3);
   });
 });
