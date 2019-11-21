@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-import './App.css';
 import Chat from './components/Chat';
 import Navigation from './components/Navigation';
 import Login from './components/Login';
+
+import './App.scss';
 
 function App() {
   const [userId, setUserId] = useState('');
@@ -20,7 +21,7 @@ function App() {
     }
   }, [userId]);
 
-  function PrivateRoute({ authed, ...rest }) {
+  const PrivateRoute =({ authed, ...rest }) => {
     return (
       <Route
         {...rest}
