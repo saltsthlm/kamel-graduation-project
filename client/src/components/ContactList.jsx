@@ -2,8 +2,8 @@ import React from "react";
 
 function ContactList({ contactList, setChatPartner }) {
 
-  const establishConnection = (userId) => {
-    setChatPartner(userId);
+  const establishConnection = (contact) => {
+    setChatPartner(contact);
   };
 
   return (
@@ -11,7 +11,7 @@ function ContactList({ contactList, setChatPartner }) {
       <h3>Active Users</h3>
       <ul>
         {contactList.map((contact, i) => (
-          <li key={i} onClick={() => establishConnection(contact.userId)}>
+          <li key={i} onClick={() => establishConnection(contact)}>
             {contact.userName}
           </li>
         ))}

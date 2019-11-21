@@ -6,7 +6,7 @@ function ChatBoard({ chatMessages, chatPartner, sendMessage }) {
 
   return (
     <div className="chat">
-      <h3>You are talking to: {chatPartner}</h3>
+      <h3>You are talking to: {chatPartner.userName}</h3>
       <p> Received messages: </p>
       <ul>
         {chatMessages.map((parcel, i) => (

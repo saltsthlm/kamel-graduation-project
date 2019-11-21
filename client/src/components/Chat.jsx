@@ -6,7 +6,7 @@ import { updateChatMessages, updateContactList } from '../lib/chat';
 function Chat({ userId, socket, userName }) {
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
-  const [chatPartner, setChatPartner] = useState('');
+  const [chatPartner, setChatPartner] = useState({});
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(userId, socket)
@@ -30,7 +30,7 @@ function Chat({ userId, socket, userName }) {
   const sendMessage = (message) => {
     const parcel = {
       message,
-      receiverId: chatPartner,
+      receiverId: chatPartner.userId,
       senderId: userId,
       type: 'DIRECT MESSAGE',
       timeStamp: Date.now(),
@@ -39,8 +39,8 @@ function Chat({ userId, socket, userName }) {
   };
 
   const getChatMessages = () => (
-    chatPartner && chatMessages[chatPartner]
-      ? chatMessages[chatPartner] 
+    chatPartner.userId && chatMessages[chatPartner.userId]
+      ? chatMessages[chatPartner.userId] 
       : []
   )
 
