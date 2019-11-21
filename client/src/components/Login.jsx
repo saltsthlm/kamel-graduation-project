@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { Block } from "jsxstyle";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React from "react";
+import { Redirect } from "react-router-dom";
 
 function Login({ setUserId, userId, setUserName }) {
   const login = async () => {
