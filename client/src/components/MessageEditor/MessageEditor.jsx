@@ -13,7 +13,7 @@ const MessageEditor = ({ sendMessage }) => {
   }
 
   return (
-    <div>
+    <div className='message-editor'>
       <input type='text' value={message} onChange={inputValue}></input>
       <button onClick={sendAndClear}>Send</button>
     </div>

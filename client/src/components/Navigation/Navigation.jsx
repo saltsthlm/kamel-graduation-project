@@ -1,14 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ulStyle = {
-  listStyle: 'none',
-}
 const Navigation = () => {
   return (
     <>
-      <nav>
-        <ul style={ulStyle}>
+      <nav className='navigation'>
+        <ul className=''>
           <li>
             <Link to="/">Chat</Link>
           </li>

@@ -1,0 +1,28 @@
+$myColor: red;
+
+html, body, #root, #root>div  {
+  height: 100%;
+}
+
+h3 {
+  color: $myColor;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Settings */
+@import '../scss/settings/settings.scss';
+
+/* Components */
+@import '../components/ContactList/contactList.scss';
+@import '../components/ChatBoard/chatBoard.scss';
+@import '../components/Chat/chat.scss';
+@import '../components/Navigation/navigation.scss';
+@import '../components/MessageEditor/messageEditor.scss';
+

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ContactList from './ContactList';
-import ChatBoard from './ChatBoard';
-import { updateChatMessages, updateContactList } from '../lib/chat';
+import ContactList from '../ContactList/ContactList';
+import ChatBoard from '../ChatBoard/ChatBoard';
+import { updateChatMessages, updateContactList } from '../../lib/chat';
+import useWindowDimensions from '../../lib/window';
 
 function Chat({ userId, socket, userName }) {
+  const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState({});
@@ -45,11 +47,21 @@ function Chat({ userId, socket, userName }) {
   )
 
   return (
+  <>
     <div className="chat">
-      <h3>Welcome {userName}</h3>
-      <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage}/>
-      <ContactList contactList={contactList} setChatPartner={setChatPartner} />
+      { (width < 700 )
+        ? (chatPartner.userName 
+            ? <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
+            : <ContactList contactList={contactList} setChatPartner={setChatPartner} />)
+        : (
+          <>
+            <ContactList contactList={contactList} setChatPartner={setChatPartner} />
+            <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
+          </>
+          )
+        }
     </div>
+  </>
   );
 }
 
