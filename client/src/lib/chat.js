@@ -1,11 +1,11 @@
-export const updateChatMessages = (messages, parcel) => {
-  const senderMessages = (messages[parcel.senderId])
-    ? [...messages[parcel.senderId], parcel]
+export const updateChatMessages = (messages, parcel, senderId = parcel.senderId) => {
+  const senderMessages = (messages[senderId])
+    ? [...messages[senderId], parcel]
     : [parcel];
 
   return {
     ...messages, 
-    [parcel.senderId]: senderMessages
+    [senderId]: senderMessages
   };
 }
 
