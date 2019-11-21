@@ -5,22 +5,22 @@
     flex: 1;
 
     &_messages {
-        flex: 1;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        height: 0px;
+        background-color: lightcyan;
     }
     ul{
         padding: 0;
         margin:0;
     }
     &_message {
+        display:block;
         background-color: lightblue;
         list-style:none;
         margin-bottom: 10px;
         padding: 10px;
         text-align: left;
-        width: 90%;
         max-width: 400px;
-        text-align: justify;
-        text-justify: inter-word;
-        display:block;
     }
 }

@@ -37,6 +37,7 @@ function Chat({ userId, socket }) {
       type: 'DIRECT MESSAGE',
       timeStamp: Date.now(),
     };
+    setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     socket.send(JSON.stringify(parcel));
   };
 
