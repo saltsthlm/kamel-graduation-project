@@ -25,9 +25,9 @@ beforeEach((done) => {
   done();
 });
 
-afterEach((done) => {
-  clientConnection.close();
-  server.close();
+afterEach(async (done) => {
+  await clientConnection.close();
+  await server.close();
   done();
 });
 
