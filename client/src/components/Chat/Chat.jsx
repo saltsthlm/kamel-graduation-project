@@ -4,7 +4,7 @@ import ChatBoard from '../ChatBoard/ChatBoard';
 import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 
-function Chat({ userId, socket, userName }) {
+function Chat({ userId, socket }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
@@ -47,21 +47,21 @@ function Chat({ userId, socket, userName }) {
   )
 
   return (
-  <>
-    <div className="chat">
-      { (width < 700 )
-        ? (chatPartner.userName 
+    <>
+      <div className="chat">
+        { (width < 700 )
+          ? (chatPartner.userName 
             ? <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
             : <ContactList contactList={contactList} setChatPartner={setChatPartner} />)
-        : (
-          <>
-            <ContactList contactList={contactList} setChatPartner={setChatPartner} />
-            <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
-          </>
+          : (
+            <>
+              <ContactList contactList={contactList} setChatPartner={setChatPartner} />
+              <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
+            </>
           )
         }
-    </div>
-  </>
+      </div>
+    </>
   );
 }
 
