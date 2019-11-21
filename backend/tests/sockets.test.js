@@ -25,9 +25,9 @@ beforeEach((done) => {
   done();
 });
 
-afterEach(async (done) => {
-  await clientConnection.close();
-  await server.close();
+afterEach((done) => {
+  clientConnection.close();
+  server.close();
   done();
 });
 
@@ -45,12 +45,16 @@ describe('The /socket routes', () => {
     client.on('connect', (connection) => {
       clientConnection = connection;
 
+      connection.on('close', () => done());
+
       connection.on('message', (message) => {
         const parcel = JSON.parse(message.utf8Data);
         expect(parcel.type).toEqual('UPDATE CONTACTLIST');
         expect(parcel.connectedClients).toEqual([socketId]);
-        expect(parcel.receiverId).toEqual(socketId);
-        done();
+        // expect(parcel.receiverId).toEqual('hi');
+        if (parcel.type === 'UPDATE CONTACTLIST') {
+          connection.close();
+        }
       });
     });
 
