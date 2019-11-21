@@ -3,7 +3,7 @@ import ContactList from './ContactList';
 import ChatBoard from './ChatBoard';
 import { updateChatMessages, updateContactList } from '../lib/chat';
 
-function Chat({ userId, socket }) {
+function Chat({ userId, socket, userName }) {
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState('');
@@ -17,6 +17,8 @@ function Chat({ userId, socket }) {
       socket.onmessage = (event) => {
         const parcel = JSON.parse(event.data);
         if (parcel.type === 'UPDATE CONTACTLIST') {
+          console.log(parcel);
+          
           setContactList(parcel.connectedClients);
         }
         if (parcel.type === 'DIRECT MESSAGE') {
@@ -46,6 +48,7 @@ function Chat({ userId, socket }) {
 
   return (
     <div className="chat">
+      <h3>Welcome {userName}</h3>
       <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage}/>
       <ContactList contactList={contactList} setChatPartner={setChatPartner} />
     </div>
