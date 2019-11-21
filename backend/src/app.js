@@ -2,8 +2,11 @@ const express = require('express');
 const expressWs = require('express-ws');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const uuid = require('uuid/v4');
+const nameGenerator = require('project-name-generator');
 
 const sockets = require('./controllers/sockets');
+const clients = require('./clients/clients');
 const logger = require('./logging/logging');
 
 const wsInstance = expressWs(express());
@@ -21,6 +24,15 @@ app.ws('/socket/:id', (ws, req) => {
 
 app.get('/', (req, res) => res.send('Hi'));
 
+app.post('/login', (req, res) => {
+  const userInfo = {
+    userId: uuid(),
+    userName: nameGenerator().spaced,
+  }
+  clients.loggedInUsers.push(userInfo);
+  res.json(userInfo);
+});
+
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   logger.logger.error(err);
@@ -28,4 +40,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('An Error Occured');
 });
 
-module.exports = app;
+module.exports = {
+  app,
+};
