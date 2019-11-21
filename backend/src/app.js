@@ -25,12 +25,12 @@ app.ws('/socket/:id', (ws, req) => {
 app.get('/', (req, res) => res.send('Hi'));
 
 app.post('/login', (req, res) => {
-  const userInfo = {
+  const credentials = {
     userId: uuid(),
     userName: nameGenerator().spaced,
-  }
-  clients.loggedInUsers.push(userInfo);
-  res.json(userInfo);
+  };
+  clients.loggedInUsers.push(credentials);
+  res.json(credentials);
 });
 
 // eslint-disable-next-line no-unused-vars

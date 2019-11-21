@@ -2,19 +2,17 @@ import React from "react";
 
 function ContactList({ contactList, setChatPartner }) {
 
-  const establishConnection = event => {
-    setChatPartner(event.target.innerText);
+  const establishConnection = (userId) => {
+    setChatPartner(userId);
   };
-
 
   return (
     <div className="contact-list">
       <h3>Active Users</h3>
       <ul>
         {contactList.map((contact, i) => (
-          <li key={i} onClick={establishConnection}>
-            {contact.clientId}
-            {contact.clientName}
+          <li key={i} onClick={() => establishConnection(contact.userId)}>
+            {contact.userName}
           </li>
         ))}
       </ul>

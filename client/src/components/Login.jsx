@@ -3,7 +3,6 @@ import { Block } from "jsxstyle";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 function Login({ setUserId, userId, setUserName }) {
-
   const login = async () => {
     const response = await fetch('/login', {
       method: 'POST',
@@ -12,9 +11,11 @@ function Login({ setUserId, userId, setUserName }) {
     setUserId(credentials.userId);
     setUserName(credentials.userName);
   };
+
   if (userId) {
     return <Redirect to='/'/>
-   }
+  }
+
   return (
     <div className="login">
       <h3>Login</h3>

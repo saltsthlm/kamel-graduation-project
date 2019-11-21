@@ -28,8 +28,8 @@ const removeConnected = (clientId) => {
 const getContactListParcel = () => ({
   type: 'UPDATE CONTACTLIST',
   connectedClients: connectedClients.map((client) => ({
-    clientId: client.clientId,
-    clientName: client.clientName,
+    userId: client.clientId,
+    userName: client.clientName,
   })),
 });
 

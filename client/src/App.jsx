@@ -15,34 +15,34 @@ function App() {
       const socket = new WebSocket(`ws://localhost:8080/socket/${userId}`);
       socket.onopen = () => {
         socket.send(JSON.stringify({ message: "Initialized connection on client!" }));
-        setSocket(socket); 
+        setSocket(socket);
       };
     }
   }, [userId]);
 
-  function PrivateRoute ({authed, ...rest}) {
+  function PrivateRoute({ authed, ...rest }) {
     return (
       <Route
         {...rest}
         render={() => authed
-          ? <Chat userId={userId} userName={userName} socket={socket}/>
-          : <Redirect to='/login' setUserId={setUserId} userId={userId}/>}
+          ? <Chat userId={userId} userName={userName} socket={socket} />
+          : <Redirect to='/login' setUserId={setUserId} userId={userId} />}
       />
     )
   }
 
   return (
-      <div className="App">
-        <Route>
-          <Navigation />
-          <Switch>
-            <Route path='/login'>
-              <Login setUserId={setUserId} userId={userId} setUserName={setUserName} />
-            </Route>
-            <PrivateRoute path='/' exact authed={userId}/>
-          </Switch>
-        </Route>
-      </div>
+    <div className="App">
+      <Route>
+        <Navigation />
+        <Switch>
+          <Route path='/login'>
+            <Login setUserId={setUserId} userId={userId} setUserName={setUserName} />
+          </Route>
+          <PrivateRoute path='/' exact authed={userId} />
+        </Switch>
+      </Route>
+    </div>
   );
 }
 

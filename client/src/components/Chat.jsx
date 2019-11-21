@@ -16,9 +16,7 @@ function Chat({ userId, socket, userName }) {
     if (socket) {
       socket.onmessage = (event) => {
         const parcel = JSON.parse(event.data);
-        if (parcel.type === 'UPDATE CONTACTLIST') {
-          console.log(parcel);
-          
+        if (parcel.type === 'UPDATE CONTACTLIST') {          
           setContactList(parcel.connectedClients);
         }
         if (parcel.type === 'DIRECT MESSAGE') {
