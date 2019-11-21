@@ -3,20 +3,21 @@ import React, { useState } from "react";
 const MessageEditor = ({ sendMessage }) => {
   const [message, setMessage] = useState('');
 
-  const inputValue = (e) => {
-    setMessage(e.target.value);
+  const inputValue = (event) => {
+    setMessage(event.target.value);
   }
 
-  const sendAndClear = () => {
+  const sendAndClear = (event) => {
+    event.preventDefault();
     sendMessage(message);
     setMessage('');
   }
 
   return (
-    <div className='message-editor'>
+    <form className='message-editor'>
       <input type='text' value={message} onChange={inputValue}></input>
-      <button onClick={sendAndClear}>Send</button>
-    </div>
+      <button type="submit" onClick={sendAndClear}>Send</button>
+    </form>
   );
 }
 

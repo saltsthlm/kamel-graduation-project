@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MessageEditor from '../MessageEditor/MessageEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
@@ -20,12 +20,17 @@ const getMessageStyle = (senderId, userId) => {
 }
 
 function ChatBoard({ chatMessages, chatPartner, sendMessage, setChatPartner, userId }) {
+  let messageArea = React.createRef();
+
+  useEffect(() => {
+    messageArea.current.scrollTop = messageArea.current.scrollHeight;
+  }, [chatMessages, messageArea])
 
   return (
     <div className="chat-board">
       <FontAwesomeIcon icon={faAngleLeft} onClick={() => setChatPartner({})} />
       <h3>{chatPartner.userName ? chatPartner.userName : 'Select contact'}</h3>
-      <div className="chat-board_messages">
+      <div className="chat-board_messages" ref={messageArea}>
         <ul>
           {chatMessages.map((parcel, i) => (
             <div key={i} className='chat-board_message' style={getMessageStyle(parcel.senderId, userId)}>
