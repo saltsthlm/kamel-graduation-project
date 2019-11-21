@@ -1,0 +1,16 @@
+
+/* Media queries: all minimum sizes they start */
+
+
+$screen-md: 700px; //tablet
+$screen-lg: 1024px; //desktop
+$screen-xl: 1440px; //desktop large (Add margins)
+
+$breakpoints: (
+  md: $screen-md,
+  lg: $screen-lg,
+  xl: $screen-xl
+);
+//In order to use the media queries think that
+//those are the minimum sizes that it starts and then apply
+//@media (max-width: $screen-XX) or @media (min-width: $screen-XX)

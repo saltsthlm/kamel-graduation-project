@@ -1,0 +1,29 @@
+.contact-list {
+    &_wrapp {
+        ul {
+            list-style:none;
+            padding: 0;
+        }
+        li {
+            padding:20px;
+            border-style: solid;
+            border-color: black;
+            border-width: 1px 0;
+        }
+        li + li {
+            padding: 20px;
+            border-width: 0 0 1px 0;
+        }
+    }
+
+    @media (max-width:$screen-md ){
+        width: 200px;
+        flex: 1;
+    }
+
+
+    @media (min-width:$screen-md ){
+        width: 300px;
+        background-color:yellow;
+    }
+}
