@@ -20,15 +20,13 @@ const testParcel = {
 };
 
 beforeEach((done) => {
-  server = app.listen(PORT);
   client = new WebSocketClient();
-  done();
+  server = app.listen(PORT, done);
 });
 
 afterEach((done) => {
   clientConnection.close();
-  server.close();
-  done();
+  server.close(done);
 });
 
 describe('The /socket routes', () => {
