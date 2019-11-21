@@ -1,15 +1,15 @@
+`use strict`;
 const WebSocketClient = require('websocket').client;
 const uuid = require('uuid/v4');
-const assert = require('assert');
+const app = require('../src/app');
 require('dotenv').config();
 
-const app = require('../src/app');
-
-const socketId = uuid();
-const PORT = 8888;
 let client;
 let server;
 let clientConnection;
+
+const socketId = uuid();
+const PORT = 8888;
 
 const testParcel = {
   message: 'Hi',
@@ -19,18 +19,19 @@ const testParcel = {
   timeStamp: Date.now(),
 };
 
-beforeEach(() => {
-  server = app.listen(PORT);
+beforeEach((done) => {
   client = new WebSocketClient();
+  server = app.listen(PORT, done);
 });
 
-afterEach(() => {
+afterEach((done) => {
   clientConnection.close();
-  server.close();
+  server.close(done);
 });
 
 describe('The /socket routes', () => {
-  it('should allow for connections on dynamic endpoints', async (done) => {
+
+  it('should allow for connections on dynamic endpoints', (done) => {
     client.on('connect', (connection) => {
       clientConnection = connection;
       done();
@@ -38,33 +39,36 @@ describe('The /socket routes', () => {
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
 
-  it('should send a list of connected clients on connect ', async (done) => {
+  it('should send a list of connected clients on connect ', (done) => {
     client.on('connect', (connection) => {
       clientConnection = connection;
 
+      connection.on('close', () => done());
+
       connection.on('message', (message) => {
         const parcel = JSON.parse(message.utf8Data);
+        expect(parcel.type).toEqual('UPDATE CONTACTLIST');
+        expect(parcel.connectedClients).toEqual([socketId]);
+        // expect(parcel.receiverId).toEqual('hi');
         if (parcel.type === 'UPDATE CONTACTLIST') {
-          assert.deepStrictEqual(parcel.connectedClients, [socketId]);
-          assert.deepStrictEqual(parcel.receiverId, socketId);
-          done();
+          connection.close();
         }
       });
     });
+
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
 
-  it('should send a list of connected clients on demand ', async (done) => {
+  it('should send a list of connected clients on demand ', (done) => {
     client.on('connect', (connection) => {
       clientConnection = connection;
 
       connection.on('message', (message) => {
         const parcel = JSON.parse(message.utf8Data);
-        if (parcel.type === 'UPDATE CONTACTLIST') {
-          assert.deepStrictEqual(parcel.connectedClients, [socketId]);
-          assert.deepStrictEqual(parcel.receiverId, socketId);
-          done();
-        }
+        expect(parcel.type).toEqual('UPDATE CONTACTLIST');
+        expect(parcel.connectedClients).toEqual([socketId]);
+        expect(parcel.receiverId).toEqual(socketId);
+        done();
       });
 
       connection.send(JSON.stringify({
@@ -75,7 +79,7 @@ describe('The /socket routes', () => {
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
 
-  it('should allow to send a direct message between two clients', async (done) => {
+  it('should allow to send a direct message between two clients', (done) => {
     client.on('connect', (connection) => {
       clientConnection = connection;
       connection.send(JSON.stringify(testParcel));
@@ -83,18 +87,18 @@ describe('The /socket routes', () => {
       connection.on('message', (message) => {
         const parcel = JSON.parse(message.utf8Data);
         if (parcel.type === 'DIRECT MESSAGE') {
-          assert.deepStrictEqual(parcel.message, testParcel.message);
-          assert.deepStrictEqual(parcel.receiverId, testParcel.receiverId);
-          assert.deepStrictEqual(parcel.senderId, testParcel.senderId);
-          assert.deepStrictEqual(parcel.timeStamp, testParcel.timeStamp);
+          expect(parcel.message).toEqual(testParcel.message);
+          expect(parcel.receiverId).toEqual(testParcel.receiverId);
+          expect(parcel.senderId).toEqual(testParcel.senderId);
+          expect(parcel.timeStamp).toEqual(testParcel.timeStamp);
           done();
-        }
+        };
       });
     });
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
 
-  it('should allow for direct messages to be translated', async (done) => {
+  it('should allow for direct messages to be translated', (done) => {
     client.on('connect', (connection) => {
       clientConnection = connection;
       connection.send(JSON.stringify(testParcel));
@@ -102,7 +106,7 @@ describe('The /socket routes', () => {
       connection.on('message', (message) => {
         const parcel = JSON.parse(message.utf8Data);
         if (parcel.type === 'DIRECT MESSAGE') {
-          assert.deepStrictEqual(parcel.translatedMessage, 'Hej');
+          expect(parcel.translatedMessage).toEqual('Hej');
           done();
         }
       });
@@ -110,7 +114,7 @@ describe('The /socket routes', () => {
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
 
-  it('should allow for multiple clients to connect', async (done) => {
+  it('should allow for multiple clients to connect', (done) => {
     const client2 = new WebSocketClient();
     const socketId2 = uuid();
 
@@ -130,7 +134,7 @@ describe('The /socket routes', () => {
     client.connect(`ws://localhost:${PORT}/socket/${socketId}`, 'echo-protocol');
   });
 
-  it('should communicate connected clients to all clients', async (done) => {
+  it('should communicate connected clients to all clients', (done) => {
     const client2 = new WebSocketClient();
     const socketId2 = uuid();
 
@@ -143,11 +147,12 @@ describe('The /socket routes', () => {
       connection.on('message', (message) => {
         const parcel = JSON.parse(message.utf8Data);
         if (parcel.type === 'UPDATE CONTACTLIST') {
-          assert.deepStrictEqual(parcel.connectedClients, [socketId, socketId2]);
-          assert.deepStrictEqual(parcel.receiverId, socketId2);
+          expect(parcel.connectedClients).toEqual([socketId, socketId2]);
+          expect(parcel.receiverId).toEqual(socketId2);
           connection.close();
         }
       });
+
       connection.on('close', () => {
         done();
       });
