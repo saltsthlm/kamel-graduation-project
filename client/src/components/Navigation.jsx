@@ -10,7 +10,10 @@ const Navigation = () => {
       <nav>
         <ul style={ulStyle}>
           <li>
-            <Link to="/chat">Chat</Link>
+            <Link to="/">Chat</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
           </li>
         </ul>
       </nav>

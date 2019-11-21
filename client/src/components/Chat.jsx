@@ -3,10 +3,10 @@ import ContactList from './ContactList';
 import ChatBoard from './ChatBoard';
 import { updateChatMessages, updateContactList } from '../lib/chat';
 
-function Chat({ userId, socket }) {
+function Chat({ userId, socket, userName }) {
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
-  const [chatPartner, setChatPartner] = useState('');
+  const [chatPartner, setChatPartner] = useState({});
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(userId, socket)
@@ -16,7 +16,7 @@ function Chat({ userId, socket }) {
     if (socket) {
       socket.onmessage = (event) => {
         const parcel = JSON.parse(event.data);
-        if (parcel.type === 'UPDATE CONTACTLIST') {
+        if (parcel.type === 'UPDATE CONTACTLIST') {          
           setContactList(parcel.connectedClients);
         }
         if (parcel.type === 'DIRECT MESSAGE') {
@@ -30,7 +30,7 @@ function Chat({ userId, socket }) {
   const sendMessage = (message) => {
     const parcel = {
       message,
-      receiverId: chatPartner,
+      receiverId: chatPartner.userId,
       senderId: userId,
       type: 'DIRECT MESSAGE',
       timeStamp: Date.now(),
@@ -39,13 +39,14 @@ function Chat({ userId, socket }) {
   };
 
   const getChatMessages = () => (
-    chatPartner && chatMessages[chatPartner]
-      ? chatMessages[chatPartner] 
+    chatPartner.userId && chatMessages[chatPartner.userId]
+      ? chatMessages[chatPartner.userId] 
       : []
   )
 
   return (
     <div className="chat">
+      <h3>Welcome {userName}</h3>
       <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage}/>
       <ContactList contactList={contactList} setChatPartner={setChatPartner} />
     </div>
