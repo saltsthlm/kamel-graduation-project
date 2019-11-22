@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
 import Chat from './components/Chat/Chat';
-import Navigation from './components/Navigation/Navigation';
+// import Navigation from './components/Navigation/Navigation';
 import Login from './components/Login';
 import './scss/App.scss';
 
