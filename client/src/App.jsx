@@ -16,12 +16,8 @@ function App() {
       const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       let { host } = window.location; // nb: window location contains the port, so host will be localhost:3000 in dev
       const socket = new WebSocket(`${protocolPrefix}//${host}/socket/${userId}`);
-      // const socket = new WebSocket(`ws://socket/${userId}`);
-      console.log('initialize socket: ', socket);
       socket.onopen = () => {
-        console.log('opened socket: ', socket);
         socket.send(JSON.stringify({ message: "Initialized connection on client!" }));
-        console.log('sent message: ', socket);
         setSocket(socket);
       };
 

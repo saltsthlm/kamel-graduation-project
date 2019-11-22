@@ -18,7 +18,6 @@ app.use(morgan('tiny', { stream: logger.stream }));
 wsInstance.getWss().on('connection', sockets.onConnect);
 
 app.ws('/socket/:id', (ws, req) => {
-  console.log('incoming websocket connection')
   ws.on('message', sockets.onMessage);
   ws.on('close', () => sockets.onClose(req));
 });
