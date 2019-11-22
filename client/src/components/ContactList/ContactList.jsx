@@ -1,4 +1,5 @@
 import React from "react";
+import ISO6391 from 'iso-639-1';
 
 function ContactList({ contactList, setChatPartner }) {
 
@@ -13,7 +14,7 @@ function ContactList({ contactList, setChatPartner }) {
         <ul>
           {contactList.map((contact, i) => (
             <li key={i} onClick={() => establishConnection(contact)}>
-             {contact.userName}
+              {contact.userName} ({ISO6391.getName(contact.language)})
             </li>
           ))}
         </ul>

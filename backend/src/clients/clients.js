@@ -8,14 +8,22 @@ const deliverParcel = (parcel) => {
   ws.send(JSON.stringify(parcel));
 };
 
+const getUserById = (id) => loggedInUsers.find((user) => user.userId === id);
+
 const getUserNameFromId = (id) => {
-  const user = loggedInUsers.find((user) => user.userId === id);
+  const user = getUserById(id);
   return user.userName;
-}
+};
+
+const getUserLanguage = (id) => {
+  const user = getUserById(id);
+  return user.language;
+};
 
 const addConnected = (clientId, ws) => {
   connectedClients.push({
     clientId,
+    language: getUserLanguage(clientId),
     clientName: getUserNameFromId(clientId),
     ws,
   });
@@ -30,6 +38,7 @@ const getContactListParcel = () => ({
   connectedClients: connectedClients.map((client) => ({
     userId: client.clientId,
     userName: client.clientName,
+    language: client.language,
   })),
 });
 
@@ -49,4 +58,5 @@ module.exports = {
   deliverParcel,
   getContactListParcel,
   loggedInUsers,
+  getUserLanguage,
 };

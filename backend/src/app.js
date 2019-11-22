@@ -24,10 +24,16 @@ app.ws('/socket/:id', (ws, req) => {
 
 app.get('/', (req, res) => res.send('Hi'));
 
+const getRandomLanguage = () => {
+  const languages = ['ca', 'de', 'sv', 'fr'];
+  return languages[Math.floor(Math.random() * languages.length)];
+};
+
 app.post('/login', (req, res) => {
   const credentials = {
     userId: uuid(),
     userName: nameGenerator().spaced,
+    language: getRandomLanguage(),
   };
   clients.loggedInUsers.push(credentials);
   res.json(credentials);

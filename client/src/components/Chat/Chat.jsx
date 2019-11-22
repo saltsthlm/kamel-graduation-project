@@ -20,6 +20,7 @@ function Chat({ userId, socket }) {
         const parcel = JSON.parse(event.data);
         if (parcel.type === 'UPDATE CONTACTLIST') {          
           setContactList(parcel.connectedClients);
+          console.log(parcel);
         }
         if (parcel.type === 'DIRECT MESSAGE') {
           setChatMessages((messages) => updateChatMessages(messages, parcel));
@@ -47,6 +48,8 @@ function Chat({ userId, socket }) {
       : []
   )
 
+  const getContactList = () => contactList.filter((contact) => contact.userId !== userId);
+
   return (
     <>
       <div className="chat">
@@ -56,7 +59,7 @@ function Chat({ userId, socket }) {
             : <ContactList contactList={contactList} setChatPartner={setChatPartner} />)
           : (
             <>
-              <ContactList contactList={contactList} setChatPartner={setChatPartner} />
+              <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
               <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
             </>
           )

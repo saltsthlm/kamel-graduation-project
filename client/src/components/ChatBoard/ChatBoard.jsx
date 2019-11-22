@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import MessageEditor from '../MessageEditor/MessageEditor';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import ISO6391 from 'iso-639-1';
 
 const getMessageStyle = (senderId, userId) => {
   if (senderId === userId) {
@@ -9,17 +10,21 @@ const getMessageStyle = (senderId, userId) => {
       float: 'right',
       clear:'both',
       marginLeft: '20px',
+      backgroundColor: 'blue',
+      color: 'white',
     }
   } else  {
     return {
       float: 'left',
       clear:'both',
       marginRight: '20px',
+      backgroundColor: '#eee',
+      color: 'black',
     }
   }
 }
 
-function ChatBoard({ chatMessages, chatPartner, sendMessage, setChatPartner, userId }) {
+const ChatBoard = ({ chatMessages, chatPartner, sendMessage, setChatPartner, userId }) => {
   let messageArea = React.createRef();
 
   useEffect(() => {
@@ -29,13 +34,16 @@ function ChatBoard({ chatMessages, chatPartner, sendMessage, setChatPartner, use
   return (
     <div className="chat-board">
       <FontAwesomeIcon icon={faAngleLeft} onClick={() => setChatPartner({})} />
-      <h3>{chatPartner.userName ? chatPartner.userName : 'Select contact'}</h3>
+      <h3>{chatPartner.userName ? `${chatPartner.userName} (${ISO6391.getName(chatPartner.language)})` : 'Select contact'}</h3>
       <div className="chat-board_messages" ref={messageArea}>
         <ul>
           {chatMessages.map((parcel, i) => (
             <div key={i} className='chat-board_message' style={getMessageStyle(parcel.senderId, userId)}>
-              <li key={Math.random()}>{parcel.translatedMessage}</li>
-              <li key={Math.random()}>{parcel.message}</li>
+              {
+                parcel.senderId === userId
+                  ? <li key={Math.random()}>{parcel.message}</li>
+                  : <li key={Math.random()}>{parcel.translatedMessage}</li>
+              }
             </div>
           ))}
         </ul>
