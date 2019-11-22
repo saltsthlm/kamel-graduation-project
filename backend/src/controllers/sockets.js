@@ -1,6 +1,7 @@
+`use strict`;
 const client = require('../clients/clients');
-const { translate } = require('../translate/translation');
 const { logger } = require('../logging/logging');
+const { processParcel } = require('./parcels');
 
 const onConnect = (ws, req) => {
   req.id = req.params.id;
@@ -15,35 +16,13 @@ const onClose = (req) => {
   logger.info(`closed connection on socket ${req.id}`);
 };
 
-const processParcel = async (parcel) => {
-  if (parcel.type === 'DIRECT MESSAGE') {
-    const translatedMessage = await translate(
-      parcel.message,
-      client.getUserLanguage(parcel.receiverId),
-    );
-    client.deliverParcel({
-      ...parcel,
-      translatedMessage,
-      senderLanguage: client.getUserLanguage(parcel.senderId),
-      receiverLanguage: client.getUserLanguage(parcel.receiverId),
-    });
-  }
-
-  if (parcel.type === 'REQUEST CONTACT LIST UPDATE') {
-    client.deliverParcel({
-      ...client.getContactListParcel(),
-      receiverId: parcel.senderId,
-    });
-  }
-}
-
 const onMessage = async (data) => {
-  const parcel = JSON.parse(data);
-  if (parcel.type) {
-    logger.info(`received parcel of type ${parcel.type}`);
-    await processParcel(parcel);
-    logger.info(parcel);
-    logger.info(`delivered parcel of type ${parcel.type}`);
+  logger.info(`data recieved, processing...`);
+  try {
+    return await processParcel(await JSON.parse(await data));
+  } catch (error) {
+    console.dir(data);
+    throw error;
   }
 };
 

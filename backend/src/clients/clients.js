@@ -1,7 +1,6 @@
-
+`use strict`;
 let connectedClients = [];
 const loggedInUsers = [];
-
 
 const deliverParcel = (parcel) => {
   const { ws } = connectedClients.find((client) => client.clientId === parcel.receiverId);

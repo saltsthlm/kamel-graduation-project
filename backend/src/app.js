@@ -1,10 +1,10 @@
+`use strict`;
 const express = require('express');
 const expressWs = require('express-ws');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const uuid = require('uuid/v4');
 const nameGenerator = require('project-name-generator');
-
 const sockets = require('./controllers/sockets');
 const clients = require('./clients/clients');
 const logger = require('./logging/logging');
@@ -20,6 +20,10 @@ wsInstance.getWss().on('connection', sockets.onConnect);
 app.ws('/socket/:id', (ws, req) => {
   ws.on('message', sockets.onMessage);
   ws.on('close', () => sockets.onClose(req));
+});
+
+app.get('/login', (req, res) => {
+  res.redirect('../');
 });
 
 app.get('/', (req, res) => res.send('Hi'));

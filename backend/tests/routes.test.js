@@ -3,6 +3,7 @@ const request = require('supertest');
 const { app } = require('../src/app');
 
 describe('The home route', () => {
+
   it('should respond to GET with status 200', (done) => {
     request(app)
       .get('/')
@@ -11,7 +12,8 @@ describe('The home route', () => {
   });
 });
 
-describe('The loggin route', () => {
+describe('The login route', () => {
+
   it('should respond to POST with status 200', (done) => {
     request(app)
       .post('/login')

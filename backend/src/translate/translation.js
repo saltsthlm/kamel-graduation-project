@@ -1,3 +1,4 @@
+`use strict`;
 const { Translate } = require('@google-cloud/translate').v2;
 
 const translationClient = new Translate({
@@ -6,8 +7,12 @@ const translationClient = new Translate({
 });
 
 const translate = async (text, target) => {
-  const [translation] = await translationClient.translate(text, target);
-  return translation;
+  try {
+    const [translation] = await translationClient.translate(text, target);
+    return translation;
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = { translate };

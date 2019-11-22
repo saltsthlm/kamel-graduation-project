@@ -1,3 +1,4 @@
+`use strict`;
 const winston = require('winston');
 
 const logger = winston.createLogger({
@@ -20,7 +21,6 @@ const logger = winston.createLogger({
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
-
   ],
   exitOnError: false,
 });
