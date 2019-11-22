@@ -15,5 +15,8 @@ export const updateContactList = (userId, socket) => {
     type: 'REQUEST CONTACT LIST UPDATE',
     timeStamp: Date.now(),
   };
+  console.log('setup callback: ', socket);
   socket.send(JSON.stringify(parcel));
+  console.log('setup callback done: ', socket);
+
 }
