@@ -25,7 +25,7 @@ app.ws('/socket/:id', (ws, req) => {
 app.get('/', (req, res) => res.send('Hi'));
 
 const getRandomLanguage = () => {
-  const languages = ['ca', 'de', 'sv', 'fr'];
+  const languages = ['es', 'sv'];
   return languages[Math.floor(Math.random() * languages.length)];
 };
 
