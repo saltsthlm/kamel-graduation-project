@@ -56,7 +56,7 @@ function Chat({ userId, socket }) {
         { (width < 700 )
           ? (chatPartner.userName 
             ? <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
-            : <ContactList contactList={contactList} setChatPartner={setChatPartner} />)
+            : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
           : (
             <>
               <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
