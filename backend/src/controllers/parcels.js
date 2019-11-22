@@ -21,6 +21,10 @@ const deliverUpdate = async (parcel) => {
   logger.info(`delivered updated list of clients to ${parcel.senderId}`);
 };
 
+const deliverReport = async (parcel) => {
+  logger.info(parcel.message);
+};
+
 const processParcel = async (parcel) => {
   logger.info(`recieved parcel of type ${parcel.type}`);
   switch (parcel.type) {
@@ -29,8 +33,7 @@ const processParcel = async (parcel) => {
     case 'UPDATE CONTACTS':
       return await deliverUpdate(parcel);
     case 'REPORT SUCCESS':
-      logger.info(parcel.message);
-      return;
+      return await deliverReport(parcel);
     default:
       const errorMessage = `Unhandled parcel type "${parcel.type}" recieved from ${parcel.senderId}!`;
       logger.error(errorMessage)
