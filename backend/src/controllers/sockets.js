@@ -15,16 +15,18 @@ const onClose = (req) => {
   logger.info(`closed connection on socket ${req.id}`);
 };
 
-// deliberate abstraction for future implementation
-const getTargetLanguage = (receiverId) => 'sv';
-
 const processParcel = async (parcel) => {
   if (parcel.type === 'DIRECT MESSAGE') {
     const translatedMessage = await translate(
       parcel.message,
-      getTargetLanguage(parcel.receiverId),
+      client.getUserLanguage(parcel.receiverId),
     );
-    client.deliverParcel({ ...parcel, translatedMessage });
+    client.deliverParcel({
+      ...parcel,
+      translatedMessage,
+      senderLanguage: client.getUserLanguage(parcel.senderId),
+      receiverLanguage: client.getUserLanguage(parcel.receiverId),
+    });
   }
 
   if (parcel.type === 'REQUEST CONTACT LIST UPDATE') {

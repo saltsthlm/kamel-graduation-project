@@ -16,11 +16,19 @@
     }
     &_message {
         display:block;
-        background-color: lightblue;
         list-style:none;
         margin-bottom: 10px;
         padding: 10px;
         text-align: left;
         max-width: 400px;
+
+        &_text {
+
+        }
+
+        &_language {
+            font-style: italic;
+            font-size: 12px;
+        }
     }
 }
