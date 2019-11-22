@@ -41,7 +41,6 @@ function App() {
     <div className="App">
       <Router>
         <Route>
-          <Navigation />
           <Switch>
             <Route path='/login'>
               <Login setUserId={setUserId} userId={userId} setUserName={setUserName} />
