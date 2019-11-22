@@ -14,8 +14,9 @@ function App() {
   useEffect(() => {
     if (userId) {
       const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      let { host } = window.location; // nb: window location contains the port, so host will be localhost:3000 in dev
+      const { host } = window.location;
       const socket = new WebSocket(`${protocolPrefix}//${host}/socket/${userId}`);
+
       socket.onopen = () => {
         socket.send(JSON.stringify({ message: "Initialized connection on client!" }));
         setSocket(socket);
