@@ -13,11 +13,16 @@ function App() {
 
   useEffect(() => {
     if (userId) {
-      const socket = new WebSocket(`ws://localhost:8080/socket/${userId}`);
+      const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const { host } = window.location;
+      const socket = new WebSocket(`${protocolPrefix}//${host}/socket/${userId}`);
+
       socket.onopen = () => {
         socket.send(JSON.stringify({ message: "Initialized connection on client!" }));
         setSocket(socket);
       };
+
+      socket.onerror = (error) => console.log(error);
     }
   }, [userId]);
 

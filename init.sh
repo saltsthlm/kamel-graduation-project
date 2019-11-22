@@ -1,5 +1,7 @@
 brew update
 brew upgrade yarn
+brew upgrade node
+docker pull mongo
 
 cd backend
 yarn install
