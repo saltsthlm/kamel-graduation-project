@@ -14,6 +14,13 @@ describe('The home route', () => {
 
 describe('The login route', () => {
 
+  it('should respond to GET with status 302', (done) => {
+    request(app)
+      .get('/login')
+      .expect(302)
+      .end(done);
+  });
+
   it('should respond to POST with status 200', (done) => {
     request(app)
       .post('/login')
