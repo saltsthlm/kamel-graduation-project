@@ -20,10 +20,12 @@ function Chat({ userId, socket }) {
         const parcel = JSON.parse(event.data);
         if (parcel.type === 'UPDATE CONTACTLIST') {          
           setContactList(parcel.connectedClients);
-          console.log(parcel);
         }
         if (parcel.type === 'DIRECT MESSAGE') {
           setChatMessages((messages) => updateChatMessages(messages, parcel));
+        }
+        if (parcel.type === 'PING') {
+          socket.send(JSON.stringify({type: 'PONG', senderId: parcel.receiverId}));
         }
       }
       socketSetupCallback();

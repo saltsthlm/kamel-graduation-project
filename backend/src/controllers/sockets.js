@@ -31,7 +31,7 @@ const processParcel = async (parcel) => {
 
   if (parcel.type === 'REQUEST CONTACT LIST UPDATE') {
     client.deliverParcel({
-      ...client.getContactListParcel(),
+      ...client.newContactListParcel(),
       receiverId: parcel.senderId,
     });
   }
@@ -43,7 +43,7 @@ const onMessage = async (data) => {
     logger.info(`received parcel of type ${parcel.type}`);
     await processParcel(parcel);
     logger.info(parcel);
-    logger.info(`delivered parcel of type ${parcel.type}`);
+    logger.info(`processed parcel of type ${parcel.type}`);
   }
 };
 

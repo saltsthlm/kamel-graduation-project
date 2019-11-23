@@ -2,7 +2,6 @@
 let connectedClients = [];
 const loggedInUsers = [];
 
-
 const deliverParcel = (parcel) => {
   const { ws } = connectedClients.find((client) => client.clientId === parcel.receiverId);
   ws.send(JSON.stringify(parcel));
@@ -33,7 +32,7 @@ const removeConnected = (clientId) => {
   connectedClients = connectedClients.filter((client) => client.clientId !== clientId);
 };
 
-const getContactListParcel = () => ({
+const newContactListParcel = () => ({
   type: 'UPDATE CONTACTLIST',
   connectedClients: connectedClients.map((client) => ({
     userId: client.clientId,
@@ -42,12 +41,23 @@ const getContactListParcel = () => ({
   })),
 });
 
-const communicateConnected = () => {
-  const parcel = getContactListParcel();
+const communicate = (parcel) => {
   connectedClients.forEach((client) => deliverParcel({
     ...parcel,
     receiverId: client.clientId,
   }));
+}
+
+const communicatePing = () => {
+  const parcel = {
+    type: 'PING',
+  };
+  communicate(parcel);
+};
+
+const communicateConnected = () => {
+  const parcel = newContactListParcel();
+  communicate(parcel);
 };
 
 module.exports = {
@@ -56,7 +66,8 @@ module.exports = {
   communicateConnected,
   removeConnected,
   deliverParcel,
-  getContactListParcel,
+  newContactListParcel,
   loggedInUsers,
   getUserLanguage,
+  communicatePing,
 };

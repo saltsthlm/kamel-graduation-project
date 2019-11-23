@@ -15,6 +15,8 @@ const { app } = wsInstance;
 app.use(helmet());
 app.use(morgan('tiny', { stream: logger.stream }));
 
+setInterval(() => clients.communicatePing(), 5000);
+
 wsInstance.getWss().on('connection', sockets.onConnect);
 
 app.ws('/socket/:id', (ws, req) => {
@@ -23,6 +25,7 @@ app.ws('/socket/:id', (ws, req) => {
 });
 
 app.get('/', (req, res) => res.send('Hi'));
+
 
 const getRandomLanguage = () => {
   const languages = ['es', 'sv'];
