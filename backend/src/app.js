@@ -7,13 +7,17 @@ const nameGenerator = require('project-name-generator');
 
 const sockets = require('./controllers/sockets');
 const clients = require('./clients/clients');
+const languages = require('./translate/languages');
 const logger = require('./logging/logging');
+const parcels = require('./parcels/parcels');
 
 const wsInstance = expressWs(express());
 const { app } = wsInstance;
 
 app.use(helmet());
 app.use(morgan('tiny', { stream: logger.stream }));
+
+setInterval(() => parcels.sendPing(), 5000);
 
 wsInstance.getWss().on('connection', sockets.onConnect);
 
@@ -22,18 +26,11 @@ app.ws('/socket/:id', (ws, req) => {
   ws.on('close', () => sockets.onClose(req));
 });
 
-app.get('/', (req, res) => res.send('Hi'));
-
-const getRandomLanguage = () => {
-  const languages = ['es', 'sv'];
-  return languages[Math.floor(Math.random() * languages.length)];
-};
-
 app.post('/login', (req, res) => {
   const credentials = {
     userId: uuid(),
     userName: nameGenerator().spaced,
-    language: getRandomLanguage(),
+    language: languages.getRandomLanguage(),
   };
   clients.loggedInUsers.push(credentials);
   res.json(credentials);
@@ -42,7 +39,6 @@ app.post('/login', (req, res) => {
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   logger.logger.error(err);
-  req.session.spotifyCode = undefined;
   res.status(500).send('An Error Occured');
 });
 
