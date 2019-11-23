@@ -3,7 +3,7 @@ import ContactList from '../ContactList/ContactList';
 import ChatBoard from '../ChatBoard/ChatBoard';
 import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
-import Peer from 'simple-peer';
+import * as webRtc from '../../lib/webrtc';
 
 const pong = (parcel) => (
   JSON.stringify({
@@ -41,40 +41,26 @@ function Chat({ userId, socket }) {
     socket.send(JSON.stringify(parcel));
   };
 
-  // const acceptWebRtc = (parcel) => {    
-  //   setWebRtcSignal(parcel.signal);
-  // }
-
   useEffect(() => {
-    if (!webRtcPeer && webRtcSignal) {
-      const peer = new Peer({
-        initiator: false,
-        trickle: false
-      });
+    if (webRtcSignal && !webRtcPeer) {
+      const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
       setWebRtcPeer(peer);
-    } else if (webRtcPeer && webRtcSignal) {
+    } else if (webRtcSignal && webRtcPeer) {
       webRtcPeer.signal(webRtcSignal);
     }
   }, [webRtcSignal])
 
   useEffect(() => {    
-    if (webRtcPeer && !webRtcSignal.onsignal) {
+    if (webRtcPeer) {
       webRtcPeer.on('data', (data) => console.log(new TextDecoder("utf-8").decode(data)));
-
-      webRtcPeer.on('signal', signal => {
-        sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId})
-      });
+      webRtcPeer.on('signal', signal => sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}));
     }
   }, [webRtcPeer]);
 
   const initiateWebRtc = (event) => {
     event.preventDefault();
-    const newPeer = new Peer({
-      initiator: true,
-      trickle: false
-    });
-    setWebRtcPeer(newPeer);
+    setWebRtcPeer(webRtc.newInitiator());
   }
  
   useEffect(() => {
