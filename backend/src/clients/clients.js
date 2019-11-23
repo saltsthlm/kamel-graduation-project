@@ -23,9 +23,10 @@ const addConnected = (clientId, ws) => {
 };
 
 const removeConnectionById = (clientId) => {
-  connectedClients = connectedClients.filter((client) => (
-    client.clientId !== clientId
+  const clientIndex = connectedClients.findIndex((client) => (
+    client.clientId === clientId
   ));
+  connectedClients.splice(clientIndex, 1);
 };
 
 module.exports = {

@@ -34,6 +34,7 @@ const sendPing = () => {
 
 const sendConnected = () => {
   const parcel = newContactListParcel();
+  console.log('updating', parcel.connectedClients.length);
   deliverToAll(parcel);
 };
 
@@ -67,16 +68,23 @@ const processContactListUpdate = (parcel) => {
   });
 };
 
+const processWebRtcOffer = (parcel) => {
+  deliverParcel(parcel);
+};
+
 const process = async (parcel) => {
   switch (parcel.type) {
   case 'DIRECT MESSAGE':
     return processDirectMessage(parcel);
-  case 'UPDATE CONTACTS':
-    return processContactListUpdate(parcel);
+  case 'OFFER WEBRTC':
+    return processWebRtcOffer(parcel);
   case 'REPORT SUCCESS':
     return logger.info(parcel);
   case 'RETURN PONG':
-    return logger.debug(parcel);
+    // return logger.debug(parcel);
+    break;
+  case 'UPDATE CONTACTS':
+    return processContactListUpdate(parcel);
   default:
     return logger.info(`received parcel of unknown type "${parcel.type}"`);
   }
