@@ -13,6 +13,19 @@ const pong = (parcel) => (
   })
 );
 
+const videoConfig = {
+  video: {
+    width: 1280,
+    height: 720,
+  },
+  audio: true,
+}
+
+const videoCss = {
+  transform: 'rotateY(180deg)',
+  height: '100%',
+}
+
 function Chat({ userId, socket }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
@@ -20,6 +33,7 @@ function Chat({ userId, socket }) {
   const [chatPartner, setChatPartner] = useState({});
   const [webRtcPeer, setWebRtcPeer] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
+  const [activeVideoCall, setActiveVideoCall] = useState(false);
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(userId, socket)
@@ -55,29 +69,30 @@ function Chat({ userId, socket }) {
     if (webRtcPeer) {
       // webRtcPeer.on('data', (data) => console.log(new TextDecoder("utf-8").decode(data)));
       webRtcPeer.on('connect', () => webRtcPeer.send('ready when you are'));
+      webRtcPeer.on('close', () => setActiveVideoCall(false));
       webRtcPeer.on('signal', signal => sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}));
       webRtcPeer.on('stream', stream => {
         const video =  document.querySelector('#video');
+        setActiveVideoCall(true);
         video.srcObject = stream;
         video.muted = true;
         video.play();
       })
 
-      const streamCallback = (stream) => {
-        webRtcPeer.addStream(stream);
-      }
-
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(streamCallback);
+      navigator.mediaDevices.getUserMedia(videoConfig)
+        .then((stream) => webRtcPeer.addStream(stream));
     }
-  }, [webRtcPeer]);
+  }, [webRtcPeer, activeVideoCall]);
 
   const initiateWebRtc = (event) => {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
   }
 
-  const sendViaWebRTC = (message) => {
-    webRtcPeer.send(message);
+  const endWebRtc = () => {
+    webRtcPeer.destroy();
+    setWebRtcSignal('');
+    setWebRtcPeer('');
   }
  
   useEffect(() => {
@@ -111,9 +126,13 @@ function Chat({ userId, socket }) {
 
   return (
     <>
-      <video id="video"></video>
-      <button onClick={sendViaWebRTC}>send something</button>
-      <div className="chat">
+      <div style={{display: activeVideoCall ? 'block' : 'none', height: '95%', backgroundColor: 'black' }}>
+        <video id="video" style={videoCss}></video>
+        <div style={{display: 'flex'}}>
+          <button onClick={endWebRtc}>Hang Up</button>
+        </div>
+      </div>
+      <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
         { (width < 700 )
           ? (chatPartner.userName 
             ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
