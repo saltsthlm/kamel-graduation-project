@@ -1,0 +1,8 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/my-project-1574063061768/frontend', './client' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/my-project-1574063061768/backend', './backend' ]
+images:
+- 'gcr.io/my-project-1574063061768/frontend'
+- 'gcr.io/my-project-1574063061768/backend'

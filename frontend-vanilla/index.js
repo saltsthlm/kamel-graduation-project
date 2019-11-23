@@ -3,7 +3,7 @@
 
 // set-up a websocket connection to a random socket endpoint on our backend
 const clientId = Math.round(Math.random() * 2 ** 52);
-const socket = new WebSocket(`ws://localhost:8080/socket/${clientId}`);
+const socket = new WebSocket(`ws://localhost:8888/socket/${clientId}`);
 
 // when the socket connection opens, send a message to the server
 socket.onopen = () => {
