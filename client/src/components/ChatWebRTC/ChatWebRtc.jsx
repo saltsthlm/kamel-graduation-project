@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, setState } from "react";
+import Peer from 'simple-peer';
 
-const ChatWebRtc = ({ chatMessages, chatPartner, sendMessage, setChatPartner, userId }) => {
 
+const ChatWebRtc = ({ }) => {
 
 
   return (

@@ -1,4 +1,4 @@
-let connectedClients = [];
+const connectedClients = [];
 const loggedInUsers = [];
 
 const getUserById = (id) => loggedInUsers.find((user) => user.userId === id);

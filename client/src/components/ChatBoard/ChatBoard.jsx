@@ -24,7 +24,7 @@ const getMessageStyle = (senderId, userId) => {
   }
 }
 
-const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, userId }) => {
+const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, userId, initiateWebRtc }) => {
   let messageArea = React.createRef();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
           ))}
         </ul>
       </div>
-      {chatPartner.userName ? <MessageEditor sendParcel={sendParcel} /> : ''}
+      {chatPartner.userName ? <MessageEditor initiateWebRtc={initiateWebRtc} sendParcel={sendParcel} /> : ''}
     </div>
   );
 }
