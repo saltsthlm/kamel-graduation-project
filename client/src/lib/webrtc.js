@@ -32,7 +32,6 @@
 // navigator.getUserMedia({ video: true, audio: true }, addMedia, () => {})
 
 
-const Peer = require('simple-peer');
 
 // // create a new Peer
 // const peer = new Peer({
@@ -62,17 +61,19 @@ const Peer = require('simple-peer');
 //   document.getElementById('messages').textContent += `${data}\n`;
 // })
 
+const Peer = require('simple-peer');
+
 const newPeer = () => (
   new Peer({
     initiator: false,
-    trickle: false
+    trickle: false,
   })
 );
 
 const newInitiator = () => (
   new Peer({
     initiator: true,
-    trickle: false
+    trickle: false,
   })
 )
 

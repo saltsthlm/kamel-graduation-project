@@ -53,14 +53,31 @@ function Chat({ userId, socket }) {
 
   useEffect(() => {    
     if (webRtcPeer) {
-      webRtcPeer.on('data', (data) => console.log(new TextDecoder("utf-8").decode(data)));
+      // webRtcPeer.on('data', (data) => console.log(new TextDecoder("utf-8").decode(data)));
+      webRtcPeer.on('connect', () => webRtcPeer.send('ready when you are'));
       webRtcPeer.on('signal', signal => sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}));
+      webRtcPeer.on('stream', stream => {
+        const video =  document.querySelector('#video');
+        video.srcObject = stream;
+        video.muted = true;
+        video.play();
+      })
+
+      const streamCallback = (stream) => {
+        webRtcPeer.addStream(stream);
+      }
+
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(streamCallback);
     }
   }, [webRtcPeer]);
 
   const initiateWebRtc = (event) => {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
+  }
+
+  const sendViaWebRTC = (message) => {
+    webRtcPeer.send(message);
   }
  
   useEffect(() => {
@@ -92,18 +109,14 @@ function Chat({ userId, socket }) {
 
   const getContactList = () => contactList.filter((contact) => contact.userId !== userId);
 
-  const sendSomething = () => {
-    console.log(webRtcPeer);
-    webRtcPeer.send('hello')
-  }
-
   return (
     <>
-      <button onClick={sendSomething}>send something</button>
+      <video id="video"></video>
+      <button onClick={sendViaWebRTC}>send something</button>
       <div className="chat">
         { (width < 700 )
           ? (chatPartner.userName 
-            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc}  chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
+            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
             : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
           : (
             <>
