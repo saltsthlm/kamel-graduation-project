@@ -18,7 +18,11 @@ function App() {
       const socket = new WebSocket(`${protocolPrefix}//${host}/socket/${userId}`);
 
       socket.onopen = () => {
-        socket.send(JSON.stringify({ message: "Initialized connection on client!" }));
+        socket.send(JSON.stringify({
+          type: 'REPORT SUCCESS',
+          message: 'Initialized connection on client!',
+          senderId: userId,
+        }));
         setSocket(socket);
       };
 
@@ -26,7 +30,7 @@ function App() {
     }
   }, [userId]);
 
-  const PrivateRoute =({ authed, ...rest }) => {
+  const PrivateRoute = ({ authed, ...rest }) => {
     return (
       <Route
         {...rest}
