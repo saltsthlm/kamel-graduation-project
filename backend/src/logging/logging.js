@@ -14,6 +14,13 @@ const logger = winston.createLogger({
       maxFiles: 5,
     }),
     new winston.transports.File({
+      level: 'info',
+      filename: './logs/pingPong.log',
+      handleExceptions: true,
+      maxsize: 5242880, // 5MB
+      maxFiles: 5,
+    }),
+    new winston.transports.File({
       level: 'error',
       filename: './logs/errors.log',
       handleExceptions: true,
