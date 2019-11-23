@@ -37,40 +37,47 @@ function Chat({ userId, socket }) {
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(userId, socket)
-  ), [userId, socket])
+  ), [userId, socket]);
 
   const sendParcel = (type, kwargs) => {
-    const parcel = {
-      ...{
-        type,
-        receiverId: chatPartner.userId,
-        senderId: userId,
-        timeStamp: Date.now()
-      },
+    const parcelTemplate = {
+      receiverId: chatPartner.userId,
+      senderId: userId,
+      timeStamp: Date.now()
+    };
+
+    const parcel = {type,
+      ...parcelTemplate,
       ...kwargs,
     };
+  
     if (parcel.type === 'DIRECT MESSAGE') {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
     socket.send(JSON.stringify(parcel));
   };
 
+  // when WebRTC signaling data is received
   useEffect(() => {
+    // if the user is joining a call
     if (webRtcSignal && !webRtcPeer) {
       const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
       setWebRtcPeer(peer);
+    // if the user is initiating a call
     } else if (webRtcSignal && webRtcPeer) {
       webRtcPeer.signal(webRtcSignal);
     }
   }, [webRtcSignal])
 
+  // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
     if (webRtcPeer) {
-      // webRtcPeer.on('data', (data) => console.log(new TextDecoder("utf-8").decode(data)));
-      webRtcPeer.on('connect', () => webRtcPeer.send('ready when you are'));
+      webRtcPeer.on('connect', () => webRtcPeer.send('ready when you are :)'));
       webRtcPeer.on('close', () => setActiveVideoCall(false));
-      webRtcPeer.on('signal', signal => sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}));
+      webRtcPeer.on('signal', signal => (
+        sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}))
+      );
       webRtcPeer.on('stream', stream => {
         const video =  document.querySelector('#video');
         setActiveVideoCall(true);
@@ -78,17 +85,18 @@ function Chat({ userId, socket }) {
         video.muted = true;
         video.play();
       })
-
       navigator.mediaDevices.getUserMedia(videoConfig)
         .then((stream) => webRtcPeer.addStream(stream));
     }
   }, [webRtcPeer, activeVideoCall]);
 
+  // initiate new WebRTC connection
   const initiateWebRtc = (event) => {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
   }
 
+  // end current WebRTC connection
   const endWebRtc = () => {
     webRtcPeer.destroy();
     setWebRtcSignal('');
@@ -126,12 +134,6 @@ function Chat({ userId, socket }) {
 
   return (
     <>
-      <div style={{display: activeVideoCall ? 'block' : 'none', height: '95%', backgroundColor: 'black' }}>
-        <video id="video" style={videoCss}></video>
-        <div style={{display: 'flex'}}>
-          <button onClick={endWebRtc}>Hang Up</button>
-        </div>
-      </div>
       <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
         { (width < 700 )
           ? (chatPartner.userName 
@@ -144,6 +146,12 @@ function Chat({ userId, socket }) {
             </>
           )
         }
+      </div>
+      <div style={{display: activeVideoCall ? 'block' : 'none', height: '95%', backgroundColor: 'black' }}>
+        <video id="video" style={videoCss}></video>
+        <div style={{display: 'flex'}}>
+          <button onClick={endWebRtc}>Hang Up</button>
+        </div>
       </div>
     </>
   );
