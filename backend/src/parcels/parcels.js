@@ -34,7 +34,6 @@ const sendPing = () => {
 
 const sendConnected = () => {
   const parcel = newContactListParcel();
-  console.log('updating', parcel.connectedClients.length);
   deliverToAll(parcel);
 };
 
@@ -68,7 +67,7 @@ const processContactListUpdate = (parcel) => {
   });
 };
 
-const processWebRtcOffer = (parcel) => {
+const processVideoOffer = (parcel) => {
   deliverParcel(parcel);
 };
 
@@ -76,13 +75,12 @@ const process = async (parcel) => {
   switch (parcel.type) {
   case 'DIRECT MESSAGE':
     return processDirectMessage(parcel);
-  case 'OFFER WEBRTC':
-    return processWebRtcOffer(parcel);
+  case 'OFFER VIDEO':
+    return processVideoOffer(parcel);
   case 'REPORT SUCCESS':
     return logger.info(parcel);
   case 'RETURN PONG':
-    // return logger.debug(parcel);
-    break;
+    return logger.debug(parcel);
   case 'UPDATE CONTACTS':
     return processContactListUpdate(parcel);
   default:
