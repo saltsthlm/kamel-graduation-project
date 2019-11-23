@@ -12,7 +12,7 @@ export const updateChatMessages = (messages, parcel, senderId = parcel.senderId)
 export const updateContactList = (userId, socket) => {
   const parcel = {
     senderId: userId,
-    type: 'REQUEST CONTACT LIST UPDATE',
+    type: 'UPDATE CONTACTS',
     timeStamp: Date.now(),
   };
   socket.send(JSON.stringify(parcel));

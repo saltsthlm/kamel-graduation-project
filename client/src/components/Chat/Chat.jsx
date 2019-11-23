@@ -24,23 +24,34 @@ function Chat({ userId, socket }) {
         if (parcel.type === 'DIRECT MESSAGE') {
           setChatMessages((messages) => updateChatMessages(messages, parcel));
         }
-        if (parcel.type === 'PING') {
-          socket.send(JSON.stringify({type: 'PONG', senderId: parcel.receiverId}));
+        if (parcel.type === 'SEND PING') {
+          socket.send(JSON.stringify({
+            type: 'RETURN PONG',
+            message: 'connection still open',
+            senderId: parcel.receiverId
+          }));
+        }
+        if (parcel.type === 'OFFER WEBRTC') {
+          console.log(parcel);
         }
       }
       socketSetupCallback();
     }
   }, [socket, socketSetupCallback])
 
-  const sendMessage = (message) => {
+  const sendParcel = (type, kwargs) => {
     const parcel = {
-      message,
+      type,
       receiverId: chatPartner.userId,
       senderId: userId,
-      type: 'DIRECT MESSAGE',
       timeStamp: Date.now(),
+      ...kwargs,
     };
-    setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
+
+    if (parcel.type === 'DIRECT MESSAGE') {
+      setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
+    }
+
     socket.send(JSON.stringify(parcel));
   };
 
@@ -57,12 +68,12 @@ function Chat({ userId, socket }) {
       <div className="chat">
         { (width < 700 )
           ? (chatPartner.userName 
-            ? <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
+            ? <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
             : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
           : (
             <>
               <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
-              <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendMessage={sendMessage} userId={userId} setChatPartner={setChatPartner}/> 
+              <ChatBoard chatMessages={getChatMessages()} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
             </>
           )
         }
