@@ -4,6 +4,7 @@ const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, on
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.lang = language;
+
     recognition.onstart = function () {
       onStart('### started speech reecognition ###');
     }
@@ -19,11 +20,13 @@ const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, on
         console.log('### No speech was detected. Try again. ###');
       }
     }
+
     recognition.onresult = function (event) {
       const current = event.resultIndex;
       const transcript = event.results[current][0].transcript;
       onTranscript(transcript);
     }
+
     recognition.start();
   } catch (e) {
     onError(e);

@@ -18,8 +18,8 @@ const newInitiator = () => (
 
 var constraints = { 
   video: {
-      width: { ideal: 1280 },
-      height: { ideal: 720 } 
+    width: { ideal: 1280 },
+    height: { ideal: 720 } 
   },
   audio: true,
 };
