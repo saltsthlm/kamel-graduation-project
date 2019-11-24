@@ -1,4 +1,4 @@
-`use strict`;
+'use strict';
 const WebSocketClient = require('websocket').client;
 const uuid = require('uuid/v4');
 const { app } = require('../src/app');

@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express');
 const expressWs = require('express-ws');
 const morgan = require('morgan');

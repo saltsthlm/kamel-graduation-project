@@ -1,3 +1,4 @@
+'use strict';
 const { translate } = require('../translate/translation');
 const clients = require('../clients/clients');
 const { logger } = require('../logging/logging');
@@ -73,20 +74,20 @@ const processVideoOffer = (parcel) => {
 
 const process = async (parcel) => {
   switch (parcel.type) {
-  case 'DIRECT MESSAGE':
-    return processDirectMessage(parcel);
-  case 'OFFER VIDEO':
-    return processVideoOffer(parcel);
-  case 'REPORT SUCCESS':
-    return logger.info(parcel);
-  case 'RETURN PONG':
-    return logger.debug(parcel);
-  case 'TRANSLATE SUBTITLES':
-    return processDirectMessage(parcel);
-  case 'UPDATE CONTACTS':
-    return processContactListUpdate(parcel);
-  default:
-    return logger.info(`received parcel of unknown type "${parcel.type}"`);
+    case 'DIRECT MESSAGE':
+      return processDirectMessage(parcel);
+    case 'OFFER VIDEO':
+      return processVideoOffer(parcel);
+    case 'REPORT SUCCESS':
+      return logger.info(parcel);
+    case 'RETURN PONG':
+      return logger.debug(parcel);
+    case 'TRANSLATE SUBTITLES':
+      return processDirectMessage(parcel);
+    case 'UPDATE CONTACTS':
+      return processContactListUpdate(parcel);
+    default:
+      return logger.info(`received parcel of unknown type "${parcel.type}"`);
   }
 };
 
