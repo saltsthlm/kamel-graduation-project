@@ -16,13 +16,17 @@ const pong = (parcel) => (
 );
 
 function Chat({ userId, socket }) {
+  // general chat-related state
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState({});
+
+  // video-related state
   const [webRtcPeer, setWebRtcPeer] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
+  const [subTitles, setSubTitles] = useState('');
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(userId, socket)
@@ -113,7 +117,7 @@ function Chat({ userId, socket }) {
           setWebRtcSignal(parcel.signal);
         }
         if (parcel.type === 'TRANSLATE SUBTITLES') {
-          console.log(parcel.translatedMessage);
+          setSubTitles(parcel.translatedMessage);
         }
       }
       socketSetupCallback();
@@ -147,7 +151,9 @@ function Chat({ userId, socket }) {
         setWebRtcPeer={setWebRtcPeer}
         webRtcPeer={webRtcPeer}
         setWebRtcSignal={setWebRtcSignal}
-        activeVideoCall={activeVideoCall} />
+        activeVideoCall={activeVideoCall}
+        subTitles={subTitles}
+        setSubTitles={setSubTitles} />
     </>
   );
 }
