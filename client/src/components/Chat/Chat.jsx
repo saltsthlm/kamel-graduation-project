@@ -15,7 +15,7 @@ const pong = (parcel) => (
   })
 );
 
-function Chat({ userId, socket }) {
+function Chat({ user, socket }) {
   // general chat-related state
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
@@ -29,13 +29,13 @@ function Chat({ userId, socket }) {
   const [subTitles, setSubTitles] = useState('');
 
   const socketSetupCallback = useCallback(() => (
-    updateContactList(userId, socket)
-  ), [userId, socket]);
+    updateContactList(user.userId, socket)
+  ), [user.userId, socket]);
 
   const sendParcel = (type, kwargs) => {
     const parcelTemplate = {
       receiverId: chatPartner.userId,
-      senderId: userId,
+      senderId: user.userId,
       timeStamp: Date.now()
     };
 
@@ -72,6 +72,7 @@ function Chat({ userId, socket }) {
       webRtcPeer.on('connect', () => {
         webRtcPeer.send('ready when you are ');
         recognizeSpeech(
+          user.language,
           (transcript) => sendParcel('TRANSLATE SUBTITLES', {message: transcript}),
           console.log,
           console.log,
@@ -130,19 +131,19 @@ function Chat({ userId, socket }) {
       : []
   )
 
-  const getContactList = () => contactList.filter((contact) => contact.userId !== userId);
+  const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
 
   return (
     <>
       <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
         { (width < 700 )
           ? (chatPartner.userName 
-            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
+            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
             : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
           : (
             <>
               <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
-              <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
+              <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
             </>
           )
         }

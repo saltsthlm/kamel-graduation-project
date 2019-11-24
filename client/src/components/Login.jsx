@@ -1,17 +1,16 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-function Login({ setUserId, userId, setUserName }) {
+function Login({ setUser, user }) {
   const login = async () => {
     const response = await fetch('/login', {
       method: 'POST',
     });
     const credentials = await response.json();
-    setUserId(credentials.userId);
-    setUserName(credentials.userName);
+    setUser(credentials);
   };
 
-  if (userId) {
+  if (user.userId) {
     return <Redirect to='/'/>
   }
 
