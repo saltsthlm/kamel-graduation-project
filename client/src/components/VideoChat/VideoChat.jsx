@@ -22,7 +22,7 @@ const subtitlesCss = {
   textShadow: '0px 0px 1px black',
 }
 
-const VideoChat = ({ setWebRtcPeer, webRtcPeer, setWebRtcSignal, activeVideoCall, subTitles, setSubTitles }) => {
+const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles }) => {
   
   useEffect(() => {
     setSubTitles('');
@@ -30,18 +30,16 @@ const VideoChat = ({ setWebRtcPeer, webRtcPeer, setWebRtcSignal, activeVideoCall
 
   const endWebRtc = () => {
     webRtcPeer.destroy();
-    setWebRtcSignal('');
-    setWebRtcPeer('');
   }
 
   return (
     <div style={{ display: activeVideoCall ? 'flex' : 'none', flexDirection: 'column', height: '100%', backgroundColor: 'black' }}>
       <video id="video" style={videoCss}></video>
       <div style={toolbarCss}>
-        <button onClick={endWebRtc}>Hang Up</button>
         <div style={subtitlesCss} className="subtitles">
           <span >{subTitles}</span>
         </div>
+        <button onClick={endWebRtc}>Hang Up</button>
       </div>
     </div>
   );

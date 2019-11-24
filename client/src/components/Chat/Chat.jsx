@@ -5,7 +5,7 @@ import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
-import { recognizeSpeech } from '../../lib/speechToText';
+import { continuousSpeechToSubtitle } from '../../lib/speechToText';
 
 const pong = (parcel) => (
   JSON.stringify({
@@ -22,7 +22,7 @@ function Chat({ user, socket }) {
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState({});
 
-  // video-related state
+  // video-chat-related state
   const [webRtcPeer, setWebRtcPeer] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
@@ -69,16 +69,25 @@ function Chat({ user, socket }) {
   // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
     if (webRtcPeer) {
-      webRtcPeer.on('connect', () => {
-        webRtcPeer.send('ready when you are ');
-        recognizeSpeech(
+      webRtcPeer.on('connect', async () => {
+        const stream = await navigator.mediaDevices.getUserMedia(webRtc.videoConfig);
+        webRtcPeer.addStream(stream)
+        continuousSpeechToSubtitle(
           user.language,
           (transcript) => sendParcel('TRANSLATE SUBTITLES', {message: transcript}),
           console.log,
           console.log,
-          console.log);
+          console.log
+        );
       });
-      webRtcPeer.on('close', () => setActiveVideoCall(false));
+
+      webRtcPeer.on('close', () => {
+        setActiveVideoCall(false);
+        setWebRtcPeer(false);
+        setWebRtcSignal(false);
+        // stream.getTracks().forEach((track) => track.stop());
+      });
+
       webRtcPeer.on('signal', signal => (
         sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}))
       );
@@ -89,8 +98,6 @@ function Chat({ user, socket }) {
         video.muted = true;
         video.play();
       })
-      navigator.mediaDevices.getUserMedia(webRtc.videoConfig)
-        .then((stream) => webRtcPeer.addStream(stream));
     }
   // eslint-disable-next-line 
   }, [webRtcPeer, activeVideoCall]);
@@ -154,7 +161,7 @@ function Chat({ user, socket }) {
         setWebRtcSignal={setWebRtcSignal}
         activeVideoCall={activeVideoCall}
         subTitles={subTitles}
-        setSubTitles={setSubTitles} />
+        setSubTitles={setSubTitles}/>
     </>
   );
 }

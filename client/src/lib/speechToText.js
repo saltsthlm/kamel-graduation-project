@@ -1,4 +1,4 @@
-const recognizeSpeech = (language, onTranscript, onQuiet, onStart, onError) => {
+const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, onError) => {
   try {
     const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
@@ -10,7 +10,7 @@ const recognizeSpeech = (language, onTranscript, onQuiet, onStart, onError) => {
 
     recognition.onspeechend = function () {
       onQuiet('### You were quiet for a while. Restarting speech recognition ###');
-      recognizeSpeech(language, onTranscript, onQuiet, onStart, onError)
+      continuousSpeechToSubtitle(language, onTranscript, onQuiet, onStart, onError)
     }
 
     recognition.onerror = function (event) {
@@ -30,4 +30,4 @@ const recognizeSpeech = (language, onTranscript, onQuiet, onStart, onError) => {
   }
 }
 
-export { recognizeSpeech };
+export { continuousSpeechToSubtitle };
