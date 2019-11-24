@@ -68,6 +68,7 @@ function Chat({ userId, socket }) {
     } else if (webRtcSignal && webRtcPeer) {
       webRtcPeer.signal(webRtcSignal);
     }
+  // eslint-disable-next-line 
   }, [webRtcSignal])
 
   // set-up WebRTC listeners once WebRTC client is initiated
@@ -88,6 +89,7 @@ function Chat({ userId, socket }) {
       navigator.mediaDevices.getUserMedia(videoConfig)
         .then((stream) => webRtcPeer.addStream(stream));
     }
+  // eslint-disable-next-line 
   }, [webRtcPeer, activeVideoCall]);
 
   // initiate new WebRTC connection
