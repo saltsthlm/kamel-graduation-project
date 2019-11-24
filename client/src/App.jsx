@@ -34,7 +34,7 @@ function App() {
       <Route
         {...rest}
         render={() => authed
-          ? <Chat user={user} socket={socket} userLanguage='en'/>
+          ? <Chat user={user} socket={socket} />
           : <Redirect to='/login' setUser={setUser} user={user} />}
       />
     )

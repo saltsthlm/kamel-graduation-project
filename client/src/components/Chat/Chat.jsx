@@ -83,7 +83,7 @@ function Chat({ user, socket }) {
         setWebRtcSignal
       })
     }
-  // eslint-disable-next-line 
+  // eslint-disable-next-line
   }, [webRtcPeer, activeVideoCall]);
 
   return (
