@@ -5,15 +5,7 @@ import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
-import { continuousSpeechToSubtitle } from '../../lib/speechToText';
-
-const pong = (parcel) => (
-  JSON.stringify({
-    type: 'RETURN PONG',
-    message: 'connection still open',
-    senderId: parcel.receiverId
-  })
-);
+import * as parcels from '../../lib/parcels';
 
 function Chat({ user, socket }) {
   // general chat-related state
@@ -28,38 +20,40 @@ function Chat({ user, socket }) {
   const [activeVideoCall, setActiveVideoCall] = useState(false);
   const [subTitles, setSubTitles] = useState('');
 
-  const socketSetupCallback = useCallback(() => (
-    updateContactList(user.userId, socket)
-  ), [user.userId, socket]);
-
   const sendParcel = (type, kwargs) => {
-    const parcelTemplate = {
-      receiverId: chatPartner.userId,
-      senderId: user.userId,
-      timeStamp: Date.now()
-    };
-
-    const parcel = {
-      type,
-      ...parcelTemplate,
-      ...kwargs,
-    };
-
+    const parcel = parcels.getNewParcel(type, user, chatPartner, kwargs)
     socket.send(JSON.stringify(parcel));
-  
-    if (parcel.type === 'DIRECT MESSAGE') {
+    if (type === 'DIRECT MESSAGE') {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
   };
 
-  // when WebRTC signaling data is received
+  const socketSetupCallback = useCallback(() => (
+    updateContactList(user.userId, socket)
+  ), [user.userId, socket]);
+
   useEffect(() => {
-    // if the user is joining a call
+    if (socket) {
+      socket.onmessage = (event) => {
+        parcels.processParcel({
+          event,
+          setContactList,
+          setChatMessages,
+          updateChatMessages,
+          socket,
+          setWebRtcSignal,
+          setSubTitles
+        })
+      }
+      socketSetupCallback();
+    }
+  }, [socket, socketSetupCallback])
+
+  useEffect(() => {
     if (webRtcSignal && !webRtcPeer) {
       const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
       setWebRtcPeer(peer);
-    // if the user is initiating a call
     } else if (webRtcSignal && webRtcPeer) {
       webRtcPeer.signal(webRtcSignal);
     }
@@ -69,34 +63,14 @@ function Chat({ user, socket }) {
   // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
     if (webRtcPeer) {
-      webRtcPeer.on('connect', async () => {
-        const stream = await navigator.mediaDevices.getUserMedia(webRtc.videoConfig);
-        webRtcPeer.addStream(stream)
-        continuousSpeechToSubtitle(
-          user.language,
-          (transcript) => sendParcel('TRANSLATE SUBTITLES', {message: transcript}),
-          console.log,
-          console.log,
-          console.log
-        );
-      });
-
-      webRtcPeer.on('close', () => {
-        setActiveVideoCall(false);
-        setWebRtcPeer(false);
-        setWebRtcSignal(false);
-        // stream.getTracks().forEach((track) => track.stop());
-      });
-
-      webRtcPeer.on('signal', signal => (
-        sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}))
-      );
-      webRtcPeer.on('stream', stream => {
-        const video =  document.querySelector('#video');
-        setActiveVideoCall(true);
-        video.srcObject = stream;
-        video.muted = true;
-        video.play();
+      webRtc.setupListeners({
+        webRtcPeer,
+        language: user.language,
+        chatPartner,
+        sendParcel,
+        setActiveVideoCall,
+        setWebRtcPeer,
+        setWebRtcSignal
       })
     }
   // eslint-disable-next-line 
@@ -107,30 +81,6 @@ function Chat({ user, socket }) {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
   }
- 
-  useEffect(() => {
-    if (socket) {
-      socket.onmessage = (event) => {
-        const parcel = JSON.parse(event.data);
-        if (parcel.type === 'UPDATE CONTACTLIST') {          
-          setContactList(parcel.connectedClients);
-        }
-        if (parcel.type === 'DIRECT MESSAGE') {
-          setChatMessages((messages) => updateChatMessages(messages, parcel));
-        }
-        if (parcel.type === 'SEND PING') {
-          socket.send(pong(parcel));
-        }
-        if (parcel.type === 'OFFER VIDEO') {
-          setWebRtcSignal(parcel.signal);
-        }
-        if (parcel.type === 'TRANSLATE SUBTITLES') {
-          setSubTitles(parcel.translatedMessage);
-        }
-      }
-      socketSetupCallback();
-    }
-  }, [socket, socketSetupCallback])
 
   const getChatMessages = () => (
     chatPartner.userId && chatMessages[chatPartner.userId]
