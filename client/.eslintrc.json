@@ -4,7 +4,10 @@
         "es6": true,
         "jest": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:jest-dom/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -17,7 +20,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "jest-dom"
     ],
     "rules": {
         "indent": ["error", 2]
