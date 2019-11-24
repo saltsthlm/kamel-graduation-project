@@ -1,5 +1,5 @@
 'use strict';
-const parcels = require('./parcels');
+const parcels = require('../../lib/parcels');
 
 const senderId = 'Moritz';
 const receiverId = 'Not Moritz';

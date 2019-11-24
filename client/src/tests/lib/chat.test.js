@@ -1,5 +1,5 @@
 'use strict';
-const chat = require('./chat');
+const chat = require('../../lib/chat');
 
 const parcel1 = {
   test: 'test',
@@ -32,10 +32,10 @@ describe('The updateMessages function', () => {
 
   it('should add multiple parcels from the same sender to the same list', () => {
     const output = {
-      [parcel1.senderId]: [parcel1, parcel2],
+      [parcel1.senderId]: [parcel1, parcel1],
     }
     const step1 = chat.updateChatMessages({}, parcel1);
-    const step2 = chat.updateChatMessages(step1, parcel2);
+    const step2 = chat.updateChatMessages(step1, parcel1);
     expect(step2).toEqual(output);
   });
 });
