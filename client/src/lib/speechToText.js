@@ -13,6 +13,7 @@ const recognizeSpeech = (onTranscript, onQuiet, onStart, onError) => {
     }
 
     recognition.onerror = function (event) {
+      console.log('### Speech-to-text error ###');
       if (event.error === 'no-speech') {
         console.log('### No speech was detected. Try again. ###');
       }
