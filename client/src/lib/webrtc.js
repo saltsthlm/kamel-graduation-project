@@ -16,13 +16,13 @@ const newInitiator = () => (
   })
 )
 
-const videoConfig = {
+var constraints = { 
   video: {
-    width: 1280,
-    height: 720,
+      width: { ideal: 1280 },
+      height: { ideal: 720 } 
   },
   audio: true,
-}
+};
 
 const setupListeners = ({
   webRtcPeer,
@@ -34,7 +34,7 @@ const setupListeners = ({
   setWebRtcSignal}) => {
 
   webRtcPeer.on('connect', async () => {
-    const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
     webRtcPeer.addStream(stream)
     continuousSpeechToSubtitle(
       language,
