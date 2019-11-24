@@ -68,7 +68,7 @@ function Chat({ userId, socket }) {
     } else if (webRtcSignal && webRtcPeer) {
       webRtcPeer.signal(webRtcSignal);
     }
-  }, [webRtcSignal, webRtcPeer])
+  }, [webRtcSignal])
 
   // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
@@ -88,8 +88,7 @@ function Chat({ userId, socket }) {
       navigator.mediaDevices.getUserMedia(videoConfig)
         .then((stream) => webRtcPeer.addStream(stream));
     }
-  // eslint-disable-next-line 
-  }, [webRtcPeer, activeVideoCall, chatPartner]);
+  }, [webRtcPeer, activeVideoCall]);
 
   // initiate new WebRTC connection
   const initiateWebRtc = (event) => {
