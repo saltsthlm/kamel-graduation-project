@@ -18,7 +18,7 @@ const deliverToAll = (parcel) => {
 };
 
 const newContactListParcel = () => ({
-  type: 'UPDATE CONTACTLIST',
+  type: 'UPDATE CONTACTS',
   connectedClients: clients.connectedClients.map((client) => ({
     userId: client.clientId,
     userName: client.clientName,

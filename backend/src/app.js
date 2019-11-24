@@ -27,6 +27,10 @@ app.ws('/socket/:id', (ws, req) => {
   ws.on('close', () => sockets.onClose(req));
 });
 
+app.get('/login', (req, res) => {
+  res.redirect('..');
+});
+
 app.post('/login', (req, res) => {
   const credentials = {
     userId: uuid(),
