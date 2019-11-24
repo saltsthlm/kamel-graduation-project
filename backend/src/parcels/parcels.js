@@ -51,14 +51,15 @@ const processDirectMessage = async (parcel) => {
     logger.error(error);
     logger.error(parcel);
     translated = false;
+  } finally {
+    deliverParcel({
+      ...parcel,
+      translatedMessage,
+      translated,
+      senderLanguage: clients.getUserLanguageById(parcel.senderId),
+      receiverLanguage: clients.getUserLanguageById(parcel.receiverId),
+    });
   }
-  deliverParcel({
-    ...parcel,
-    translatedMessage,
-    translated,
-    senderLanguage: clients.getUserLanguageById(parcel.senderId),
-    receiverLanguage: clients.getUserLanguageById(parcel.receiverId),
-  });
 };
 
 const processContactListUpdate = (parcel) => {
@@ -80,6 +81,8 @@ const process = async (parcel) => {
       return processVideoOffer(parcel);
     case 'REPORT SUCCESS':
       return logger.info(parcel);
+    case 'REPORT LANGUAGE':
+      return logger.info(`${parcel.senderId} browser language is "${parcel.message}"`); // Placeholder
     case 'RETURN PONG':
       return logger.debug(parcel);
     case 'TRANSLATE SUBTITLES':

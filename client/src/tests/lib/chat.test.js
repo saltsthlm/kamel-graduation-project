@@ -2,12 +2,12 @@
 const chat = require('../../lib/chat');
 
 const parcel1 = {
-  test: 'test',
+  type: 'TEST PARCEL',
   senderId: '123',
 };
 
 const parcel2 = {
-  test: 'test',
+  type: 'TEST PARCEL',
   senderId: '456',
 };
 

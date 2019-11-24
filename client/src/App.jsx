@@ -21,6 +21,11 @@ function App() {
           message: 'Initialized connection on client!',
           senderId: user.userId,
         }));
+        socket.send(JSON.stringify({
+          type: 'REPORT LANGUAGE',
+          message: `${window.navigator.language}`.slice(0, 2),
+          senderId: user.userId,
+        }));
         setSocket(socket);
       };
 
