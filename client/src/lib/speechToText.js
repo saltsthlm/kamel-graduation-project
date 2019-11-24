@@ -13,8 +13,7 @@ const recognizeSpeech = (onTranscript, onQuiet, onStart, onError) => {
     }
 
     recognition.onerror = function (event) {
-      // eslint-disable-next-line
-      if (event.error == 'no-speech') {
+      if (event.error === 'no-speech') {
         console.log('### No speech was detected. Try again. ###');
       }
     }
