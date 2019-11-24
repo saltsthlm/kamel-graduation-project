@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const MessageEditor = ({ sendParcel }) => {
+const MessageEditor = ({ sendParcel, initiateWebRtc }) => {
   const [message, setMessage] = useState('');
 
   const inputValue = (event) => {
@@ -13,20 +13,12 @@ const MessageEditor = ({ sendParcel }) => {
     setMessage('');
   }
 
-  const offerVideoCall = (event) => {
-    event.preventDefault();
-    sendParcel('DIRECT MESSAGE', {message});
-    setMessage('');
-  }
-
   return (
-    <div className='message-editor'>
-      <button onClick={offerVideoCall}>Video</button>
-      <form className='message-editor'>
-        <input type='text' value={message} onChange={inputValue}></input>
-        <button type="submit" onClick={sendDirectMessageAndClear}>Send</button>
-      </form>
-    </div>
+    <form className='message-editor'>
+      <span onClick={initiateWebRtc}>Video</span>
+      <input type='text' value={message} onChange={inputValue}></input>
+      <button type="submit" onClick={sendDirectMessageAndClear}>Send</button>
+    </form>
   );
 }
 
