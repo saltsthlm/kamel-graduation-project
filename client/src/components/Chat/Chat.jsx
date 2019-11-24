@@ -35,7 +35,8 @@ function Chat({ userId, socket }) {
       timeStamp: Date.now()
     };
 
-    const parcel = {type,
+    const parcel = {
+      type,
       ...parcelTemplate,
       ...kwargs,
     };
@@ -66,7 +67,11 @@ function Chat({ userId, socket }) {
     if (webRtcPeer) {
       webRtcPeer.on('connect', () => {
         webRtcPeer.send('ready when you are ');
-        recognizeSpeech(console.log, console.log, console.log, console.log);
+        recognizeSpeech(
+          (transcript) => sendParcel('TRANSLATE SUBTITLES', {message: transcript}),
+          console.log,
+          console.log,
+          console.log);
       });
       webRtcPeer.on('close', () => setActiveVideoCall(false));
       webRtcPeer.on('signal', signal => (
@@ -106,6 +111,9 @@ function Chat({ userId, socket }) {
         }
         if (parcel.type === 'OFFER VIDEO') {
           setWebRtcSignal(parcel.signal);
+        }
+        if (parcel.type === 'TRANSLATE SUBTITLES') {
+          console.log(parcel.translatedMessage);
         }
       }
       socketSetupCallback();

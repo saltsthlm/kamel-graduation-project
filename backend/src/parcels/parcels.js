@@ -81,6 +81,8 @@ const process = async (parcel) => {
     return logger.info(parcel);
   case 'RETURN PONG':
     return logger.debug(parcel);
+  case 'TRANSLATE SUBTITLES':
+    return processDirectMessage(parcel);
   case 'UPDATE CONTACTS':
     return processContactListUpdate(parcel);
   default:
