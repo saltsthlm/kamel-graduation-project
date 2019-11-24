@@ -26,7 +26,7 @@ const VideoChat = ({ setWebRtcPeer, webRtcPeer, setWebRtcSignal, activeVideoCall
   
   useEffect(() => {
     setSubTitles('');
-  }, [webRtcPeer]);
+  }, [webRtcPeer, setSubTitles]);
 
   const endWebRtc = () => {
     webRtcPeer.destroy();
