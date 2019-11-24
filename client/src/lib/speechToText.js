@@ -10,7 +10,7 @@ const recognizeSpeech = (language, onTranscript, onQuiet, onStart, onError) => {
 
     recognition.onspeechend = function () {
       onQuiet('### You were quiet for a while. Restarting speech recognition ###');
-      recognizeSpeech(onTranscript, onQuiet, onStart, onError)
+      recognizeSpeech(language, onTranscript, onQuiet, onStart, onError)
     }
 
     recognition.onerror = function (event) {

@@ -25,8 +25,8 @@ const subtitlesCss = {
 const VideoChat = ({ setWebRtcPeer, webRtcPeer, setWebRtcSignal, activeVideoCall, subTitles, setSubTitles }) => {
   
   useEffect(() => {
-    setTimeout(() => setSubTitles(''), 3000)
-  }, [subTitles, setSubTitles]);
+    setSubTitles('');
+  }, [webRtcPeer]);
 
   const endWebRtc = () => {
     webRtcPeer.destroy();
