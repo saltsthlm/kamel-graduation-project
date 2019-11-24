@@ -77,4 +77,12 @@ const newInitiator = () => (
   })
 )
 
-export { newPeer, newInitiator };
+const videoConfig = {
+  video: {
+    width: 1280,
+    height: 720,
+  },
+  audio: true,
+}
+
+export { newPeer, newInitiator, videoConfig };

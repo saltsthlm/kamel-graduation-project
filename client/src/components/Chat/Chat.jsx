@@ -14,14 +14,6 @@ const pong = (parcel) => (
   })
 );
 
-const videoConfig = {
-  video: {
-    width: 1280,
-    height: 720,
-  },
-  audio: true,
-}
-
 function Chat({ userId, socket }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
@@ -46,11 +38,12 @@ function Chat({ userId, socket }) {
       ...parcelTemplate,
       ...kwargs,
     };
+
+    socket.send(JSON.stringify(parcel));
   
     if (parcel.type === 'DIRECT MESSAGE') {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
-    socket.send(JSON.stringify(parcel));
   };
 
   // when WebRTC signaling data is received
@@ -82,7 +75,7 @@ function Chat({ userId, socket }) {
         video.muted = true;
         video.play();
       })
-      navigator.mediaDevices.getUserMedia(videoConfig)
+      navigator.mediaDevices.getUserMedia(webRtc.videoConfig)
         .then((stream) => webRtcPeer.addStream(stream));
     }
   // eslint-disable-next-line 
@@ -138,7 +131,11 @@ function Chat({ userId, socket }) {
           )
         }
       </div>
-      <VideoChat setWebRtcPeer={setWebRtcPeer} webRtcPeer={webRtcPeer} setWebRtcSignal={setWebRtcSignal} activeVideoCall={activeVideoCall} />
+      <VideoChat
+        setWebRtcPeer={setWebRtcPeer}
+        webRtcPeer={webRtcPeer}
+        setWebRtcSignal={setWebRtcSignal}
+        activeVideoCall={activeVideoCall} />
     </>
   );
 }

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import * as webRtc from '../../lib/webrtc';
+import React, { } from "react";
 
 const videoCss = {
   transform: 'rotateY(180deg)',
