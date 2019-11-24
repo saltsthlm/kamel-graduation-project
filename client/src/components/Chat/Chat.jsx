@@ -4,6 +4,7 @@ import ChatBoard from '../ChatBoard/ChatBoard';
 import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
+import VideoChat from '../VideoChat/VideoChat';
 
 const pong = (parcel) => (
   JSON.stringify({
@@ -12,19 +13,6 @@ const pong = (parcel) => (
     senderId: parcel.receiverId
   })
 );
-
-const videoConfig = {
-  video: {
-    width: 1280,
-    height: 720,
-  },
-  audio: true,
-}
-
-const videoCss = {
-  transform: 'rotateY(180deg)',
-  height: '100%',
-}
 
 function Chat({ userId, socket }) {
   const { width } = useWindowDimensions();
@@ -50,11 +38,12 @@ function Chat({ userId, socket }) {
       ...parcelTemplate,
       ...kwargs,
     };
+
+    socket.send(JSON.stringify(parcel));
   
     if (parcel.type === 'DIRECT MESSAGE') {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
-    socket.send(JSON.stringify(parcel));
   };
 
   // when WebRTC signaling data is received
@@ -68,7 +57,8 @@ function Chat({ userId, socket }) {
     } else if (webRtcSignal && webRtcPeer) {
       webRtcPeer.signal(webRtcSignal);
     }
-  }, [webRtcSignal, webRtcPeer])
+  // eslint-disable-next-line 
+  }, [webRtcSignal])
 
   // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
@@ -85,23 +75,16 @@ function Chat({ userId, socket }) {
         video.muted = true;
         video.play();
       })
-      navigator.mediaDevices.getUserMedia(videoConfig)
+      navigator.mediaDevices.getUserMedia(webRtc.videoConfig)
         .then((stream) => webRtcPeer.addStream(stream));
     }
   // eslint-disable-next-line 
-  }, [webRtcPeer, activeVideoCall, chatPartner]);
+  }, [webRtcPeer, activeVideoCall]);
 
   // initiate new WebRTC connection
   const initiateWebRtc = (event) => {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
-  }
-
-  // end current WebRTC connection
-  const endWebRtc = () => {
-    webRtcPeer.destroy();
-    setWebRtcSignal('');
-    setWebRtcPeer('');
   }
  
   useEffect(() => {
@@ -148,12 +131,11 @@ function Chat({ userId, socket }) {
           )
         }
       </div>
-      <div style={{display: activeVideoCall ? 'block' : 'none', height: '95%', backgroundColor: 'black' }}>
-        <video id="video" style={videoCss}></video>
-        <div style={{display: 'flex'}}>
-          <button onClick={endWebRtc}>Hang Up</button>
-        </div>
-      </div>
+      <VideoChat
+        setWebRtcPeer={setWebRtcPeer}
+        webRtcPeer={webRtcPeer}
+        setWebRtcSignal={setWebRtcSignal}
+        activeVideoCall={activeVideoCall} />
     </>
   );
 }
