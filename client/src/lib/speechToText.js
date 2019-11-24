@@ -1,17 +1,9 @@
-const speechLanguages = {
-  'sv': 'en-US',
-  'es': 'en-US',
-  'de': 'en-US',
-  'fr': 'en-US',
-  'en': 'en-US',
-};
-
 const recognizeSpeech = (language, onTranscript, onQuiet, onStart, onError) => {
   try {
     const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
-    recognition.lang = speechLanguages[language];
+    recognition.lang = language;
     recognition.onstart = function () {
       onStart('### started speech reecognition ###');
     }

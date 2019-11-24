@@ -1,5 +1,5 @@
 const getRandomLanguage = () => {
-  const languages = ['es', 'sv'];
+  const languages = ['ro', 'de'];
   return languages[Math.floor(Math.random() * languages.length)];
 };
 
