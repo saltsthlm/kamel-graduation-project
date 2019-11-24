@@ -8,13 +8,11 @@ import VideoChat from '../VideoChat/VideoChat';
 import * as parcels from '../../lib/parcels';
 
 function Chat({ user, socket }) {
-  // general chat-related state
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState({});
 
-  // video-chat-related state
   const [webRtcPeer, setWebRtcPeer] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
@@ -27,6 +25,30 @@ function Chat({ user, socket }) {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
   };
+
+  const initiateWebRtc = (event) => {
+    event.preventDefault();
+    setWebRtcPeer(webRtc.newInitiator());
+  }
+
+  const getChatMessages = () => (
+    chatPartner.userId && chatMessages[chatPartner.userId]
+      ? chatMessages[chatPartner.userId] 
+      : []
+  )
+
+  const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
+
+  useEffect(() => {
+    if (webRtcSignal && !webRtcPeer) {
+      const peer = webRtc.newPeer();
+      peer.signal(webRtcSignal);
+      setWebRtcPeer(peer);
+    } else if (webRtcSignal && webRtcPeer) {
+      webRtcPeer.signal(webRtcSignal);
+    }
+  // eslint-disable-next-line 
+  }, [webRtcSignal])
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(user.userId, socket)
@@ -49,18 +71,6 @@ function Chat({ user, socket }) {
     }
   }, [socket, socketSetupCallback])
 
-  useEffect(() => {
-    if (webRtcSignal && !webRtcPeer) {
-      const peer = webRtc.newPeer();
-      peer.signal(webRtcSignal);
-      setWebRtcPeer(peer);
-    } else if (webRtcSignal && webRtcPeer) {
-      webRtcPeer.signal(webRtcSignal);
-    }
-  // eslint-disable-next-line 
-  }, [webRtcSignal])
-
-  // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
     if (webRtcPeer) {
       webRtc.setupListeners({
@@ -75,20 +85,6 @@ function Chat({ user, socket }) {
     }
   // eslint-disable-next-line 
   }, [webRtcPeer, activeVideoCall]);
-
-  // initiate new WebRTC connection
-  const initiateWebRtc = (event) => {
-    event.preventDefault();
-    setWebRtcPeer(webRtc.newInitiator());
-  }
-
-  const getChatMessages = () => (
-    chatPartner.userId && chatMessages[chatPartner.userId]
-      ? chatMessages[chatPartner.userId] 
-      : []
-  )
-
-  const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
 
   return (
     <>
