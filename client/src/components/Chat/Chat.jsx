@@ -5,6 +5,7 @@ import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
+import { recognizeSpeech } from '../../lib/speechToText';
 
 const pong = (parcel) => (
   JSON.stringify({
@@ -63,7 +64,10 @@ function Chat({ userId, socket }) {
   // set-up WebRTC listeners once WebRTC client is initiated
   useEffect(() => {    
     if (webRtcPeer) {
-      webRtcPeer.on('connect', () => webRtcPeer.send('ready when you are :)'));
+      webRtcPeer.on('connect', () => {
+        webRtcPeer.send('ready when you are ');
+        recognizeSpeech(console.log, console.log, console.log, console.log);
+      });
       webRtcPeer.on('close', () => setActiveVideoCall(false));
       webRtcPeer.on('signal', signal => (
         sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}))
