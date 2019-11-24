@@ -11,12 +11,7 @@ const socket = new WebSocket.client();
 
 describe('The Chat component', () => {
   it('should have two children', () => {
-    renderer.render(<Chat
-      userId={userId}
-      socket={socket} />);
-
-    const component = renderer.getRenderOutput();
-    const children = component.props.children;
+    
 
     // expect(children.length).toBe(3);
   });
