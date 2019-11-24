@@ -1,7 +1,7 @@
-const getNewParcel = (type, user, chatPartner, kwargs) => {
+const getNewParcel = (type, senderId, receiverId, kwargs) => {
   const parcelTemplate = {
-    receiverId: chatPartner.userId,
-    senderId: user.userId,
+    receiverId,
+    senderId,
     timeStamp: Date.now()
   };
 

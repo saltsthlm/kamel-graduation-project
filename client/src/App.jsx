@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
 import Chat from './components/Chat/Chat';
-// import Navigation from './components/Navigation/Navigation';
 import Login from './components/Login';
 import './scss/App.scss';
 
@@ -34,7 +33,7 @@ function App() {
       <Route
         {...rest}
         render={() => authed
-          ? <Chat user={user} socket={socket} userLanguage='en'/>
+          ? <Chat user={user} socket={socket} />
           : <Redirect to='/login' setUser={setUser} user={user} />}
       />
     )

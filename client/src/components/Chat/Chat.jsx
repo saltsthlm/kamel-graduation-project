@@ -19,7 +19,7 @@ function Chat({ user, socket }) {
   const [subTitles, setSubTitles] = useState('');
 
   const sendParcel = (type, kwargs) => {
-    const parcel = parcels.getNewParcel(type, user, chatPartner, kwargs)
+    const parcel = parcels.getNewParcel(type, user.userId, chatPartner.userId, kwargs)
     socket.send(JSON.stringify(parcel));
     if (type === 'DIRECT MESSAGE') {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
@@ -83,7 +83,7 @@ function Chat({ user, socket }) {
         setWebRtcSignal
       })
     }
-  // eslint-disable-next-line 
+  // eslint-disable-next-line
   }, [webRtcPeer, activeVideoCall]);
 
   return (
