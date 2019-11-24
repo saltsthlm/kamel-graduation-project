@@ -4,6 +4,7 @@ import ChatBoard from '../ChatBoard/ChatBoard';
 import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
+import VideoChat from '../VideoChat/VideoChat';
 
 const pong = (parcel) => (
   JSON.stringify({
@@ -19,11 +20,6 @@ const videoConfig = {
     height: 720,
   },
   audio: true,
-}
-
-const videoCss = {
-  transform: 'rotateY(180deg)',
-  height: '100%',
 }
 
 function Chat({ userId, socket }) {
@@ -97,13 +93,6 @@ function Chat({ userId, socket }) {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
   }
-
-  // end current WebRTC connection
-  const endWebRtc = () => {
-    webRtcPeer.destroy();
-    setWebRtcSignal('');
-    setWebRtcPeer('');
-  }
  
   useEffect(() => {
     if (socket) {
@@ -149,12 +138,7 @@ function Chat({ userId, socket }) {
           )
         }
       </div>
-      <div style={{display: activeVideoCall ? 'block' : 'none', height: '95%', backgroundColor: 'black' }}>
-        <video id="video" style={videoCss}></video>
-        <div style={{display: 'flex'}}>
-          <button onClick={endWebRtc}>Hang Up</button>
-        </div>
-      </div>
+      <VideoChat setWebRtcPeer={setWebRtcPeer} webRtcPeer={webRtcPeer} setWebRtcSignal={setWebRtcSignal} activeVideoCall={activeVideoCall} />
     </>
   );
 }
