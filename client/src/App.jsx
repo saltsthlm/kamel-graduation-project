@@ -7,36 +7,35 @@ import Login from './components/Login';
 import './scss/App.scss';
 
 function App() {
-  const [userId, setUserId] = useState('');
+  const [user, setUser] = useState('');
   const [socket, setSocket] = useState('');
-  const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    if (userId) {
+    if (user.userId) {
       const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const { host } = window.location;
-      const socket = new WebSocket(`${protocolPrefix}//${host}/socket/${userId}`);
+      const socket = new WebSocket(`${protocolPrefix}//${host}/socket/${user.userId}`);
 
       socket.onopen = () => {
         socket.send(JSON.stringify({
           type: 'REPORT SUCCESS',
           message: 'Initialized connection on client!',
-          senderId: userId,
+          senderId: user.userId,
         }));
         setSocket(socket);
       };
 
       socket.onerror = (error) => console.log(error);
     }
-  }, [userId]);
+  }, [user]);
 
   const PrivateRoute = ({ authed, ...rest }) => {
     return (
       <Route
         {...rest}
         render={() => authed
-          ? <Chat userId={userId} userName={userName} socket={socket} />
-          : <Redirect to='/login' setUserId={setUserId} userId={userId} />}
+          ? <Chat user={user} socket={socket} userLanguage='en'/>
+          : <Redirect to='/login' setUser={setUser} user={user} />}
       />
     )
   }
@@ -47,9 +46,9 @@ function App() {
         <Route>
           <Switch>
             <Route path='/login'>
-              <Login setUserId={setUserId} userId={userId} setUserName={setUserName} />
+              <Login setUser={setUser} user={user} />
             </Route>
-            <PrivateRoute path='/' exact authed={userId} />
+            <PrivateRoute path='/' exact authed={user.userId} />
           </Switch>
         </Route>
       </Router>

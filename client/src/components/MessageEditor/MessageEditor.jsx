@@ -15,9 +15,9 @@ const MessageEditor = ({ sendParcel, initiateWebRtc }) => {
 
   return (
     <form className='message-editor'>
-      <span onClick={initiateWebRtc}>Video</span>
       <input type='text' value={message} onChange={inputValue}></input>
       <button type="submit" onClick={sendDirectMessageAndClear}>Send</button>
+      <button type="button" onClick={initiateWebRtc}>Video</button>
     </form>
   );
 }

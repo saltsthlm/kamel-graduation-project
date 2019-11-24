@@ -1,23 +1,44 @@
-import React, { } from "react";
+import React, { useEffect } from "react";
 
 const videoCss = {
   transform: 'rotateY(180deg)',
-  height: '100%',
+  flex: '1',
+  zIndex: '0',
 }
 
-const VideoChat = ({ setWebRtcPeer, webRtcPeer, setWebRtcSignal, activeVideoCall }) => {
+const toolbarCss = {
+  display: 'flex',
+  height: '40px',
+  marginTop: '-40px',
+  zIndex: '1',
+}
 
-  // end current WebRTC connection
+const subtitlesCss = {
+  color: 'white',
+  flex: '1',
+  textAlign: 'center',
+  fontSize: '24px',
+  outlineColor: 'white',
+  textShadow: '0px 0px 1px black',
+}
+
+const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles }) => {
+  
+  useEffect(() => {
+    setSubTitles('');
+  }, [webRtcPeer, setSubTitles]);
+
   const endWebRtc = () => {
     webRtcPeer.destroy();
-    setWebRtcSignal('');
-    setWebRtcPeer('');
   }
 
   return (
-    <div style={{ display: activeVideoCall ? 'block' : 'none', height: '95%', backgroundColor: 'black' }}>
+    <div style={{ display: activeVideoCall ? 'flex' : 'none', flexDirection: 'column', height: '100%', backgroundColor: 'black' }}>
       <video id="video" style={videoCss}></video>
-      <div style={{ display: 'flex' }}>
+      <div style={toolbarCss}>
+        <div style={subtitlesCss} className="subtitles">
+          <span >{subTitles}</span>
+        </div>
         <button onClick={endWebRtc}>Hang Up</button>
       </div>
     </div>

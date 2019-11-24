@@ -15,7 +15,7 @@ const wsInstance = expressWs(express());
 const { app } = wsInstance;
 
 app.use(helmet());
-// app.use(morgan('tiny', { stream: logger.stream }));
+app.use(morgan('tiny', { stream: logger.stream }));
 
 setInterval(() => parcels.sendPing(), 5000);
 

@@ -5,108 +5,31 @@ import { updateChatMessages, updateContactList } from '../../lib/chat';
 import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
+import * as parcels from '../../lib/parcels';
 
-const pong = (parcel) => (
-  JSON.stringify({
-    type: 'RETURN PONG',
-    message: 'connection still open',
-    senderId: parcel.receiverId
-  })
-);
-
-function Chat({ userId, socket }) {
+function Chat({ user, socket }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState({});
+
   const [webRtcPeer, setWebRtcPeer] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
-
-  const socketSetupCallback = useCallback(() => (
-    updateContactList(userId, socket)
-  ), [userId, socket]);
+  const [subTitles, setSubTitles] = useState('');
 
   const sendParcel = (type, kwargs) => {
-    const parcelTemplate = {
-      receiverId: chatPartner.userId,
-      senderId: userId,
-      timeStamp: Date.now()
-    };
-
-    const parcel = {type,
-      ...parcelTemplate,
-      ...kwargs,
-    };
-
+    const parcel = parcels.getNewParcel(type, user, chatPartner, kwargs)
     socket.send(JSON.stringify(parcel));
-  
-    if (parcel.type === 'DIRECT MESSAGE') {
+    if (type === 'DIRECT MESSAGE') {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
   };
 
-  // when WebRTC signaling data is received
-  useEffect(() => {
-    // if the user is joining a call
-    if (webRtcSignal && !webRtcPeer) {
-      const peer = webRtc.newPeer();
-      peer.signal(webRtcSignal);
-      setWebRtcPeer(peer);
-    // if the user is initiating a call
-    } else if (webRtcSignal && webRtcPeer) {
-      webRtcPeer.signal(webRtcSignal);
-    }
-  // eslint-disable-next-line 
-  }, [webRtcSignal])
-
-  // set-up WebRTC listeners once WebRTC client is initiated
-  useEffect(() => {    
-    if (webRtcPeer) {
-      webRtcPeer.on('connect', () => webRtcPeer.send('ready when you are :)'));
-      webRtcPeer.on('close', () => setActiveVideoCall(false));
-      webRtcPeer.on('signal', signal => (
-        sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}))
-      );
-      webRtcPeer.on('stream', stream => {
-        const video =  document.querySelector('#video');
-        setActiveVideoCall(true);
-        video.srcObject = stream;
-        video.muted = true;
-        video.play();
-      })
-      navigator.mediaDevices.getUserMedia(webRtc.videoConfig)
-        .then((stream) => webRtcPeer.addStream(stream));
-    }
-  // eslint-disable-next-line 
-  }, [webRtcPeer, activeVideoCall]);
-
-  // initiate new WebRTC connection
   const initiateWebRtc = (event) => {
     event.preventDefault();
     setWebRtcPeer(webRtc.newInitiator());
   }
- 
-  useEffect(() => {
-    if (socket) {
-      socket.onmessage = (event) => {
-        const parcel = JSON.parse(event.data);
-        if (parcel.type === 'UPDATE CONTACTLIST') {          
-          setContactList(parcel.connectedClients);
-        }
-        if (parcel.type === 'DIRECT MESSAGE') {
-          setChatMessages((messages) => updateChatMessages(messages, parcel));
-        }
-        if (parcel.type === 'SEND PING') {
-          socket.send(pong(parcel));
-        }
-        if (parcel.type === 'OFFER VIDEO') {
-          setWebRtcSignal(parcel.signal);
-        }
-      }
-      socketSetupCallback();
-    }
-  }, [socket, socketSetupCallback])
 
   const getChatMessages = () => (
     chatPartner.userId && chatMessages[chatPartner.userId]
@@ -114,19 +37,66 @@ function Chat({ userId, socket }) {
       : []
   )
 
-  const getContactList = () => contactList.filter((contact) => contact.userId !== userId);
+  const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
+
+  useEffect(() => {
+    if (webRtcSignal && !webRtcPeer) {
+      const peer = webRtc.newPeer();
+      peer.signal(webRtcSignal);
+      setWebRtcPeer(peer);
+    } else if (webRtcSignal && webRtcPeer) {
+      webRtcPeer.signal(webRtcSignal);
+    }
+  // eslint-disable-next-line 
+  }, [webRtcSignal])
+
+  const socketSetupCallback = useCallback(() => (
+    updateContactList(user.userId, socket)
+  ), [user.userId, socket]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.onmessage = (event) => {
+        parcels.processParcel({
+          event,
+          setContactList,
+          setChatMessages,
+          updateChatMessages,
+          socket,
+          setWebRtcSignal,
+          setSubTitles
+        })
+      }
+      socketSetupCallback();
+    }
+  }, [socket, socketSetupCallback])
+
+  useEffect(() => {    
+    if (webRtcPeer) {
+      webRtc.setupListeners({
+        webRtcPeer,
+        language: user.language,
+        chatPartner,
+        sendParcel,
+        setActiveVideoCall,
+        setWebRtcPeer,
+        setWebRtcSignal
+      })
+    }
+  // eslint-disable-next-line 
+  }, [webRtcPeer, activeVideoCall]);
 
   return (
     <>
       <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
         { (width < 700 )
           ? (chatPartner.userName 
-            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
+            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
             : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
           : (
             <>
               <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
-              <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={userId} setChatPartner={setChatPartner}/> 
+              <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
             </>
           )
         }
@@ -135,7 +105,9 @@ function Chat({ userId, socket }) {
         setWebRtcPeer={setWebRtcPeer}
         webRtcPeer={webRtcPeer}
         setWebRtcSignal={setWebRtcSignal}
-        activeVideoCall={activeVideoCall} />
+        activeVideoCall={activeVideoCall}
+        subTitles={subTitles}
+        setSubTitles={setSubTitles}/>
     </>
   );
 }
