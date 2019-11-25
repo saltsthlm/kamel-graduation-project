@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Chat from './components/Chat/Chat';
-import Login from './components/Login';
+import Login from './components/Login/Login';
 import './scss/App.scss';
 
 function App() {
