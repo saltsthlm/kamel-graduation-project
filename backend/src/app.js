@@ -10,10 +10,12 @@ const sockets = require('./controllers/sockets');
 const clients = require('./clients/clients');
 const languages = require('./translate/languages');
 const logger = require('./logging/logging');
+const mongoClient = require('./mongodb/connect');
 const parcels = require('./parcels/parcels');
 
 const wsInstance = expressWs(express());
 const { app } = wsInstance;
+const db = mongoClient.setupDb();
 
 app.use(helmet());
 app.use(morgan('tiny', { stream: logger.stream }));
