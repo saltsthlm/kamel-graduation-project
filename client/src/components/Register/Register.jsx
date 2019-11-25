@@ -1,7 +1,7 @@
-import React, { useState,  } from "react";
-import { Redirect, Route, Link } from "react-router-dom";
+import React, { useState, useHistory } from "react";
+import { Redirect } from "react-router-dom";
 
-function Login({ setUser, user }) {
+function Register({ setUser, user }) {
   const [ input, setInput ] = useState({ 
     userName: '',
     email: '',
@@ -19,7 +19,7 @@ function Login({ setUser, user }) {
 
   const login = async (e) => {
     e.preventDefault();
-    const response = await fetch('/login', {
+    const response = await fetch('/register', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -28,9 +28,7 @@ function Login({ setUser, user }) {
       body: JSON.stringify(input),
     });
     if (response.status === 200) {
-      const credentials = await response.json();
-      console.log(credentials);
-      setUser(credentials);
+      window.location.href = '/login';
     }
   };
 
@@ -38,19 +36,14 @@ function Login({ setUser, user }) {
     return <Redirect to='/'/>
   }
 
-  const redirect = (e) => {
-    console.log(e);
-    return (
-      <Route>
-        <Redirect to='/register'/>
-      </Route>
-    )
-  }
-
   return (
     <div className="login">
       <form onSubmit={login} className="login_form">
-        <h1 className="login_form_header">Sign In</h1>
+        <h1 className="login_form_header">Sign Up</h1>
+        <div className='login_form_user-input'>
+          <label htmlFor='userName' className='login_form_user-input_label'> Name: </label>
+          <input type='text' name='userName' id='userName' onChange={inputChange} className='login_form_user-input_field' required/>
+        </div>
         <div className='login_form_user-input'>
           <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
           <input type='email' name='email' id='email' onChange={inputChange} className='login_form_user-input_field' required/>
@@ -59,13 +52,16 @@ function Login({ setUser, user }) {
           <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
           <input type='password' name='password' id='password' onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
+        <div className='login_form_user-input'>
+          <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
+          <input type='text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/>
+        </div>
         <div className="login_form_button">
-          <button type="submit" >Sign In</button>
+          <button type="submit" >Sign Up</button>
         </div>
       </form>
-      <Link to="/register">Register</Link>
     </div>
   );
 }
 
-export default Login;
+export default Register;

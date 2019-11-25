@@ -38,24 +38,46 @@ app.get('/login', (req, res) => {
   res.redirect('..');
 });
 
-app.post('/login', async (req, res) => {
-  const { userName, password, email, language } = req.body;
+const registerUser = ({ userName, password, email, language }) => {
   const credentials = {
     userName,
     password,
     language,
     email,
+    socketId: uuid(),
   };
 
   const user = new User(credentials);
-  user.save((err, user) => {
-    if (err) console.log(err);
-    console.log('added user: ', user);
+  user.save((err, registeredUser) => {
+    if (err) logger.logger.error(err);
+    logger.logger.info(registeredUser);
   });
+  return user;
+};
 
-  const userOld = { ...credentials, userId: uuid() };
-  clients.loggedInUsers.push(userOld);
-  res.json(userOld);
+app.post('/register', (req, res) => {
+  registerUser(req.body);
+  res.send();
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  await User.authenticate(email, password, (err, user) => {
+    if (err || !user) {
+      return res.status(401).json({ error: 'error' });
+    }
+
+    const credentials = {
+      userName: user.userName,
+      language: user.language,
+      email: user.email,
+      userId: uuid(),
+    };
+
+    clients.loggedInUsers.push(credentials);
+    return res.json(credentials);
+  });
 });
 
 // eslint-disable-next-line no-unused-vars

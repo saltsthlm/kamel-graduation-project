@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  socketId: {
+    type: String,
+    required: true,
+  },
   language: {
     type: String,
     required: true,
@@ -35,8 +39,25 @@ UserSchema.pre('save', function (next) {
     }
     user.password = hash;
     next();
-  })
+  });
 });
+
+UserSchema.statics.authenticate = (email, password, callback) => (
+  user.findOne({ email })
+    .exec((err, user) => {
+      if (err) {
+        return callback(err);
+      } if (!user) {
+        return callback(401);
+      }
+
+      return bcrypt.compare(password, user.password, (_, result) => (
+        (result === true)
+          ? callback(null, user)
+          : callback()
+      ));
+    })
+);
 
 const user = mongoose.model('User', UserSchema);
 
