@@ -1,3 +1,4 @@
+'use strict';
 const { Translate } = require('@google-cloud/translate').v2;
 
 const translationClient = new Translate({

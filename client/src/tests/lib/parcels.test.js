@@ -1,10 +1,12 @@
-const parcels = require('./parcels');
+'use strict';
+const parcels = require('../../lib/parcels');
 
 const senderId = 'Moritz';
 const receiverId = 'Not Moritz';
-const type = 'TEST';
+const type = 'TEST PARCEL';
 
 describe('The getNewParcel function', () => {
+
   it('should return a parcel with all baseline parameters', () => {
     const parcel = parcels.getNewParcel(type, senderId, receiverId);
     expect(parcel.senderId).toBe(senderId);

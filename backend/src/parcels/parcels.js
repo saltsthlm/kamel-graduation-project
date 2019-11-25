@@ -1,3 +1,4 @@
+'use strict';
 const { translate } = require('../translate/translation');
 const clients = require('../clients/clients');
 const { logger } = require('../logging/logging');
@@ -17,7 +18,7 @@ const deliverToAll = (parcel) => {
 };
 
 const newContactListParcel = () => ({
-  type: 'UPDATE CONTACTLIST',
+  type: 'UPDATE CONTACTS',
   connectedClients: clients.connectedClients.map((client) => ({
     userId: client.clientId,
     userName: client.clientName,
@@ -50,14 +51,15 @@ const processDirectMessage = async (parcel) => {
     logger.error(error);
     logger.error(parcel);
     translated = false;
+  } finally {
+    deliverParcel({
+      ...parcel,
+      translatedMessage,
+      translated,
+      senderLanguage: clients.getUserLanguageById(parcel.senderId),
+      receiverLanguage: clients.getUserLanguageById(parcel.receiverId),
+    });
   }
-  deliverParcel({
-    ...parcel,
-    translatedMessage,
-    translated,
-    senderLanguage: clients.getUserLanguageById(parcel.senderId),
-    receiverLanguage: clients.getUserLanguageById(parcel.receiverId),
-  });
 };
 
 const processContactListUpdate = (parcel) => {
@@ -73,20 +75,22 @@ const processVideoOffer = (parcel) => {
 
 const process = async (parcel) => {
   switch (parcel.type) {
-  case 'DIRECT MESSAGE':
-    return processDirectMessage(parcel);
-  case 'OFFER VIDEO':
-    return processVideoOffer(parcel);
-  case 'REPORT SUCCESS':
-    return logger.info(parcel);
-  case 'RETURN PONG':
-    return logger.debug(parcel);
-  case 'TRANSLATE SUBTITLES':
-    return processDirectMessage(parcel);
-  case 'UPDATE CONTACTS':
-    return processContactListUpdate(parcel);
-  default:
-    return logger.info(`received parcel of unknown type "${parcel.type}"`);
+    case 'DIRECT MESSAGE':
+      return processDirectMessage(parcel);
+    case 'OFFER VIDEO':
+      return processVideoOffer(parcel);
+    case 'REPORT SUCCESS':
+      return logger.info(parcel);
+    case 'REPORT LANGUAGE':
+      return logger.info(`${parcel.senderId} browser language is "${parcel.message}"`); // Placeholder
+    case 'RETURN PONG':
+      return logger.debug(parcel);
+    case 'TRANSLATE SUBTITLES':
+      return processDirectMessage(parcel);
+    case 'UPDATE CONTACTS':
+      return processContactListUpdate(parcel);
+    default:
+      return logger.info(`received parcel of unknown type "${parcel.type}"`);
   }
 };
 

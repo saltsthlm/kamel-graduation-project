@@ -1,4 +1,4 @@
-`use strict`;
+'use strict';
 const WebSocketClient = require('websocket').client;
 const uuid = require('uuid/v4');
 const { app } = require('../src/app');
@@ -48,10 +48,10 @@ describe('The /socket routes', () => {
 
   //     connection.on('message', (message) => {
   //       const parcel = JSON.parse(message.utf8Data);
-  //       expect(parcel.type).toEqual('UPDATE CONTACTLIST');
+  //       expect(parcel.type).toEqual('UPDATE CONTACTS');
   //       // expect(parcel.connectedClients).toEqual([socketId]);
   //       // expect(parcel.receiverId).toEqual('hi');
-  //       if (parcel.type === 'UPDATE CONTACTLIST') {
+  //       if (parcel.type === 'UPDATE CONTACTS') {
   //         connection.close();
   //       }
   //     });
@@ -66,7 +66,7 @@ describe('The /socket routes', () => {
 
   //     connection.on('message', (message) => {
   //       const parcel = JSON.parse(message.utf8Data);
-  //       expect(parcel.type).toEqual('UPDATE CONTACTLIST');
+  //       expect(parcel.type).toEqual('UPDATE CONTACTS');
   //       // expect(parcel.connectedClients).toEqual([socketId]);
   //       expect(parcel.receiverId).toEqual(socketId);
   //       done();
@@ -147,7 +147,7 @@ describe('The /socket routes', () => {
   //   client2.on('connect', (connection) => {
   //     connection.on('message', (message) => {
   //       const parcel = JSON.parse(message.utf8Data);
-  //       if (parcel.type === 'UPDATE CONTACTLIST') {
+  //       if (parcel.type === 'UPDATE CONTACTS') {
   //         expect(parcel.connectedClients).toEqual([socketId, socketId2]);
   //         expect(parcel.receiverId).toEqual(socketId2);
   //         connection.close();

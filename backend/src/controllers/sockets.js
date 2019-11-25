@@ -1,3 +1,4 @@
+'use strict';
 const client = require('../clients/clients');
 const { logger } = require('../logging/logging');
 const parcels = require('../parcels/parcels');

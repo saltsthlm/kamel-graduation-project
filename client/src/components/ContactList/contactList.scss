@@ -16,13 +16,12 @@
         }
     }
 
-    @media (max-width:$screen-md ){
+    @media (max-width:$screen-md) {
         width: 200px;
         flex: 1;
     }
 
-
-    @media (min-width:$screen-md ){
+    @media (min-width:$screen-md) {
         width: 300px;
         background-color:yellow;
     }

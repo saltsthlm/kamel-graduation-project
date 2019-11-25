@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, Redirect } from "react-router-dom";
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Chat from './components/Chat/Chat';
 import Login from './components/Login';
 import './scss/App.scss';
@@ -19,6 +18,11 @@ function App() {
         socket.send(JSON.stringify({
           type: 'REPORT SUCCESS',
           message: 'Initialized connection on client!',
+          senderId: user.userId,
+        }));
+        socket.send(JSON.stringify({
+          type: 'REPORT LANGUAGE',
+          message: `${window.navigator.language}`.slice(0, 2),
           senderId: user.userId,
         }));
         setSocket(socket);
