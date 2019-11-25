@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const uuid = require('uuid/v4');
 const nameGenerator = require('project-name-generator');
+const bodyParser = require('body-parser');
 
 const sockets = require('./controllers/sockets');
 const clients = require('./clients/clients');
@@ -12,13 +13,17 @@ const languages = require('./translate/languages');
 const logger = require('./logging/logging');
 const mongoClient = require('./mongodb/connect');
 const parcels = require('./parcels/parcels');
+const User = require('./mongodb/schemas');
 
 const wsInstance = expressWs(express());
 const { app } = wsInstance;
-const db = mongoClient.setupDb();
+mongoClient.setupDb();
 
 app.use(helmet());
 app.use(morgan('tiny', { stream: logger.stream }));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 setInterval(() => parcels.sendPing(), 5000);
 
@@ -33,14 +38,24 @@ app.get('/login', (req, res) => {
   res.redirect('..');
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
+  const { userName, password, email, language } = req.body;
   const credentials = {
-    userId: uuid(),
-    userName: nameGenerator().spaced,
-    language: languages.getRandomLanguage(),
+    userName,
+    password,
+    language,
+    email,
   };
-  clients.loggedInUsers.push(credentials);
-  res.json(credentials);
+
+  const user = new User(credentials);
+  user.save((err, user) => {
+    if (err) console.log(err);
+    console.log('added user: ', user);
+  });
+
+  const userOld = { ...credentials, userId: uuid() };
+  clients.loggedInUsers.push(userOld);
+  res.json(userOld);
 });
 
 // eslint-disable-next-line no-unused-vars
