@@ -29,22 +29,12 @@ function Login({ setUser, user }) {
     });
     if (response.status === 200) {
       const credentials = await response.json();
-      console.log(credentials);
       setUser(credentials);
     }
   };
 
   if (user.userId) {
     return <Redirect to='/'/>
-  }
-
-  const redirect = (e) => {
-    console.log(e);
-    return (
-      <Route>
-        <Redirect to='/register'/>
-      </Route>
-    )
   }
 
   return (

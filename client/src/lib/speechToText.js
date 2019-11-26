@@ -2,7 +2,7 @@ const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, on
   try {
     const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    recognition.continuous = true;
+    recognition.continuous = false;
     recognition.lang = language;
 
     recognition.onstart = function () {
@@ -16,8 +16,9 @@ const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, on
 
     recognition.onerror = function (event) {
       console.log('### Speech-to-text error ###');
-      if (event.error === 'no-speech') {
+      if (event.error === 'no-speech') {        
         console.log('### No speech was detected. Try again. ###');
+        continuousSpeechToSubtitle(language, onTranscript, onQuiet, onStart, onError)
       }
     }
 

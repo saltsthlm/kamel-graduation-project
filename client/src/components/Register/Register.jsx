@@ -1,7 +1,7 @@
 import React, { useState, useHistory } from "react";
 import { Redirect } from "react-router-dom";
 
-function Register({ setUser, user }) {
+function Register({ user }) {
   const [ input, setInput ] = useState({ 
     userName: '',
     email: '',

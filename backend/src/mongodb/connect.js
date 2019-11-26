@@ -4,7 +4,7 @@ const { logger } = require('../logging/logging');
 // const session = require('express-session');
 // const mongoStore = require('connect-mongo')(session);
 
-const setupDb = () => {
+const setupDb = async () => {
   mongoose.set('useCreateIndex', true);
   mongoose.connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-yc07r.gcp.mongodb.net/test?retryWrites=true&w=majority`,
