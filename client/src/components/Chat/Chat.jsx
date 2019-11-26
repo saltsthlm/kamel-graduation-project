@@ -6,6 +6,7 @@ import useWindowDimensions from '../../lib/window';
 import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
 import * as parcels from '../../lib/parcels';
+import Navigation from '../Navigation/Navigation';
 
 function Chat({ user, socket }) {
   const { width } = useWindowDimensions();
@@ -89,6 +90,7 @@ function Chat({ user, socket }) {
   return (
     <>
       <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
+        <Navigation/>
         { (width < 700 )
           ? (chatPartner.userName 
             ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 

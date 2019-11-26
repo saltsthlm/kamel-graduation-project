@@ -4,7 +4,6 @@ import Chat from './components/Chat/Chat';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import './scss/App.scss';
-import uuid from 'uuid/v4';
 
 function App() {
   const [user, setUser] = useState('');

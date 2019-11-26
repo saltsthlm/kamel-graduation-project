@@ -1,20 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { slide as Menu } from 'react-burger-menu';
 
 const Navigation = () => {
   return (
-    <>
-      <nav className='navigation'>
-        <ul className=''>
-          <li>
-            <Link to="/">Chat</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-        </ul>
-      </nav>
-    </>
+    <Menu left>
+        <Link to="/Settings">Settings</Link>
+    </Menu>
   );
 }
 
