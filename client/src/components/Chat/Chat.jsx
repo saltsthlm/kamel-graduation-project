@@ -7,6 +7,7 @@ import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
 import * as parcels from '../../lib/parcels';
 import Navigation from '../Navigation/Navigation';
+import AcceptCallScreen from '../AcceptCallScreen/AcceptCallScreen';
 
 
 function Chat({ user, socket }) {
@@ -19,6 +20,7 @@ function Chat({ user, socket }) {
   const [webRtcFlag, setWebRtcFlag] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
+  const [acceptCall, setAcceptCall] = useState(false);
   const [subTitles, setSubTitles] = useState('');
 
   const sendParcel = (type, kwargs) => {
@@ -42,6 +44,7 @@ function Chat({ user, socket }) {
     setWebRtcPeer(false);
     setActiveVideoCall(false);
     setSubTitles('');
+    setAcceptCall(false);
   }
 
   const getChatMessages = () => (
@@ -57,6 +60,9 @@ function Chat({ user, socket }) {
     console.log('    webRtcSignal value', webRtcSignal)
     console.log('    webRtcPeer value', webRtcPeer)
 
+    if (!acceptCall && webRtcSignal && webRtcSignal.type === 'offer') {
+      return undefined;
+    }
     if (webRtcSignal && !webRtcPeer) {
       const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
@@ -65,7 +71,7 @@ function Chat({ user, socket }) {
       webRtcPeer.signal(webRtcSignal);
     }
   // eslint-disable-next-line 
-  }, [webRtcSignal])
+  }, [webRtcSignal, acceptCall])
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(user.userId, socket)
@@ -108,9 +114,22 @@ function Chat({ user, socket }) {
   // eslint-disable-next-line
   }, [webRtcPeer, activeVideoCall]);
 
+
+  const acceptCallScreenStyle = () => {
+    console.log(webRtcPeer,  webRtcSignal, acceptCall)
+    if ((webRtcSignal && !acceptCall) && !(webRtcSignal && webRtcPeer)) {
+      return {
+        display: 'flex',
+        height: '100%',
+      };
+    } else {
+      return {display: 'none'};
+    }
+  }
+
   return (
     <>
-      <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
+      <div className="chat" style={{display: webRtcSignal ? 'none' : ''}}>
         <Navigation/>
         { (width < 700 )
           ? (chatPartner.userName 
@@ -133,6 +152,7 @@ function Chat({ user, socket }) {
         activeVideoCall={activeVideoCall}
         subTitles={subTitles}
         setSubTitles={setSubTitles}/>
+      <AcceptCallScreen setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} css={acceptCallScreenStyle()}/>
     </>
   );
 }
