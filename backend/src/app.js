@@ -41,7 +41,7 @@ mongoClient.setupDb().then(() => {
 
   app.post('/register', async (req, res) => {
     const { userName, password, language, email } = req.body;
-
+    console.log(language);
     const credentials = {
       userName,
       password,
@@ -58,7 +58,7 @@ mongoClient.setupDb().then(() => {
       }
       logger.logger.info('created new user');
       logger.logger.info(registeredUser);
-      return res.status(200).json(user);
+      return res.status(200).json();
     });
   });
 
@@ -69,6 +69,8 @@ mongoClient.setupDb().then(() => {
       if (err || !user) {
         return res.status(401).json({ error: 'wrong email or password' });
       }
+
+      console.log(user);
 
       const credentials = {
         userName: user.userName,

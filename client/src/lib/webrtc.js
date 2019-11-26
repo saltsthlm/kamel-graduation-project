@@ -30,33 +30,44 @@ const setupListeners = ({
   chatPartner,
   sendParcel,
   setActiveVideoCall,
-  setWebRtcPeer,
-  setWebRtcSignal}) => {
+  endWebRtc}) => {
+  
+  console.log('setting up webrtc listeners')
 
   webRtcPeer.on('connect', async () => {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const videoSecondary =  document.querySelector('#video-secondary');
+    videoSecondary.srcObject = stream;
+    videoSecondary.muted = true;
+    videoSecondary.play();
     webRtcPeer.addStream(stream)
-    continuousSpeechToSubtitle(
-      language,
-      (transcript) => sendParcel('TRANSLATE SUBTITLES', {message: transcript}),
-      console.log,
-      console.log,
-      console.log
-    );
+  
+    try {
+      continuousSpeechToSubtitle(
+        language,
+        (transcript) => sendParcel('TRANSLATE SUBTITLES', {message: transcript}),
+        console.log,
+        console.log,
+        console.log
+      );
+    } catch (e) {
+      console.log(e);
+    }
   });
 
   webRtcPeer.on('close', () => {
-    setActiveVideoCall(false);
-    setWebRtcPeer(false);
-    setWebRtcSignal(false);
+    endWebRtc()
     // stream.getTracks().forEach((track) => track.stop());
   });
 
-  webRtcPeer.on('signal', signal => (
-    sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId}))
-  );
+  webRtcPeer.on('signal', signal => {
+    console.log('sending webrtc offer (on signal)');
+    sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId});
+  });
 
   webRtcPeer.on('stream', stream => {
+    console.log('webrtc on stream')
+
     const video =  document.querySelector('#video');
     setActiveVideoCall(true);
     video.srcObject = stream;

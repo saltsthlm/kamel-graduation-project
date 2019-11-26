@@ -8,6 +8,7 @@ import VideoChat from '../VideoChat/VideoChat';
 import * as parcels from '../../lib/parcels';
 import Navigation from '../Navigation/Navigation';
 
+
 function Chat({ user, socket }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
@@ -15,6 +16,7 @@ function Chat({ user, socket }) {
   const [chatPartner, setChatPartner] = useState({});
 
   const [webRtcPeer, setWebRtcPeer] = useState(false);
+  const [webRtcFlag, setWebRtcFlag] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
   const [subTitles, setSubTitles] = useState('');
@@ -32,6 +34,16 @@ function Chat({ user, socket }) {
     setWebRtcPeer(webRtc.newInitiator());
   }
 
+  const endWebRtc = () => {
+    console.log('ending webrtc call')
+    webRtcPeer.destroy();
+    setWebRtcFlag(false);
+    setWebRtcSignal(false);
+    setWebRtcPeer(false);
+    setActiveVideoCall(false);
+    setSubTitles('');
+  }
+
   const getChatMessages = () => (
     chatPartner.userId && chatMessages[chatPartner.userId]
       ? chatMessages[chatPartner.userId] 
@@ -41,6 +53,10 @@ function Chat({ user, socket }) {
   const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
 
   useEffect(() => {
+    console.log('useEffect webRtcSignal')
+    console.log('    webRtcSignal value', webRtcSignal)
+    console.log('    webRtcPeer value', webRtcPeer)
+
     if (webRtcSignal && !webRtcPeer) {
       const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
@@ -72,8 +88,12 @@ function Chat({ user, socket }) {
     }
   }, [socket, socketSetupCallback])
 
-  useEffect(() => {    
-    if (webRtcPeer) {
+  useEffect(() => {
+    console.log('useEffect webRtcPeer')
+    console.log('    webrct peer value', webRtcPeer)
+    console.log('    activeVideoCall value', activeVideoCall)
+    if (webRtcPeer && !webRtcFlag) {
+      setWebRtcFlag(true);
       webRtc.setupListeners({
         webRtcPeer,
         language: user.language,
@@ -81,7 +101,8 @@ function Chat({ user, socket }) {
         sendParcel,
         setActiveVideoCall,
         setWebRtcPeer,
-        setWebRtcSignal
+        setWebRtcSignal,
+        endWebRtc,
       })
     }
   // eslint-disable-next-line
@@ -105,6 +126,8 @@ function Chat({ user, socket }) {
       </div>
       <VideoChat
         setWebRtcPeer={setWebRtcPeer}
+        endWebRtc={endWebRtc}
+        setWebRtcFlag={setWebRtcFlag}
         webRtcPeer={webRtcPeer}
         setWebRtcSignal={setWebRtcSignal}
         activeVideoCall={activeVideoCall}
