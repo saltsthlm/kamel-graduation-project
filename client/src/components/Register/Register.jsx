@@ -24,6 +24,17 @@ function Register({ user }) {
     }));
   }
 
+  const dropDownChange = (e) => {
+    e.persist();
+    const languageLong = e.target.value;
+    const languageCode = ISO6391.getCode(languageLong);
+    setInput((previousInput) => ({
+      ...previousInput, 
+      language: languageCode,
+    }));
+  }
+
+
   const login = async (e) => {
     e.preventDefault();
     const response = await fetch('/register', {
@@ -61,7 +72,7 @@ function Register({ user }) {
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
-          <select className='language-list' name='language'>
+          <select onChange={dropDownChange} className='language-list' name='language'>
             {languageList.map(language => (
               <option key='language'>{language}</option>
             ))}
