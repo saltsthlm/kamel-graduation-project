@@ -11,15 +11,15 @@ const getMessageStyle = (senderId, userId) => {
       float: 'right',
       clear:'both',
       marginLeft: '20px',
-      backgroundColor: 'blue',
-      color: 'white',
+      backgroundColor: 'rgb(86, 171, 238)',
+      color: 'black',
     }
   } else  {
     return {
       float: 'left',
       clear:'both',
       marginRight: '20px',
-      backgroundColor: '#eee',
+      backgroundColor: '#ddd',
       color: 'black',
     }
   }
@@ -35,7 +35,7 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
   return (
     <div className="chat-board">
       <FontAwesomeIcon icon={faAngleLeft} onClick={() => setChatPartner({})} />
-      <h3>{chatPartner.userName ? `${chatPartner.userName} (${ISO6391.getName(chatPartner.language)})` : 'Select contact'}</h3>
+      <h3>{chatPartner.userName ? `${chatPartner.userName} (${ISO6391.getName(chatPartner.language)})` : 'Select a contact in the contactlist'}</h3>
       <div className="chat-board_messages" ref={messageArea}>
         <ul>
           {chatMessages.map((parcel, i) => (

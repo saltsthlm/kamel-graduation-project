@@ -1,14 +1,18 @@
 .message-editor {
-    background-color: #fff;
+    background-color: $mainMedium;
     height: 30px;
     display:flex;
+    // border-top: 1px solid black;
     
     input {
         flex:1;
-        font-size: 30px;
         border: 0.5px solid $mainMedium;
         border-radius:  20px;
-        margin-left: 2px;
+        margin-left: 5px;
+        outline: none;
+        font-size: $fontSmall;
+        padding-left: 7px;
+        padding-right: 7px;
     }
     button{
         margin-left: 2px;

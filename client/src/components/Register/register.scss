@@ -53,17 +53,16 @@
                 background-color: black;
                 color: white;
             }
+
+            &_language-list {
+                font-size: 16px;
+                appearance: none;
+                padding: 10px;
+                border-radius: 1000px;
+                opacity: 0.2;
+                background-color: black;
+                color: white;
+            }
         }
     }
-
 }
-.language-list {
-    font-size: 16px;
-    appearance: none;
-    padding: 10px;
-    border-radius: 1000px;
-    opacity: 0.2;
-    background-color: black;
-    color: white;
-}
-
