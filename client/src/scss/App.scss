@@ -6,8 +6,9 @@ $mainDark: rgb(37, 55, 94);
 $mainMedium: rgb(77, 96, 183);
 $mainLight: rgb(86, 171, 238);
 $highlight: #FCD25A;
-$primaryText: #fff;
+$primaryText: $mainDark;
 $secondaryText: #eee;
+$subText: #aaa;
 $darkText: $mainDark;
 
 $fontGinormus: 48px;

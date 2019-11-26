@@ -1,20 +1,59 @@
 .contact-list {
     color: rgb(255, 250, 157);
+    background-color: white;
+
     
     h3 {
         color: whitesmoke;
     }
+
     &_wrapp {
+        padding: 20px;
+        text-align: left;
+
+        &_portrait {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        &_details {
+            display: flex;
+            flex-direction: column;
+
+
+            &_name {
+                font-weight: 700;
+                font-size: $fontMedium;
+                color: $primaryText;
+                cursor: pointer;
+            }
+
+            &_name:hover {
+                color: $mainLight;
+            }
+
+            &_language {
+                color: black;
+                font-size: $fontTiny;
+                color: $subText;
+            }
+        }
+
         ul {
             list-style:none;
             padding: 0;
         }
+
         li {
             padding:20px;
             border-style: solid;
-            border-color: black;
+            border-color: $secondaryText;
             border-width: 1px 0;
-            color:black;
+            display: flex;
+            justify-content: flex-start;
         }
         li + li {
             padding: 20px;
@@ -29,6 +68,6 @@
 
     @media (min-width:$screen-md) {
         width: 300px;
-        background-color: $mainMedium;
+    background-color: white;
     }
 }
