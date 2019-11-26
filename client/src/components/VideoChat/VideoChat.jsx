@@ -6,6 +6,10 @@ const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles, endWe
     setSubTitles('');
   }, [webRtcPeer, setSubTitles]);
 
+  const toggleMute = () => {
+    const video =  document.querySelector('#video');
+    video.muted = !video.muted;
+  }
 
   return (
     <div className="video-chat" style={{ display: activeVideoCall ? 'flex' : 'none' }} >
@@ -15,6 +19,7 @@ const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles, endWe
           <span >{subTitles}</span>
         </div>
         <button onClick={endWebRtc}>Hang Up</button>
+        <button onClick={toggleMute}>Toggle Sound</button>
       </div>
     </div>
   );
