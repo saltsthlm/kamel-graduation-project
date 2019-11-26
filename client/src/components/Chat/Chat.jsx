@@ -58,12 +58,10 @@ function Chat({ user, socket }) {
     console.log('    webRtcPeer value', webRtcPeer)
 
     if (webRtcSignal && !webRtcPeer) {
-      console.log('initiating secondary peer')
       const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
       setWebRtcPeer(peer);
     } else if (webRtcSignal && webRtcPeer) {
-      console.log('receiving webrtc answer signal')
       webRtcPeer.signal(webRtcSignal);
     }
   // eslint-disable-next-line 

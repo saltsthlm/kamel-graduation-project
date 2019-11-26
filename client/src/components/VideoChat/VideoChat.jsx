@@ -13,6 +13,7 @@ const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles, endWe
 
   return (
     <div className="video-chat" style={{ display: activeVideoCall ? 'flex' : 'none' }} >
+      <video id="video-secondary" className="video-chat_video_secondary"></video>
       <video id="video" className="video-chat_video"></video>
       <div className="video-chat_toolbar">
         <div className="video-chat_toolbar_subtitles">
