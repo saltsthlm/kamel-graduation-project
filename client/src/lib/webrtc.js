@@ -30,15 +30,18 @@ const setupListeners = ({
   chatPartner,
   sendParcel,
   setActiveVideoCall,
-  setWebRtcPeer,
-  endWebRtc,
-  setWebRtcSignal}) => {
+  endWebRtc}) => {
   
   console.log('setting up webrtc listeners')
 
   webRtcPeer.on('connect', async () => {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const videoSecondary =  document.querySelector('#video-secondary');
+    videoSecondary.srcObject = stream;
+    videoSecondary.muted = true;
+    videoSecondary.play();
     webRtcPeer.addStream(stream)
+  
     try {
       continuousSpeechToSubtitle(
         language,
@@ -53,7 +56,6 @@ const setupListeners = ({
   });
 
   webRtcPeer.on('close', () => {
-    console.log('webrtc on close');
     endWebRtc()
     // stream.getTracks().forEach((track) => track.stop());
   });
