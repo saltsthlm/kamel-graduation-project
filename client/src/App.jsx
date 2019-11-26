@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Chat from './components/Chat/Chat';
-import Login from './components/Login';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 import './scss/App.scss';
 
 function App() {
@@ -48,6 +49,9 @@ function App() {
       <Router>
         <Route>
           <Switch>
+            <Route path='/register'>
+              <Register setUser={setUser} user={user} />
+            </Route>
             <Route path='/login'>
               <Login setUser={setUser} user={user} />
             </Route>

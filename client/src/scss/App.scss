@@ -1,11 +1,30 @@
-$myColor: red;
+$mainDark: rgb(37, 55, 94);
+$mainMedium: rgb(77, 96, 183);
+$mainLight: rgb(86, 171, 238);
+$highlight: #FCD25A;
+$primaryText: #fff;
+$secondaryText: #eee;
+$darkText: $mainDark;
+
+$fontHuge: 32px;
+$fontBig: 24px;
+$fontMedium: 18px;
+$fontSmall: 14px;
+$fontTiny: 11px;
+
 
 html, body, #root, #root>div  {
   height: 100%;
+  color: $primaryText;
+  background-image: linear-gradient(-90deg, $mainLight, $mainMedium);
 }
 
 h3 {
-  color: $myColor;
+  color: $mainDark;
+}
+
+button {
+  cursor: pointer;
 }
 
 .App {
@@ -23,6 +42,8 @@ h3 {
 @import '../components/ContactList/contactList.scss';
 @import '../components/ChatBoard/chatBoard.scss';
 @import '../components/Chat/chat.scss';
+@import '../components/Register/register.scss';
+@import '../components/Login/login.scss';
 @import '../components/Navigation/navigation.scss';
 @import '../components/MessageEditor/messageEditor.scss';
 @import '../components/MessageEditor/buttonUnite.scss';

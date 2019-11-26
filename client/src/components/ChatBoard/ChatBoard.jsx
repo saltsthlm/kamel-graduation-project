@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import ISO6391 from 'iso-639-1';
 
+
 const getMessageStyle = (senderId, userId) => {
   if (senderId === userId) {
     return {

@@ -1,5 +1,5 @@
 .bttn-default {
-  color: #fff;
+  color: $primaryText;
 }
 .bttn-primary,
 .bttn,
@@ -7,7 +7,7 @@
 .bttn-md,
 .bttn-sm,
 .bttn-xs {
-  color: #1d89ff;
+  color: $mainMedium;
 }
 .bttn,
 .bttn-lg,
@@ -57,10 +57,10 @@
   padding: 5px 12px;
   z-index: 0;
   overflow: hidden;
-  border: 1px solid #1d89ff;
+  border: 1px solid $mainMedium;
   border-radius: 100px;
-  background: #fff;
-  color: #1d89ff;
+  background: $primaryText;
+  color: $mainMedium;
   -webkit-transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1), border-color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
   transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1), border-color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
@@ -87,7 +87,7 @@
   left: 0;
   width: 100%;
   height: 120%;
-  background: rgba(214,227,255,0.7);
+  background: $mainLight;
   content: '';
   opacity: 0;
   z-index: -1;
@@ -100,8 +100,8 @@
 }
 .bttn-unite:hover,
 .bttn-unite:focus {
-  box-shadow: 0 1px 8px rgba(58,51,53,0.3);
-  color: #1d89ff;
+  box-shadow: 0 1px 8px $mainDark;
+  color: $mainMedium;
   -webkit-transition: all 0.5s cubic-bezier(0.02, 0.01, 0.47, 1);
   transition: all 0.5s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
@@ -132,7 +132,7 @@
 }
 .bttn-unite.bttn-xs:hover,
 .bttn-unite.bttn-xs:focus {
-  box-shadow: 0 1px 4px rgba(58,51,53,0.3);
+  box-shadow: 0 1px 4px $mainDark;
 }
 .bttn-unite.bttn-sm {
   padding: 4px 10px;
@@ -141,7 +141,7 @@
 }
 .bttn-unite.bttn-sm:hover,
 .bttn-unite.bttn-sm:focus {
-  box-shadow: 0 1px 6px rgba(58,51,53,0.3);
+  box-shadow: 0 1px 6px $mainDark;
 }
 .bttn-unite.bttn-md {
   font-size: 20px;
@@ -150,7 +150,7 @@
 }
 .bttn-unite.bttn-md:hover,
 .bttn-unite.bttn-md:focus {
-  box-shadow: 0 1px 8px rgba(58,51,53,0.3);
+  box-shadow: 0 1px 8px $mainDark;
 }
 .bttn-unite.bttn-lg {
   padding: 8px 15px;
@@ -159,20 +159,20 @@
 }
 .bttn-unite.bttn-lg:hover,
 .bttn-unite.bttn-lg:focus {
-  box-shadow: 0 1px 10px rgba(58,51,53,0.3);
+  box-shadow: 0 1px 10px $mainDark;
 }
 .bttn-unite {
-  border-color: #1d89ff;
-  color: #1d89ff;
+  border-color: $mainMedium;
+  color: $mainMedium;
 }
 .bttn-unite:hover,
 .bttn-unite:focus {
-  background: #1d89ff;
-  color: #fff;
+  background: $mainMedium;
+  color: $primaryText;
 }
 .bttn-unite:before {
-  background: #006de3;
+  background: $mainMedium;
 }
 .bttn-unite:after {
-  background: #1d89ff;
+  background: $mainMedium;
 }

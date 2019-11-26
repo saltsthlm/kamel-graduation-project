@@ -8,6 +8,9 @@ module.exports = function(app) {
     }),
     proxy("/login", {
       target: "http://localhost:8888",
+    }),
+    proxy("/register", {
+      target: "http://localhost:8888",
     })
   );
 };
