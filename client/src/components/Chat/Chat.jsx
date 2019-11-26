@@ -156,8 +156,9 @@ function Chat({ user, socket }) {
         setWebRtcSignal={setWebRtcSignal}
         activeVideoCall={activeVideoCall}
         subTitles={subTitles}
-        setSubTitles={setSubTitles}/>
-      <AcceptCallScreen setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} css={acceptCallScreenStyle()}/>
+        setSubTitles={setSubTitles}
+        acceptCall={acceptCall}/>
+      <AcceptCallScreen setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} chatPartner={chatPartner} css={acceptCallScreenStyle()}/>
     </>
   );
 }
