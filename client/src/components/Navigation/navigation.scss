@@ -12,23 +12,26 @@
     }
 }
 
+/* NAVIGATION STYLE */  
+
 /* Position and sizing of burger button */
 .bm-burger-button {
     position: fixed;
     width: 36px;
     height: 30px;
     left: 36px;
-    top: 36px;
+    top: 20px;
   }
   
   /* Color/shape of burger icon bars */
   .bm-burger-bars {
-    background: #373a47;
+    display:none;
+    visibility: hidden;
   }
-  
-  /* Color/shape of burger icon bars on hover*/
+
   .bm-burger-bars-hover {
-    background: #a90000;
+    display:none;
+    visibility: hidden;
   }
   
   /* Position and sizing of clickable cross button */
@@ -39,7 +42,7 @@
   
   /* Color/shape of close button cross */
   .bm-cross {
-    background: #bdc3c7;
+    background: #4d60b7;
   }
   
   /*
@@ -53,7 +56,7 @@
   
   /* General sidebar styles */
   .bm-menu {
-    background: #373a47;
+    background: #FED55B;
     padding: 2.5em 1.5em 0;
     font-size: 1.15em;
   }
@@ -64,9 +67,11 @@
   }
   
   /* Wrapper for item list */
-  .bm-item-list {
-    color: #b8b7ad;
+  .bm-item-list a{
+    color: #4d60b7;
     padding: 0.8em;
+    text-decoration: none;
+    font-weight:bold;
   }
   
   /* Individual item */
