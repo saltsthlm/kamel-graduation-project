@@ -28,7 +28,7 @@ function ContactList({ contactList, setChatPartner }) {
               </div>
               <div className='contact-list_wrapp_details'>
                 <span className='contact-list_wrapp_details_name' onClick={() => establishConnection(contact)}>{contact.userName}</span>
-                <span className='contact-list_wrapp_details_language'>({ISO6391.getName(contact.language)})</span>
+                <span className='contact-list_wrapp_details_language'>{ISO6391.getName(contact.language)}</span>
               </div>
             </li>
           ))}
