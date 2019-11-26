@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 
-const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles }) => {
+const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles, endWebRtc }) => {
   
   useEffect(() => {
     setSubTitles('');
   }, [webRtcPeer, setSubTitles]);
 
-  const endWebRtc = () => {
-    webRtcPeer.destroy();
-  }
 
   return (
     <div className="video-chat" style={{ display: activeVideoCall ? 'flex' : 'none' }} >

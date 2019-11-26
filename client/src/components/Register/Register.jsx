@@ -36,7 +36,6 @@ function Register({ user }) {
     }));
   }
 
-
   const login = async (e) => {
     e.preventDefault();
     const response = await fetch('/register', {
@@ -47,7 +46,7 @@ function Register({ user }) {
       },
       body: JSON.stringify(input),
     });
- 
+    
     if (response.status === 200) {
       window.location.href = '/login';
     } else {
