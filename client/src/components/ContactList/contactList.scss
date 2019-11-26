@@ -1,4 +1,9 @@
 .contact-list {
+    color: rgb(255, 250, 157);
+    
+    h3 {
+        color: whitesmoke;
+    }
     &_wrapp {
         ul {
             list-style:none;
@@ -23,6 +28,6 @@
 
     @media (min-width:$screen-md) {
         width: 300px;
-        background-color:yellow;
+        background-color: $mainMedium;
     }
 }

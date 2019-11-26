@@ -1,14 +1,19 @@
 .chat-board {
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
     flex: 1;
+    background: #eee;
+    h3 {
+        color:black;
+        text-decoration: underline;
+        margin-top: -5px;
+        padding-bottom: 10px;
+    }
 
     &_messages {
         flex: 1 1 auto;
         overflow-y: auto;
         height: 0px;
-        background-color: lightcyan;
     }
     ul {
         padding: 0;
@@ -19,12 +24,16 @@
         display:block;
         list-style:none;
         margin-bottom: 10px;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
         padding: 10px;
         text-align: left;
         max-width: 400px;
+        border-radius: 1000px;
+        font-family: 'Roboto', sans-serif;
 
         &_text {
-
         }
 
         &_language {
