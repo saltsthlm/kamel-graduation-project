@@ -1,4 +1,4 @@
-import React, { useState, useHistory } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
 function Register({ user }) {
