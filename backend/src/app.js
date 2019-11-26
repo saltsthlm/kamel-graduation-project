@@ -4,12 +4,10 @@ const expressWs = require('express-ws');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const uuid = require('uuid/v4');
-const nameGenerator = require('project-name-generator');
 const bodyParser = require('body-parser');
 
 const sockets = require('./controllers/sockets');
 const clients = require('./clients/clients');
-const languages = require('./translate/languages');
 const logger = require('./logging/logging');
 const mongoClient = require('./mongodb/connect');
 const parcels = require('./parcels/parcels');
@@ -37,7 +35,13 @@ mongoClient.setupDb().then(() => {
     res.redirect('..');
   });
 
-  const registerUser = ({ userName, password, email, language }) => {
+  app.get('/register', (req, res) => {
+    res.redirect('..');
+  });
+
+  app.post('/register', async (req, res) => {
+    const { userName, password, language, email } = req.body;
+
     const credentials = {
       userName,
       password,
@@ -47,16 +51,15 @@ mongoClient.setupDb().then(() => {
     };
 
     const user = new User(credentials);
-    user.save((err, registeredUser) => {
-      if (err) logger.logger.error(err);
+    await user.save((err, registeredUser) => {
+      if (err) {
+        logger.logger.error(err);
+        return res.status(401).json({ error: 'email already in use' });
+      }
+      logger.logger.info('created new user');
       logger.logger.info(registeredUser);
+      return res.status(200).json(user);
     });
-    return user;
-  };
-
-  app.post('/register', (req, res) => {
-    registerUser(req.body);
-    res.send();
   });
 
   app.post('/login', async (req, res) => {
@@ -64,7 +67,7 @@ mongoClient.setupDb().then(() => {
 
     await User.authenticate(email, password, (err, user) => {
       if (err || !user) {
-        return res.status(401).json({ error: 'error' });
+        return res.status(401).json({ error: 'wrong email or password' });
       }
 
       const credentials = {
@@ -77,6 +80,11 @@ mongoClient.setupDb().then(() => {
       clients.loggedInUsers.push(credentials);
       return res.json(credentials);
     });
+  });
+
+  // redirect all invalid urls to home
+  app.use((req, res) => {
+    res.redirect('..');
   });
 
   // eslint-disable-next-line no-unused-vars

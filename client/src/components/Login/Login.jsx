@@ -9,6 +9,8 @@ function Login({ setUser, user }) {
     language:'',
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const inputChange = (e) => {
     e.persist();
     setInput((previousInput) => ({
@@ -30,6 +32,9 @@ function Login({ setUser, user }) {
     if (response.status === 200) {
       const credentials = await response.json();
       setUser(credentials);
+    } else {
+      const { error } = await response.json();
+      setErrorMessage(error);
     }
   };
 
@@ -43,12 +48,13 @@ function Login({ setUser, user }) {
         <h1 className="login_form_header">Sign In</h1>
         <div className='login_form_user-input'>
           <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
-          <input type='email' name='email' id='email' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='email' onClick={() => setErrorMessage('')} name='email' id='email' onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
-          <input type='password' name='password' id='password' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='password' onClick={() => setErrorMessage('')} name='password' id='password' onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
+        {errorMessage ? <span className='error-message'>{errorMessage}</span> : ''}
         <div className="login_form_button">
           <button type="submit" >Sign In</button>
         </div>

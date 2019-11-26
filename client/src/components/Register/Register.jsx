@@ -5,16 +5,18 @@ import ISO6391 from 'iso-639-1';
 const languageList = ISO6391.getAllNames();
 console.log(ISO6391.getCode('Swedish'));
 
-// const languageToCode = ISO6391.getCode({language})
-// console.log(languageToCode)
 
 function Register({ user }) {
+  const defaultLanguage = 'English';
+
   const [ input, setInput ] = useState({ 
     userName: '',
     email: '',
     password: '',
-    language:'',
+    language: defaultLanguage,
   });
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const inputChange = (e) => {
     e.persist();
@@ -45,8 +47,12 @@ function Register({ user }) {
       },
       body: JSON.stringify(input),
     });
+ 
     if (response.status === 200) {
       window.location.href = '/login';
+    } else {
+      const { error } = await response.json();
+      setErrorMessage(error);
     }
   };
 
@@ -60,25 +66,26 @@ function Register({ user }) {
         <h1 className="login_form_header">Sign Up</h1>
         <div className='login_form_user-input'>
           <label htmlFor='userName' className='login_form_user-input_label'> Name: </label>
-          <input type='text' name='userName' id='userName' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='text' name='userName' id='userName' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
-          <input type='email' name='email' id='email' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='email' name='email' id='email' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
-          <input type='password' name='password' id='password' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='password' name='password' id='password' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
           <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
             {languageList.map(language => (
-              <option key='language'>{language}</option>
+              (language === defaultLanguage) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
             ))}
           </select>
           {/* <input type=\'text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/> */}
         </div>
+        {errorMessage ? <span className='error-message'>{errorMessage}</span> : ''}
         <div className="login_form_button">
           <button type="submit" >Sign Up</button>
         </div>
