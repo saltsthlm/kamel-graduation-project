@@ -19,14 +19,13 @@
   }
 
   &_toolbar > svg {
-    width: 75px !important;
-    height: 75px;
-    cursor: pointer;
+    width: 65px !important;
+    height: 65px;
     background-color: $primaryText;
     color: $mainDark;
     border-radius: 50%;
     padding: 40px;
-    margin: 25px;
+    margin: 15px;
   }
 
   &_toolbar > svg:first-of-type {
@@ -38,7 +37,7 @@
     
     @keyframes pulse {
       0% { transform: scale(1, 1); }
-      50% { transform: scale(1.2, 1.2); }
+      50% { transform: scale(1.15, 1.15); }
       100% { transform: scale(1, 1); }
     }
   }
@@ -51,6 +50,7 @@
   &_toolbar > svg {
     background-color: white;
     color: red;
+    cursor: pointer;
   }
 
   &_toolbar > svg:hover {
