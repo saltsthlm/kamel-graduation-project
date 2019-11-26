@@ -22,12 +22,14 @@ const pong = (parcel) => (
   })
 );
 
-const processParcel = ({ event, setContactList, setChatMessages, updateChatMessages, socket, setWebRtcSignal, setSubTitles }) => {
+const processParcel = ({ event, setContactList, setChatMessages, updateChatMessages, socket, setWebRtcSignal, setSubTitles, setChatPartner }) => {
   const parcel = JSON.parse(event.data);
   switch (parcel.type) {
     case 'DIRECT MESSAGE':
       return setChatMessages((messages) => updateChatMessages(messages, parcel));
     case 'OFFER VIDEO':
+      console.log(parcel.chatPartner);
+      setChatPartner(parcel.chatPartner);
       return setWebRtcSignal(parcel.signal);
     case 'SEND PING':
       return socket.send(pong(parcel));

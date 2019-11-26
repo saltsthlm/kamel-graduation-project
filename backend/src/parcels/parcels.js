@@ -70,7 +70,12 @@ const processContactListUpdate = (parcel) => {
 };
 
 const processVideoOffer = (parcel) => {
-  deliverParcel(parcel);
+  const chatPartner = {
+    userId: parcel.senderId,
+    userName: clients.getUserLanguageById(parcel.senderId),
+    language: clients.getUserNameById(parcel.senderId),
+  }
+  deliverParcel({...parcel, chatPartner });
 };
 
 const process = async (parcel) => {

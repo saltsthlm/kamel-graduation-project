@@ -31,20 +31,24 @@ function Chat({ user, socket }) {
     }
   };
 
-  const initiateWebRtc = (event) => {
-    event.preventDefault();
-    setWebRtcPeer(webRtc.newInitiator());
-  }
-
   const endWebRtc = () => {
     console.log('ending webrtc call')
-    webRtcPeer.destroy();
+    if (webRtcPeer) {
+      webRtcPeer.destroy();
+    }
     setWebRtcFlag(false);
     setWebRtcSignal(false);
     setWebRtcPeer(false);
     setActiveVideoCall(false);
     setSubTitles('');
     setAcceptCall(false);
+    setChatPartner('');
+  }
+
+
+  const initiateWebRtc = (event) => {
+    event.preventDefault();
+    setWebRtcPeer(webRtc.newInitiator());
   }
 
   const getChatMessages = () => (
@@ -87,7 +91,8 @@ function Chat({ user, socket }) {
           updateChatMessages,
           socket,
           setWebRtcSignal,
-          setSubTitles
+          setSubTitles,
+          setChatPartner,
         })
       }
       socketSetupCallback();
@@ -109,6 +114,7 @@ function Chat({ user, socket }) {
         setWebRtcPeer,
         setWebRtcSignal,
         endWebRtc,
+        userId: user.userId,
       })
     }
   // eslint-disable-next-line
@@ -116,7 +122,6 @@ function Chat({ user, socket }) {
 
 
   const acceptCallScreenStyle = () => {
-    console.log(webRtcPeer,  webRtcSignal, acceptCall)
     if ((webRtcSignal && !acceptCall) && !(webRtcSignal && webRtcPeer)) {
       return {
         display: 'flex',

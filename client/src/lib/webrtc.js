@@ -30,7 +30,8 @@ const setupListeners = ({
   chatPartner,
   sendParcel,
   setActiveVideoCall,
-  endWebRtc}) => {
+  endWebRtc,
+  userId}) => {
   
   console.log('setting up webrtc listeners')
 
@@ -62,7 +63,8 @@ const setupListeners = ({
 
   webRtcPeer.on('signal', signal => {
     console.log('sending webrtc offer (on signal)');
-    sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId});
+    console.log(userId)
+    sendParcel('OFFER VIDEO', {signal, senderId: userId, receiverId: chatPartner.userId});
   });
 
   webRtcPeer.on('stream', stream => {
