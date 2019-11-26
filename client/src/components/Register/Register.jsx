@@ -1,5 +1,12 @@
-import React, { useState, useHistory } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import ISO6391 from 'iso-639-1';
+
+const languageList = ISO6391.getAllNames();
+console.log(ISO6391.getCode('Swedish'));
+
+// const languageToCode = ISO6391.getCode({language})
+// console.log(languageToCode)
 
 function Register({ setUser, user }) {
   const [ input, setInput ] = useState({ 
@@ -54,7 +61,12 @@ function Register({ setUser, user }) {
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
-          <input type='text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/>
+          <select className='language-list' name='language'>
+            {languageList.map(language => (
+              <option key='language'>{language}</option>
+            ))}
+          </select>
+          {/* <input type=\'text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/> */}
         </div>
         <div className="login_form_button">
           <button type="submit" >Sign Up</button>
