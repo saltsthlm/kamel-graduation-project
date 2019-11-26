@@ -72,7 +72,7 @@ function Register({ user }) {
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
-          <select onChange={dropDownChange} className='language-list' name='language'>
+          <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
             {languageList.map(language => (
               <option key='language'>{language}</option>
             ))}
