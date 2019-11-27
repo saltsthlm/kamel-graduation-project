@@ -13,11 +13,6 @@
 }
 
 /* NAVIGATION STYLE */  
-.menu-icon > svg {
-  width: 50px !important;
-  height: 50px !important;
-}
-
 
 /* Position and sizing of burger button */
 .bm-burger-button {
@@ -27,7 +22,13 @@
     left: 36px;
     top: 20px;
   }
-  
+
+  .bm-burger-button > svg {
+    float: left;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
   /* Color/shape of burger icon bars */
   .bm-burger-bars {
     display:none;
@@ -73,10 +74,14 @@
   
   /* Wrapper for item list */
   .bm-item-list a{
-    color: #4d60b7;
+    color: $mainDark;
     padding: 0.8em;
     text-decoration: none;
     font-weight:bold;
+  }
+
+  .bm-item-list a:hover {
+    color: $theGoodPink;
   }
   
   /* Individual item */

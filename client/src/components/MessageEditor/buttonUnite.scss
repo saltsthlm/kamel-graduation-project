@@ -7,7 +7,7 @@
 .bttn-md,
 .bttn-sm,
 .bttn-xs {
-  color: $mainMedium;
+  color: $theGoodPink;
 }
 .bttn,
 .bttn-lg,
@@ -57,10 +57,10 @@
   padding: 5px 12px;
   z-index: 0;
   overflow: hidden;
-  border: 1px solid $mainMedium;
+  border: 1px solid $theGoodPink;
   border-radius: 100px;
   background: white;
-  color: $mainMedium;
+  color: $theGoodPink;
   -webkit-transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1), border-color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
   transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1), border-color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
@@ -101,7 +101,7 @@
 .bttn-unite:hover,
 .bttn-unite:focus {
   box-shadow: 0 1px 8px $mainDark;
-  color: $mainMedium;
+  color: $theGoodPink;
   -webkit-transition: all 0.5s cubic-bezier(0.02, 0.01, 0.47, 1);
   transition: all 0.5s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
@@ -162,17 +162,18 @@
   box-shadow: 0 1px 10px $mainDark;
 }
 .bttn-unite {
-  border-color: $mainMedium;
-  color: $mainMedium;
+  border-color: $mainDark;
+  color: $mainDark;
 }
 .bttn-unite:hover,
 .bttn-unite:focus {
-  background: $mainMedium;
+  background: $theGoodPink;
+  border-color: $theGoodPink;
   color: white;
 }
 .bttn-unite:before {
-  background: $mainMedium;
+  background: $theGoodPink;
 }
 .bttn-unite:after {
-  background: $mainMedium;
+  background: $theGoodPink;
 }
