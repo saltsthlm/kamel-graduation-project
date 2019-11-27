@@ -15,10 +15,10 @@ const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, on
     }
 
     recognition.onerror = function (event) {
-      console.log('### Speech-to-text error ###');
-      console.log(event.error);
+      // console.log('### Speech-to-text error ###');
+      // console.log(event.error);
       if (event.error === 'no-speech') {        
-        console.log('### No speech was detected. Try again. ###');
+        // console.log('### No speech was detected. Try again. ###');
         continuousSpeechToSubtitle(language, onTranscript, onQuiet, onStart, onError)
       }
     }

@@ -90,6 +90,8 @@ const process = async (parcel) => {
       return logger.info(`${parcel.senderId} browser language is "${parcel.message}"`); // Placeholder
     case 'RETURN PONG':
       return logger.debug(parcel);
+    case 'REJECT CALL':
+      return deliverParcel(parcel);
     case 'TRANSLATE SUBTITLES':
       return processDirectMessage(parcel);
     case 'UPDATE CONTACTS':

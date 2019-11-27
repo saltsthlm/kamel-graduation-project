@@ -33,7 +33,7 @@ const setupListeners = ({
   endWebRtc,
   userId}) => {
   
-  console.log('setting up webrtc listeners')
+  // console.log('setting up webrtc listeners')
 
   webRtcPeer.on('connect', async () => {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -62,8 +62,8 @@ const setupListeners = ({
   });
 
   webRtcPeer.on('signal', signal => {
-    console.log('sending webrtc offer (on signal)');
-    console.log(userId)
+    // console.log('sending webrtc offer (on signal)');
+    // console.log(userId)
     sendParcel('OFFER VIDEO', {signal, senderId: userId, receiverId: chatPartner.userId});
   });
 
