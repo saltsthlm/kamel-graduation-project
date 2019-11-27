@@ -147,10 +147,14 @@ function Chat({ user, socket }) {
 
   const getImage = (userName) => {
     switch (userName) {
-    case 'Moritz':
-      return './moritz.png';
+    case 'Ari':
+      return './ariadna.jpeg';
+    case 'Ariadna':
+      return './ariadna.jpeg';
     case 'Erik':
       return './erik.jpeg';
+    case 'Moritz':
+      return './moritz.png';
     default:
       return '/logo512.png'
     }

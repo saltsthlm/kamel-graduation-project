@@ -37,7 +37,7 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
     <div className="chat-board">
       <FontAwesomeIcon icon={faAngleLeft} onClick={() => setChatPartner({})} />
       <div>
-        <img className="chat-board_img" src={chatPartner.userName ? getImage(chatPartner.userName) : ''}/>
+        {chatPartner.userName ? <img alt='chatpartner' className="chat-board_img" src={getImage(chatPartner.userName)}/> : ''}
       </div>
       <h3 className="chat-board_header">{chatPartner.userName ? `${chatPartner.userName}` : 'Select a contact in the contactlist'}</h3>
       <p className="chat-board_paragraph">{chatPartner.userName ? `${ISO6391.getName(chatPartner.language)}` : ''}</p>
