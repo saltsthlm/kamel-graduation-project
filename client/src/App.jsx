@@ -38,7 +38,7 @@ function App() {
       <Route
         {...rest}
         render={() => authed
-          ? <Chat user={user} socket={socket} />
+          ? <Chat user={user} socket={socket} setUser={setUser} setSocket={setSocket} />
           : <Redirect to='/login' setUser={setUser} user={user} />}
       />
     )

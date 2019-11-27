@@ -11,7 +11,7 @@ import AcceptCallScreen from '../AcceptCallScreen/AcceptCallScreen';
 import OfferCallScreen from '../OfferCallScreen/OfferCallScreen';
 
 
-function Chat({ user, socket }) {
+function Chat({ user, socket, setUser, setSocket }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
   const [chatMessages, setChatMessages] = useState({});
@@ -31,6 +31,20 @@ function Chat({ user, socket }) {
       setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
     }
   };
+
+  const logout = () => {
+    setContactList([]);
+    setChatMessages({});
+    setChatPartner({});
+    setUser('');
+    setSocket('');
+    setWebRtcPeer(false);
+    setWebRtcFlag(false);
+    setWebRtcSignal(false);
+    setActiveVideoCall(false);
+    setAcceptCall(false);
+    setSubTitles('');
+  }
 
   const endWebRtc = () => {
     if (webRtcPeer) {
@@ -165,7 +179,7 @@ function Chat({ user, socket }) {
   return (
     <>
       <div className="chat" style={{display: webRtcSignal || (webRtcPeer && !activeVideoCall && !webRtcSignal) ? 'none' : ''}}>
-        {!chatPartner.userName || (width >= 700 ) ? <Navigation/> : '' }
+        {!chatPartner.userName || (width >= 700 ) ? <Navigation logout={logout}/> : '' }
         { (width < 700 )
           ? (chatPartner.userName 
             ? <ChatBoard chatMessages={getChatMessages()} getImage={getImage} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 

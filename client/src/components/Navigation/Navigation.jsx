@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 
-const Navigation = () => {
+const Navigation = ({logout}) => {
+
   return (
     <>
       <div className='bm-burger-button'>
@@ -13,7 +14,7 @@ const Navigation = () => {
       </div>
       <Menu left>
         <Link to="/settings">Settings</Link>
-        <Link to="/">Log Out</Link>
+        <Link to="/" onClick={logout}>Log Out</Link>
       </Menu>
     </>
   );
