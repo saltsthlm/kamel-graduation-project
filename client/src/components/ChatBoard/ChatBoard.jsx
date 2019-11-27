@@ -21,6 +21,7 @@ const getMessageStyle = (senderId, userId) => {
       marginRight: '20px',
       backgroundColor: '#ddd',
       color: 'black',
+      cursor: 'pointer',
     }
   }
 }
@@ -32,6 +33,14 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
     messageArea.current.scrollTop = messageArea.current.scrollHeight;
   }, [chatMessages, messageArea])
 
+  const toogleMessageLanguage = (id, translated, original) => {
+    const element = document.getElementById(String(id));
+    if (element.innerText === translated) {
+      element.innerText = original;
+    } else {
+      element.innerText = translated;
+    }
+  }
 
   return (
     <div className="chat-board">
@@ -50,7 +59,7 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
               {
                 parcel.senderId === userId
                   ? <li key={Math.random()}>{parcel.message}</li>
-                  : <li key={Math.random()}>{parcel.translatedMessage}</li>
+                  : <li id={i} key={Math.random()} onClick={() => toogleMessageLanguage(i, parcel.translatedMessage, parcel.message)}>{parcel.translatedMessage}</li>
               }
             </div>
           ))}
