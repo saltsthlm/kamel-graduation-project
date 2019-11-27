@@ -153,6 +153,8 @@ function Chat({ user, socket }) {
       return './ariadna.jpeg';
     case 'Erik':
       return './erik.jpeg';
+    case 'Leo':
+      return './leo.jpeg';
     case 'Moritz':
       return './moritz.png';
     default:
@@ -163,7 +165,7 @@ function Chat({ user, socket }) {
   return (
     <>
       <div className="chat" style={{display: webRtcSignal || (webRtcPeer && !activeVideoCall && !webRtcSignal) ? 'none' : ''}}>
-        <Navigation/>
+        {!chatPartner.userName || (width >= 700 ) ? <Navigation/> : '' }
         { (width < 700 )
           ? (chatPartner.userName 
             ? <ChatBoard chatMessages={getChatMessages()} getImage={getImage} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MessageEditor from '../MessageEditor/MessageEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import ISO6391 from 'iso-639-1';
 
 
@@ -11,8 +11,8 @@ const getMessageStyle = (senderId, userId) => {
       float: 'right',
       clear:'both',
       marginLeft: '20px',
-      backgroundColor: 'rgb(86, 171, 238)',
-      color: 'black',
+      backgroundColor: 'rgb(37, 55, 94)',
+      color: 'white',
     }
   } else  {
     return {
@@ -35,7 +35,9 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
 
   return (
     <div className="chat-board">
-      <FontAwesomeIcon icon={faAngleLeft} onClick={() => setChatPartner({})} />
+      <div className='chat-board_back-icon'>
+        <FontAwesomeIcon icon={faChevronCircleLeft} onClick={() => setChatPartner({})} />
+      </div>
       <div>
         {chatPartner.userName ? <img alt='chatpartner' className="chat-board_img" src={getImage(chatPartner.userName)}/> : ''}
       </div>
