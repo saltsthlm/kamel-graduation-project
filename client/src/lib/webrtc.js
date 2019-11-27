@@ -30,9 +30,10 @@ const setupListeners = ({
   chatPartner,
   sendParcel,
   setActiveVideoCall,
-  endWebRtc}) => {
+  endWebRtc,
+  userId}) => {
   
-  console.log('setting up webrtc listeners')
+  // console.log('setting up webrtc listeners')
 
   webRtcPeer.on('connect', async () => {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -61,12 +62,13 @@ const setupListeners = ({
   });
 
   webRtcPeer.on('signal', signal => {
-    console.log('sending webrtc offer (on signal)');
-    sendParcel('OFFER VIDEO', {signal, receiverId: chatPartner.userId});
+    // console.log('sending webrtc offer (on signal)');
+    // console.log(userId)
+    sendParcel('OFFER VIDEO', {signal, senderId: userId, receiverId: chatPartner.userId});
   });
 
   webRtcPeer.on('stream', stream => {
-    console.log('webrtc on stream')
+    // console.log('webrtc on stream')
 
     const video =  document.querySelector('#video');
     setActiveVideoCall(true);

@@ -1,5 +1,5 @@
 .bttn-default {
-  color: $primaryText;
+  color: $secondaryText;
 }
 .bttn-primary,
 .bttn,
@@ -59,7 +59,7 @@
   overflow: hidden;
   border: 1px solid $mainMedium;
   border-radius: 100px;
-  background: $primaryText;
+  background: white;
   color: $mainMedium;
   -webkit-transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1), border-color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
   transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1), border-color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
@@ -168,7 +168,7 @@
 .bttn-unite:hover,
 .bttn-unite:focus {
   background: $mainMedium;
-  color: $primaryText;
+  color: white;
 }
 .bttn-unite:before {
   background: $mainMedium;

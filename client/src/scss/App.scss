@@ -1,15 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:600&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400&display=swap');
 
 $mainDark: rgb(37, 55, 94);
 $mainMedium: rgb(77, 96, 183);
 $mainLight: rgb(86, 171, 238);
 $highlight: #FCD25A;
-$primaryText: #fff;
+$primaryText: $mainDark;
 $secondaryText: #eee;
+$subText: #aaa;
 $darkText: $mainDark;
 
-$fontHuge: 32px;
+$fontGinormus: 48px;
+$fontHuge: 36px;
 $fontBig: 24px;
 $fontMedium: 18px;
 $fontSmall: 14px;
@@ -19,7 +22,7 @@ $fontTiny: 11px;
 html, body, #root, #root>div  {
   height: 100%;
   color: $primaryText;
-  background-image: linear-gradient(-90deg, $mainLight, $mainMedium);
+  background-color: $mainDark;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -29,6 +32,24 @@ h3 {
 
 button {
   cursor: pointer;
+}
+
+.error-message {
+  font-size: $fontSmall;
+  font-weight: 600;
+  color: $highlight;
+}
+
+.link {
+  margin-top: -15px;
+  font-size: $fontSmall;
+  font-weight: 600;
+  color: $secondaryText;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 
 .App {
@@ -43,12 +64,14 @@ button {
 @import '../scss/settings/settings.scss';
 
 /* Components */
+@import '../components/AcceptCallScreen/acceptCallScreen.scss';
 @import '../components/ContactList/contactList.scss';
 @import '../components/ChatBoard/chatBoard.scss';
 @import '../components/Chat/chat.scss';
 @import '../components/Register/register.scss';
 @import '../components/Login/login.scss';
 @import '../components/Navigation/navigation.scss';
+@import '../components/OfferCallScreen/offerCallScreen.scss';
 @import '../components/MessageEditor/messageEditor.scss';
 @import '../components/MessageEditor/buttonUnite.scss';
 @import '../components/VideoChat/videoChat.scss';

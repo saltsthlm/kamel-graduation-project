@@ -3,11 +3,25 @@
     flex-direction: column;
     flex: 1;
     background: #eee;
-    h3 {
-        color:black;
-        text-decoration: underline;
+    text-align: center;
+
+    &_img {
+        width: 80px;
+        border-radius: 50%;
+        margin-bottom: 5px;
+        margin-top: 10px;
+    }
+
+    &_header {
+        font-size: $fontBig;
+        color: $mainDark;
         margin-top: -5px;
-        padding-bottom: 10px;
+    }
+
+    &_paragraph {
+        font-size: $fontSmall;
+        color: $mainDark;
+        margin-top: -20px;
     }
 
     &_messages {

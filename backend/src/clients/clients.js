@@ -36,4 +36,5 @@ module.exports = {
   removeConnectionById,
   loggedInUsers,
   getUserLanguageById,
+  getUserNameById,
 };

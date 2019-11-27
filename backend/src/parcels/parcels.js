@@ -70,7 +70,12 @@ const processContactListUpdate = (parcel) => {
 };
 
 const processVideoOffer = (parcel) => {
-  deliverParcel(parcel);
+  const chatPartner = {
+    userId: parcel.senderId,
+    userName: clients.getUserNameById(parcel.senderId),
+    language: clients.getUserLanguageById(parcel.senderId),
+  };
+  deliverParcel({ ...parcel, chatPartner });
 };
 
 const process = async (parcel) => {
@@ -85,6 +90,8 @@ const process = async (parcel) => {
       return logger.info(`${parcel.senderId} browser language is "${parcel.message}"`); // Placeholder
     case 'RETURN PONG':
       return logger.debug(parcel);
+    case 'REJECT CALL':
+      return deliverParcel(parcel);
     case 'TRANSLATE SUBTITLES':
       return processDirectMessage(parcel);
     case 'UPDATE CONTACTS':

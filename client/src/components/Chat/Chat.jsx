@@ -7,6 +7,8 @@ import * as webRtc from '../../lib/webrtc';
 import VideoChat from '../VideoChat/VideoChat';
 import * as parcels from '../../lib/parcels';
 import Navigation from '../Navigation/Navigation';
+import AcceptCallScreen from '../AcceptCallScreen/AcceptCallScreen';
+import OfferCallScreen from '../OfferCallScreen/OfferCallScreen';
 
 
 function Chat({ user, socket }) {
@@ -19,9 +21,10 @@ function Chat({ user, socket }) {
   const [webRtcFlag, setWebRtcFlag] = useState(false);
   const [webRtcSignal, setWebRtcSignal] = useState(false);
   const [activeVideoCall, setActiveVideoCall] = useState(false);
+  const [acceptCall, setAcceptCall] = useState(false);
   const [subTitles, setSubTitles] = useState('');
 
-  const sendParcel = (type, kwargs) => {
+  const sendParcel = (type, kwargs = {}) => {
     const parcel = parcels.getNewParcel(type, user.userId, chatPartner.userId, kwargs)
     socket.send(JSON.stringify(parcel));
     if (type === 'DIRECT MESSAGE') {
@@ -29,19 +32,23 @@ function Chat({ user, socket }) {
     }
   };
 
-  const initiateWebRtc = (event) => {
-    event.preventDefault();
-    setWebRtcPeer(webRtc.newInitiator());
-  }
-
   const endWebRtc = () => {
-    console.log('ending webrtc call')
-    webRtcPeer.destroy();
+    if (webRtcPeer) {
+      webRtcPeer.destroy();
+    }
     setWebRtcFlag(false);
     setWebRtcSignal(false);
     setWebRtcPeer(false);
     setActiveVideoCall(false);
     setSubTitles('');
+    setAcceptCall(false);
+    setChatPartner('');
+  }
+
+
+  const initiateWebRtc = (event) => {
+    event.preventDefault();
+    setWebRtcPeer(webRtc.newInitiator());
   }
 
   const getChatMessages = () => (
@@ -53,10 +60,13 @@ function Chat({ user, socket }) {
   const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
 
   useEffect(() => {
-    console.log('useEffect webRtcSignal')
-    console.log('    webRtcSignal value', webRtcSignal)
-    console.log('    webRtcPeer value', webRtcPeer)
+    // console.log('useEffect webRtcSignal')
+    // console.log('    webRtcSignal value', webRtcSignal)
+    // console.log('    webRtcPeer value', webRtcPeer)
 
+    if (!acceptCall && webRtcSignal && webRtcSignal.type === 'offer') {
+      return undefined;
+    }
     if (webRtcSignal && !webRtcPeer) {
       const peer = webRtc.newPeer();
       peer.signal(webRtcSignal);
@@ -65,7 +75,7 @@ function Chat({ user, socket }) {
       webRtcPeer.signal(webRtcSignal);
     }
   // eslint-disable-next-line 
-  }, [webRtcSignal])
+  }, [webRtcSignal, acceptCall])
 
   const socketSetupCallback = useCallback(() => (
     updateContactList(user.userId, socket)
@@ -81,17 +91,20 @@ function Chat({ user, socket }) {
           updateChatMessages,
           socket,
           setWebRtcSignal,
-          setSubTitles
+          setSubTitles,
+          setChatPartner,
+          endWebRtc,
         })
       }
       socketSetupCallback();
     }
+  // eslint-disable-next-line
   }, [socket, socketSetupCallback])
 
   useEffect(() => {
-    console.log('useEffect webRtcPeer')
-    console.log('    webrct peer value', webRtcPeer)
-    console.log('    activeVideoCall value', activeVideoCall)
+    // console.log('useEffect webRtcPeer')
+    // console.log('    webrct peer value', webRtcPeer)
+    // console.log('    activeVideoCall value', activeVideoCall)
     if (webRtcPeer && !webRtcFlag) {
       setWebRtcFlag(true);
       webRtc.setupListeners({
@@ -103,23 +116,62 @@ function Chat({ user, socket }) {
         setWebRtcPeer,
         setWebRtcSignal,
         endWebRtc,
+        userId: user.userId,
       })
     }
   // eslint-disable-next-line
   }, [webRtcPeer, activeVideoCall]);
 
+
+  const acceptCallScreenStyle = () => {
+    if ((webRtcSignal && !acceptCall) && !(webRtcSignal && webRtcPeer)) {
+      return {
+        display: 'flex',
+        height: '100%',
+      };
+    } else {
+      return {display: 'none'};
+    }
+  }
+
+  const offerCallScreenStyle = () => {
+    if (webRtcPeer && !activeVideoCall && !webRtcSignal) {
+      return {
+        display: 'flex',
+        height: '100%',
+      };
+    } else {
+      return {display: 'none'};
+    }
+  }
+
+  const getImage = (userName) => {
+    switch (userName) {
+    case 'Ari':
+      return './ariadna.jpeg';
+    case 'Ariadna':
+      return './ariadna.jpeg';
+    case 'Erik':
+      return './erik.jpeg';
+    case 'Moritz':
+      return './moritz.png';
+    default:
+      return '/logo512.png'
+    }
+  }
+
   return (
     <>
-      <div className="chat" style={{display: activeVideoCall ? 'none' : ''}}>
+      <div className="chat" style={{display: webRtcSignal || (webRtcPeer && !activeVideoCall && !webRtcSignal) ? 'none' : ''}}>
         <Navigation/>
         { (width < 700 )
           ? (chatPartner.userName 
-            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
-            : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
+            ? <ChatBoard chatMessages={getChatMessages()} getImage={getImage} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
+            : <ContactList contactList={getContactList()} getImage={getImage} setChatPartner={setChatPartner} />)
           : (
             <>
-              <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
-              <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
+              <ContactList contactList={getContactList()} getImage={getImage} setChatPartner={setChatPartner} />
+              <ChatBoard chatMessages={getChatMessages()} getImage={getImage} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
             </>
           )
         }
@@ -132,7 +184,10 @@ function Chat({ user, socket }) {
         setWebRtcSignal={setWebRtcSignal}
         activeVideoCall={activeVideoCall}
         subTitles={subTitles}
-        setSubTitles={setSubTitles}/>
+        setSubTitles={setSubTitles}
+        acceptCall={acceptCall}/>
+      <OfferCallScreen endWebRtc={endWebRtc} chatPartner={chatPartner}  css={offerCallScreenStyle()}/>
+      <AcceptCallScreen sendParcel={sendParcel} setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} chatPartner={chatPartner} css={acceptCallScreenStyle()}/>
     </>
   );
 }

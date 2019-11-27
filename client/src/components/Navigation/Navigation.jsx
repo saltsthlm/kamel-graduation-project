@@ -1,17 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { slide as Menu } from 'react-burger-menu';
-import SettingsIcon from "./SettingsIcon";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+
 
 const Navigation = () => {
   return (
     <>
       <div className='bm-burger-button'>
-        <SettingsIcon/>
+        <FontAwesomeIcon className="menu-icon" icon={faCog}/>
       </div>
       <Menu left>
-          <Link to="/settings">Settings</Link>
-          <Link to="/">Log Out</Link>
+        <Link to="/settings">Settings</Link>
+        <Link to="/">Log Out</Link>
       </Menu>
     </>
   );

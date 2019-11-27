@@ -3,11 +3,10 @@ import { Redirect } from "react-router-dom";
 import ISO6391 from 'iso-639-1';
 
 const languageList = ISO6391.getAllNames();
-console.log(ISO6391.getCode('Swedish'));
-
+// console.log(ISO6391.getCode('Swedish'));
 
 function Register({ user }) {
-  const defaultLanguage = 'English';
+  const defaultLanguage = 'en';
 
   const [ input, setInput ] = useState({ 
     userName: '',
@@ -61,6 +60,7 @@ function Register({ user }) {
 
   return (
     <div className="login">
+      <img alt='polychat logo' className='login_logo' src='./polychat.png' />
       <form onSubmit={login} className="login_form">
         <h1 className="login_form_header">Sign Up</h1>
         <div className='login_form_user-input'>
@@ -79,7 +79,7 @@ function Register({ user }) {
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
           <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
             {languageList.map(language => (
-              (language === defaultLanguage) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
+              (language === ISO6391.getName(defaultLanguage)) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
             ))}
           </select>
           {/* <input type=\'text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/> */}

@@ -5,6 +5,10 @@
     justify-content: center;
     height: 100%;
 
+    &_logo {
+        max-width: 225px;
+    }
+
     &_form {
         display: flex;
         flex-direction: column;
@@ -15,11 +19,12 @@
 
         &_header {
             margin-top: 0;
+            color: $highlight;
         }
 
         &_button > button {
-            background-color: $mainDark;
-            color: $primaryText;
+            background-color: $highlight;
+            color: $mainDark;
             border: none;
             font-size: $fontMedium;
             padding: 10px 20px;
@@ -28,8 +33,9 @@
         }
 
         &_button > button:hover {
-            color: $darkText;
-            background-color: $highlight;
+            background-color: $mainMedium;
+            color: $highlight;
+            outline: none;
         }
 
         &_user-input {
@@ -48,7 +54,21 @@
                 font-size: 16px;
                 border-radius: 1000px;
                 padding: 5px;
-                opacity: 0.2;
+                opacity: 1;
+                padding: 5px 10px;
+                background-color: $secondaryText;
+                color: $primaryText;
+            }
+
+            &_select {
+                font-size: $fontSmall;
+                background-color: $secondaryText;
+                color: $primaryText;
+                border-radius: 1000px;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;       /* Remove default arrow */
+                padding: 10px;
             }
 
         }
