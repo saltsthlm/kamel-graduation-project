@@ -44,6 +44,7 @@ function Login({ setUser, user }) {
 
   return (
     <div className="login">
+      <img alt='polychat logo' className='login_logo' src='./polychat.png' />
       <form onSubmit={login} className="login_form">
         <h1 className="login_form_header">Sign In</h1>
         <div className='login_form_user-input'>
@@ -59,7 +60,7 @@ function Login({ setUser, user }) {
           <button type="submit" >Sign In</button>
         </div>
       </form>
-      <Link to="/register">Register</Link>
+      <Link to="/register" className='link'>Register</Link>
     </div>
   );
 }

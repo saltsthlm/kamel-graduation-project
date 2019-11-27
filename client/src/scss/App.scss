@@ -22,7 +22,7 @@ $fontTiny: 11px;
 html, body, #root, #root>div  {
   height: 100%;
   color: $primaryText;
-  background-image: linear-gradient(-90deg, $mainLight, $mainMedium);
+  background-color: $mainDark;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -32,6 +32,24 @@ h3 {
 
 button {
   cursor: pointer;
+}
+
+.error-message {
+  font-size: $fontSmall;
+  font-weight: 600;
+  color: $highlight;
+}
+
+.link {
+  margin-top: -15px;
+  font-size: $fontSmall;
+  font-weight: 600;
+  color: $secondaryText;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 
 .App {

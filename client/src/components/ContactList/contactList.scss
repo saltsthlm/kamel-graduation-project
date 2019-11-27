@@ -1,15 +1,19 @@
 .contact-list {
-    color: rgb(255, 250, 157);
-    background-color: white;
-
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 1;
+    width: 300px;
+    background: white;
     
-    h3 {
-        color: whitesmoke;
+    &_header {
+        height: 25px;
+        color: $mainDark;
     }
 
     &_wrapp {
-        padding: 20px;
-        text-align: left;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        height: 0;
 
         &_portrait {
             width: 40px;
@@ -22,8 +26,6 @@
         &_details {
             display: flex;
             flex-direction: column;
-
-
             &_name {
                 font-weight: 700;
                 font-size: $fontMedium;
@@ -45,6 +47,7 @@
         ul {
             list-style:none;
             padding: 0;
+            margin: 0 auto;
         }
 
         li {
@@ -68,6 +71,5 @@
 
     @media (min-width:$screen-md) {
         width: 300px;
-    background-color: white;
     }
 }

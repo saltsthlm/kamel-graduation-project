@@ -60,6 +60,7 @@ function Register({ user }) {
 
   return (
     <div className="login">
+      <img alt='polychat logo' className='login_logo' src='./polychat.png' />
       <form onSubmit={login} className="login_form">
         <h1 className="login_form_header">Sign Up</h1>
         <div className='login_form_user-input'>

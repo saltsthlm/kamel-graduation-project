@@ -145,18 +145,27 @@ function Chat({ user, socket }) {
     }
   }
 
+  const getImage = (userName) => {
+    switch (userName) {
+    case 'Moritz':
+      return './moritz.png';
+    default:
+      return '/logo512.png'
+    }
+  }
+
   return (
     <>
       <div className="chat" style={{display: webRtcSignal || (webRtcPeer && !activeVideoCall && !webRtcSignal) ? 'none' : ''}}>
         <Navigation/>
         { (width < 700 )
           ? (chatPartner.userName 
-            ? <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
-            : <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />)
+            ? <ChatBoard chatMessages={getChatMessages()} getImage={getImage} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
+            : <ContactList contactList={getContactList()} getImage={getImage} setChatPartner={setChatPartner} />)
           : (
             <>
-              <ContactList contactList={getContactList()} setChatPartner={setChatPartner} />
-              <ChatBoard chatMessages={getChatMessages()} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
+              <ContactList contactList={getContactList()} getImage={getImage} setChatPartner={setChatPartner} />
+              <ChatBoard chatMessages={getChatMessages()} getImage={getImage} initiateWebRtc={initiateWebRtc} chatPartner={chatPartner} sendParcel={sendParcel} userId={user.userId} setChatPartner={setChatPartner}/> 
             </>
           )
         }

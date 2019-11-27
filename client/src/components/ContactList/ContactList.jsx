@@ -1,24 +1,16 @@
 import React from "react";
 import ISO6391 from 'iso-639-1';
 
-function ContactList({ contactList, setChatPartner }) {
+function ContactList({ contactList, setChatPartner, getImage }) {
 
   const establishConnection = (contact) => {
     setChatPartner(contact);
   };
 
-  const getImage = (userName) => {
-    switch (userName) {
-    case 'Moritz':
-      return './moritz.png';
-    default:
-      return '/logo512.png'
-    }
-  }
 
   return (
     <div className='contact-list'>
-      <h3>Contacts</h3>
+      <h3 className='contact-list_header'>Contacts</h3>
       <div className='contact-list_wrapp'>
         <ul>
           {contactList.map((contact, i) => (

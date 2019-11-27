@@ -25,17 +25,22 @@ const getMessageStyle = (senderId, userId) => {
   }
 }
 
-const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, userId, initiateWebRtc }) => {
+const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, userId, initiateWebRtc, getImage }) => {
   let messageArea = React.createRef();
 
   useEffect(() => {
     messageArea.current.scrollTop = messageArea.current.scrollHeight;
   }, [chatMessages, messageArea])
 
+
   return (
     <div className="chat-board">
       <FontAwesomeIcon icon={faAngleLeft} onClick={() => setChatPartner({})} />
-      <h3>{chatPartner.userName ? `${chatPartner.userName} (${ISO6391.getName(chatPartner.language)})` : 'Select a contact in the contactlist'}</h3>
+      <div>
+        <img className="chat-board_img" src={chatPartner.userName ? getImage(chatPartner.userName) : ''}/>
+      </div>
+      <h3 className="chat-board_header">{chatPartner.userName ? `${chatPartner.userName}` : 'Select a contact in the contactlist'}</h3>
+      <p className="chat-board_paragraph">{chatPartner.userName ? `${ISO6391.getName(chatPartner.language)}` : ''}</p>
       <div className="chat-board_messages" ref={messageArea}>
         <ul>
           {chatMessages.map((parcel, i) => (
