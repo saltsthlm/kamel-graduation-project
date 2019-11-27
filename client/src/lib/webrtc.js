@@ -68,7 +68,7 @@ const setupListeners = ({
   });
 
   webRtcPeer.on('stream', stream => {
-    console.log('webrtc on stream')
+    // console.log('webrtc on stream')
 
     const video =  document.querySelector('#video');
     setActiveVideoCall(true);

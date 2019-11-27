@@ -31,7 +31,7 @@ const continuousSpeechToSubtitle = (language, onTranscript, onQuiet, onStart, on
 
     recognition.start();
   } catch (e) {
-    console.log('caught error')
+    console.log('caught error, but all good!')
     onError(e);
   }
 }
