@@ -24,7 +24,7 @@ function Chat({ user, socket }) {
   const [acceptCall, setAcceptCall] = useState(false);
   const [subTitles, setSubTitles] = useState('');
 
-  const sendParcel = (type, kwargs) => {
+  const sendParcel = (type, kwargs = {}) => {
     const parcel = parcels.getNewParcel(type, user.userId, chatPartner.userId, kwargs)
     socket.send(JSON.stringify(parcel));
     if (type === 'DIRECT MESSAGE') {
@@ -60,9 +60,9 @@ function Chat({ user, socket }) {
   const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
 
   useEffect(() => {
-    console.log('useEffect webRtcSignal')
-    console.log('    webRtcSignal value', webRtcSignal)
-    console.log('    webRtcPeer value', webRtcPeer)
+    // console.log('useEffect webRtcSignal')
+    // console.log('    webRtcSignal value', webRtcSignal)
+    // console.log('    webRtcPeer value', webRtcPeer)
 
     if (!acceptCall && webRtcSignal && webRtcSignal.type === 'offer') {
       return undefined;
@@ -93,16 +93,18 @@ function Chat({ user, socket }) {
           setWebRtcSignal,
           setSubTitles,
           setChatPartner,
+          endWebRtc,
         })
       }
       socketSetupCallback();
     }
+  // eslint-disable-next-line
   }, [socket, socketSetupCallback])
 
   useEffect(() => {
-    console.log('useEffect webRtcPeer')
-    console.log('    webrct peer value', webRtcPeer)
-    console.log('    activeVideoCall value', activeVideoCall)
+    // console.log('useEffect webRtcPeer')
+    // console.log('    webrct peer value', webRtcPeer)
+    // console.log('    activeVideoCall value', activeVideoCall)
     if (webRtcPeer && !webRtcFlag) {
       setWebRtcFlag(true);
       webRtc.setupListeners({
@@ -170,7 +172,7 @@ function Chat({ user, socket }) {
         setSubTitles={setSubTitles}
         acceptCall={acceptCall}/>
       <OfferCallScreen endWebRtc={endWebRtc} chatPartner={chatPartner}  css={offerCallScreenStyle()}/>
-      <AcceptCallScreen setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} chatPartner={chatPartner} css={acceptCallScreenStyle()}/>
+      <AcceptCallScreen sendParcel={sendParcel} setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} chatPartner={chatPartner} css={acceptCallScreenStyle()}/>
     </>
   );
 }
