@@ -6,7 +6,7 @@ const languageList = ISO6391.getAllNames();
 // console.log(ISO6391.getCode('Swedish'));
 
 function Register({ user }) {
-  const defaultLanguage = 'English';
+  const defaultLanguage = 'en';
 
   const [ input, setInput ] = useState({ 
     userName: '',
@@ -79,7 +79,7 @@ function Register({ user }) {
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
           <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
             {languageList.map(language => (
-              (language === defaultLanguage) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
+              (language === ISO6391.getName(defaultLanguage)) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
             ))}
           </select>
           {/* <input type=\'text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/> */}

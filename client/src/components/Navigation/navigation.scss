@@ -13,12 +13,17 @@
 }
 
 /* NAVIGATION STYLE */  
+.menu-icon > svg {
+  width: 50px !important;
+  height: 50px !important;
+}
+
 
 /* Position and sizing of burger button */
 .bm-burger-button {
     position: fixed;
-    width: 36px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     left: 36px;
     top: 20px;
   }

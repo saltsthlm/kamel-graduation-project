@@ -149,6 +149,8 @@ function Chat({ user, socket }) {
     switch (userName) {
     case 'Moritz':
       return './moritz.png';
+    case 'Erik':
+      return './erik.jpeg';
     default:
       return '/logo512.png'
     }
