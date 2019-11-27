@@ -1,11 +1,12 @@
-export const updateChatMessages = (messages, parcel, senderId = parcel.senderId) => {
-  const senderMessages = (messages[senderId])
-    ? [...messages[senderId], parcel]
+// TODO: change senderId to parcel.userName
+export const updateChatMessages = (messages, parcel, senderName = parcel.userName) => {
+  const senderMessages = (messages[senderName])
+    ? [...messages[senderName], parcel]
     : [parcel];
 
   return {
     ...messages, 
-    [senderId]: senderMessages
+    [senderName]: senderMessages
   };
 }
 

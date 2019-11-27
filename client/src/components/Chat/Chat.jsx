@@ -11,10 +11,9 @@ import AcceptCallScreen from '../AcceptCallScreen/AcceptCallScreen';
 import OfferCallScreen from '../OfferCallScreen/OfferCallScreen';
 
 
-function Chat({ user, socket, setUser, setSocket }) {
+function Chat({ user, socket, setUser, setSocket, chatMessages, setChatMessages }) {
   const { width } = useWindowDimensions();
   const [contactList, setContactList] = useState([]);
-  const [chatMessages, setChatMessages] = useState({});
   const [chatPartner, setChatPartner] = useState({});
 
   const [webRtcPeer, setWebRtcPeer] = useState(false);
@@ -24,11 +23,12 @@ function Chat({ user, socket, setUser, setSocket }) {
   const [acceptCall, setAcceptCall] = useState(false);
   const [subTitles, setSubTitles] = useState('');
 
-  const sendParcel = (type, kwargs = {}) => {
-    const parcel = parcels.getNewParcel(type, user.userId, chatPartner.userId, kwargs)
+  // TODO: send userName together with parcel
+  const sendParcel = (type, kwargs) => {
+    const parcel = parcels.getNewParcel(type, user.userId, chatPartner.userId, user.userName, kwargs)
     socket.send(JSON.stringify(parcel));
     if (type === 'DIRECT MESSAGE') {
-      setChatMessages((messages) => updateChatMessages(messages, parcel, parcel.receiverId));
+      setChatMessages((messages) => updateChatMessages(messages, parcel, chatPartner.userName));
     }
   };
 
@@ -66,12 +66,13 @@ function Chat({ user, socket, setUser, setSocket }) {
   }
 
   const getChatMessages = () => (
-    chatPartner.userId && chatMessages[chatPartner.userId]
-      ? chatMessages[chatPartner.userId] 
+    chatPartner.userName && chatMessages[chatPartner.userName]
+      // TODO: change userId to userName
+      ? chatMessages[chatPartner.userName] 
       : []
   )
 
-  const getContactList = () => contactList.filter((contact) => contact.userId !== user.userId);
+  const getContactList = () => contactList.filter((contact) => contact.userName !== user.userName);
 
   useEffect(() => {
     // console.log('useEffect webRtcSignal')

@@ -70,7 +70,7 @@ const saveToDatabase = (dbParcel) => {
       logger.error(err);
     }
     const { messages } = user;
-    const updatedMessages = updateChatMessages(messages, dbParcel, databaseIdReceiver);
+    const updatedMessages = updateChatMessages(messages, dbParcel, receiver.userName);
     User.updateOne({ _id: databaseIdSender }, { '$set': { messages: updatedMessages } }, (err) => {
       logger.error(err);
     });
@@ -82,7 +82,7 @@ const saveToDatabase = (dbParcel) => {
       logger.error(err);
     }
     const { messages } = user;
-    const updatedMessages = updateChatMessages(messages, dbParcel, databaseIdSender);
+    const updatedMessages = updateChatMessages(messages, dbParcel, sender.userName);
     User.updateOne({ _id: databaseIdReceiver }, { '$set': { messages: updatedMessages } }, (err) => {
       logger.error(err);
     });
@@ -109,6 +109,7 @@ const processDirectMessage = async (parcel) => {
       ...parcel,
       translatedMessage,
       translated,
+      userName: parcel.userName,
       senderLanguage: clients.getUserLanguageById(parcel.senderId),
       receiverLanguage: clients.getUserLanguageById(parcel.receiverId),
     };

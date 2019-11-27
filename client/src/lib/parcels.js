@@ -1,8 +1,9 @@
-const getNewParcel = (type, senderId, receiverId, kwargs) => {
+const getNewParcel = (type, senderId, receiverId, userName, kwargs) => {
   const parcelTemplate = {
     receiverId,
     senderId,
     timeStamp: Date.now(),
+    userName,
   };
 
   const parcel = {
@@ -37,6 +38,7 @@ const processParcel = ({ event, setContactList, setChatMessages, updateChatMessa
     case 'TRANSLATE SUBTITLES':
       return setSubTitles(parcel.translatedMessage);
     case 'UPDATE CONTACTS':
+      // userName, userId = socketId, userLanguage
       return setContactList(parcel.connectedClients);
     default:
       return console.log(`received parcel of unknown type "${parcel.type}"`);

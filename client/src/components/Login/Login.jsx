@@ -1,7 +1,7 @@
 import React, { useState,  } from "react";
 import { Redirect, Link } from "react-router-dom";
 
-function Login({ setUser, user }) {
+function Login({ setUser, user, setChatMessages }) {
   const [ input, setInput ] = useState({ 
     userName: '',
     email: '',
@@ -30,7 +30,9 @@ function Login({ setUser, user }) {
       body: JSON.stringify(input),
     });
     if (response.status === 200) {
-      const credentials = await response.json();
+      const { credentials, messages } = await response.json();
+      console.log(messages);
+      setChatMessages(messages);
       setUser(credentials);
     } else {
       const { error } = await response.json();

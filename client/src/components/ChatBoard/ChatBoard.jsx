@@ -57,6 +57,7 @@ const ChatBoard = ({ chatMessages, chatPartner, sendParcel, setChatPartner, user
           {chatMessages.map((parcel, i) => (
             <div key={i} className='chat-board_message' style={getMessageStyle(parcel.senderId, userId)}>
               {
+                // TODO change to username
                 parcel.senderId === userId
                   ? <li key={Math.random()}>{parcel.message}</li>
                   : <li id={i} key={Math.random()} onClick={() => toogleMessageLanguage(i, parcel.translatedMessage, parcel.message)}>{parcel.translatedMessage}</li>

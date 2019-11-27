@@ -8,6 +8,8 @@ import './scss/App.scss';
 function App() {
   const [user, setUser] = useState('');
   const [socket, setSocket] = useState('');
+  const [chatMessages, setChatMessages] = useState({});
+
 
   useEffect(() => {
     if (user.userId) {
@@ -38,8 +40,8 @@ function App() {
       <Route
         {...rest}
         render={() => authed
-          ? <Chat user={user} socket={socket} setUser={setUser} setSocket={setSocket} />
-          : <Redirect to='/login' setUser={setUser} user={user} />}
+          ? <Chat user={user} socket={socket} setUser={setUser} setSocket={setSocket} chatMessages={chatMessages} setChatMessages={setChatMessages}/>
+          : <Redirect to='/login' setUser={setUser} setChatMessages={setChatMessages} user={user} />}
       />
     )
   }
@@ -53,7 +55,7 @@ function App() {
               <Register setUser={setUser} user={user} />
             </Route>
             <Route path='/login'>
-              <Login setUser={setUser} user={user} />
+              <Login setUser={setUser} user={user} setChatMessages={setChatMessages} />
             </Route>
             <PrivateRoute path='/' exact authed={user.userId} />
           </Switch>

@@ -41,7 +41,6 @@ mongoClient.setupDb().then(() => {
 
   app.post('/register', async (req, res) => {
     const { userName, password, language, email } = req.body;
-    console.log(language);
     const credentials = {
       userName,
       password,
@@ -78,8 +77,8 @@ mongoClient.setupDb().then(() => {
         userId: uuid(),
       };
 
-      clients.loggedInUsers.push({...credentials, databaseId: user.id });
-      return res.json(credentials);
+      clients.loggedInUsers.push({ ...credentials, databaseId: user.id });
+      return res.json({ credentials, messages: user.messages });
     });
   });
 
