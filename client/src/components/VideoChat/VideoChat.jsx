@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faSync, faVolumeMute, faVolumeUp, faPhoneSlash } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faSync, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 
 const VideoChat = ({ webRtcPeer, activeVideoCall, subTitles, setSubTitles, endWebRtc, acceptCall }) => {
   

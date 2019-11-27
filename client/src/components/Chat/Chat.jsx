@@ -8,6 +8,7 @@ import VideoChat from '../VideoChat/VideoChat';
 import * as parcels from '../../lib/parcels';
 import Navigation from '../Navigation/Navigation';
 import AcceptCallScreen from '../AcceptCallScreen/AcceptCallScreen';
+import OfferCallScreen from '../OfferCallScreen/OfferCallScreen';
 
 
 function Chat({ user, socket }) {
@@ -32,7 +33,6 @@ function Chat({ user, socket }) {
   };
 
   const endWebRtc = () => {
-    console.log('ending webrtc call')
     if (webRtcPeer) {
       webRtcPeer.destroy();
     }
@@ -132,9 +132,20 @@ function Chat({ user, socket }) {
     }
   }
 
+  const offerCallScreenStyle = () => {
+    if (webRtcPeer && !activeVideoCall && !webRtcSignal) {
+      return {
+        display: 'flex',
+        height: '100%',
+      };
+    } else {
+      return {display: 'none'};
+    }
+  }
+
   return (
     <>
-      <div className="chat" style={{display: webRtcSignal ? 'none' : ''}}>
+      <div className="chat" style={{display: webRtcSignal || (webRtcPeer && !activeVideoCall && !webRtcSignal) ? 'none' : ''}}>
         <Navigation/>
         { (width < 700 )
           ? (chatPartner.userName 
@@ -158,6 +169,7 @@ function Chat({ user, socket }) {
         subTitles={subTitles}
         setSubTitles={setSubTitles}
         acceptCall={acceptCall}/>
+      <OfferCallScreen endWebRtc={endWebRtc} chatPartner={chatPartner}  css={offerCallScreenStyle()}/>
       <AcceptCallScreen setAcceptCall={setAcceptCall} endWebRtc={endWebRtc} chatPartner={chatPartner} css={acceptCallScreenStyle()}/>
     </>
   );

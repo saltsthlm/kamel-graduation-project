@@ -93,8 +93,8 @@
     margin: 5px;
     height: 25px !important;
     width: 25px !important;
-    color: $mainDark;
-    background-color: $primaryText;
+    color: white;
+    background-color: black;
     padding: 10px;
     border-radius: 50%;
   }
@@ -102,7 +102,7 @@
   &_toolbar > svg:hover {
 
     cursor: pointer;
-    color: $primaryText;
-    background-color: $mainDark;
+    color: black;
+    background-color: white;
   }
 }

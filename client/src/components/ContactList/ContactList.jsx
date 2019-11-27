@@ -24,7 +24,7 @@ function ContactList({ contactList, setChatPartner }) {
           {contactList.map((contact, i) => (
             <li key={i}>
               <div>
-                <img className='contact-list_wrapp_portrait' onClick={() => establishConnection(contact)} src={getImage(contact.userName)}/>
+                <img alt='portrait' className='contact-list_wrapp_portrait' onClick={() => establishConnection(contact)} src={getImage(contact.userName)}/>
               </div>
               <div className='contact-list_wrapp_details'>
                 <span className='contact-list_wrapp_details_name' onClick={() => establishConnection(contact)}>{contact.userName}</span>
