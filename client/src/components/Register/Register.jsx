@@ -3,8 +3,7 @@ import { Redirect } from "react-router-dom";
 import ISO6391 from 'iso-639-1';
 
 const languageList = ISO6391.getAllNames();
-console.log(ISO6391.getCode('Swedish'));
-
+// console.log(ISO6391.getCode('Swedish'));
 
 function Register({ user }) {
   const defaultLanguage = 'English';
