@@ -47,7 +47,8 @@ mongoClient.setupDb().then(() => {
       password,
       language,
       email,
-      socketId: uuid(),
+      messages: { test: 'tesst test tes' },
+      // socketId: uuid(),
     };
 
     const user = new User(credentials);
@@ -70,8 +71,6 @@ mongoClient.setupDb().then(() => {
         return res.status(401).json({ error: 'wrong email or password' });
       }
 
-      console.log(user);
-
       const credentials = {
         userName: user.userName,
         language: user.language,
@@ -79,7 +78,7 @@ mongoClient.setupDb().then(() => {
         userId: uuid(),
       };
 
-      clients.loggedInUsers.push(credentials);
+      clients.loggedInUsers.push({...credentials, databaseId: user.id });
       return res.json(credentials);
     });
   });

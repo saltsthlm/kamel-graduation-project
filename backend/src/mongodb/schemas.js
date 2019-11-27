@@ -16,10 +16,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  socketId: {
-    type: String,
-    required: true,
-  },
   language: {
     type: String,
     required: true,
@@ -28,6 +24,11 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now,
+  },
+  messages: {
+    type: Object,
+    required: true,
+    default: Object,
   },
 });
 

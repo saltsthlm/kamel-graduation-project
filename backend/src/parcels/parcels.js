@@ -2,6 +2,7 @@
 const { translate } = require('../translate/translation');
 const clients = require('../clients/clients');
 const { logger } = require('../logging/logging');
+const User = require('../mongodb/schemas');
 
 const deliverParcel = (parcel) => {
   const { ws } = clients.connectedClients.find((client) => (
@@ -38,6 +39,58 @@ const sendConnected = () => {
   deliverToAll(parcel);
 };
 
+// Moritz's Messages Database Object
+// const messages = {
+//   'Ariadna_databaseId': [parcel1, parcel2],
+//   'Erik_databaseId': [parcel1, parcel2],
+// }
+
+const updateChatMessages = (messages, parcel, senderId = parcel.senderId) => {
+  const senderMessages = (messages[senderId])
+    ? [...messages[senderId], parcel]
+    : [parcel];
+
+  return {
+    ...messages,
+    [senderId]: senderMessages,
+  };
+};
+
+const saveToDatabase = (dbParcel) => {
+  const { senderId, receiverId } = dbParcel;
+  const sender = clients.loggedInUsers.find((user) => user.userId === senderId);
+  const receiver = clients.loggedInUsers.find((user) => user.userId === receiverId);
+
+  const databaseIdSender = sender.databaseId;
+  const databaseIdReceiver = receiver.databaseId;
+
+  // Moritz sent a message to Ariadna
+  User.findById(databaseIdSender, (err, user) => {
+    if (err || !user) {
+      logger.error(err);
+    }
+    const { messages } = user;
+    const updatedMessages = updateChatMessages(messages, dbParcel, databaseIdReceiver);
+    User.updateOne({ _id: databaseIdSender }, { '$set': { messages: updatedMessages } }, (err) => {
+      logger.error(err);
+    });
+    logger.info('updated messages');
+  });
+
+  User.findById(databaseIdReceiver, (err, user) => {
+    if (err || !user) {
+      logger.error(err);
+    }
+    const { messages } = user;
+    const updatedMessages = updateChatMessages(messages, dbParcel, databaseIdSender);
+    User.updateOne({ _id: databaseIdReceiver }, { '$set': { messages: updatedMessages } }, (err) => {
+      logger.error(err);
+    });
+    logger.info('updated messages');
+
+  });
+};
+
 const processDirectMessage = async (parcel) => {
   let translatedMessage;
   let translated;
@@ -52,13 +105,15 @@ const processDirectMessage = async (parcel) => {
     logger.error(parcel);
     translated = false;
   } finally {
-    deliverParcel({
+    const dbParcel = {
       ...parcel,
       translatedMessage,
       translated,
       senderLanguage: clients.getUserLanguageById(parcel.senderId),
       receiverLanguage: clients.getUserLanguageById(parcel.receiverId),
-    });
+    };
+    saveToDatabase(dbParcel);
+    deliverParcel(dbParcel);
   }
 };
 
