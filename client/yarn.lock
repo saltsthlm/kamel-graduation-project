@@ -7397,6 +7397,22 @@ node-pre-gyp@^0.12.0:
     semver "^5.3.0"
     tar "^4"
 
+node-pre-gyp@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.13.0.tgz#df9ab7b68dd6498137717838e4f92a33fc9daa42"
+  integrity sha512-Md1D3xnEne8b/HGVQkZZwV27WUi1ZRuZBij24TNaZwUPU3ZAFtvT6xxJGaUVillfmMKnn5oD1HoGsp2Ftik7SQ==
+  dependencies:
+    detect-libc "^1.0.2"
+    mkdirp "^0.5.1"
+    needle "^2.2.1"
+    nopt "^4.0.1"
+    npm-packlist "^1.1.6"
+    npmlog "^4.0.2"
+    rc "^1.2.7"
+    rimraf "^2.6.1"
+    semver "^5.3.0"
+    tar "^4"
+
 node-record-lpcm16@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/node-record-lpcm16/-/node-record-lpcm16-1.0.1.tgz#2201dee8d7dc8fc4055ab1bd275154201433e635"
@@ -11486,6 +11502,15 @@ write@1.0.3:
   integrity sha512-/lg70HAjtkUgWPVZhZcm+T4hkL8Zbtp1nFNOn3lRrxnlv50SRBv7cR7RqR+GMsd3hUXy9hWBo4CHTbFTcOYwig==
   dependencies:
     mkdirp "^0.5.1"
+
+wrtc@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/wrtc/-/wrtc-0.4.2.tgz#feeb829709dac17139b49f7a18f57f4e98300a6f"
+  integrity sha512-IaXogllhkd3dHKrZxzQKXmKjqsR35X9XIjp1ElimieZuaPgDCPEbIg/DOwzGTT4bdKqmB8FjPgau2RNMFTGvHQ==
+  dependencies:
+    node-pre-gyp "^0.13.0"
+  optionalDependencies:
+    domexception "^1.0.1"
 
 ws@^5.2.0:
   version "5.2.2"
