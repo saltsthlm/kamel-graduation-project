@@ -108,6 +108,7 @@ function Chat({ user, socket, setUser, setSocket }) {
           setSubTitles,
           setChatPartner,
           endWebRtc,
+          userId: user.userId,
         })
       }
       socketSetupCallback();
@@ -172,7 +173,7 @@ function Chat({ user, socket, setUser, setSocket }) {
     case 'Moritz':
       return './moritz.png';
     default:
-      return '/logo512.png'
+      return '/avatar.png'
     }
   }
 

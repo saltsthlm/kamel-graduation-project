@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import ISO6391 from 'iso-639-1';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const languageList = ISO6391.getAllNames();
 // console.log(ISO6391.getCode('Swedish'));
 
 function Register({ user }) {
   const defaultLanguage = 'en';
+
+  const [success, setSuccess] = useState(false);
 
   const [ input, setInput ] = useState({ 
     userName: '',
@@ -47,7 +51,8 @@ function Register({ user }) {
     });
     
     if (response.status === 200) {
-      window.location.href = '/login';
+      setSuccess(true);
+      setTimeout(() => window.location.href = '/login', 750)
     } else {
       const { error } = await response.json();
       setErrorMessage(error);
@@ -59,37 +64,50 @@ function Register({ user }) {
   }
 
   return (
-    <div className="login">
-      <img alt='polychat logo' className='login_logo' src='./polychat.png' />
-      <form onSubmit={login} className="login_form">
-        <h1 className="login_form_header">Sign Up</h1>
-        <div className='login_form_user-input'>
-          <label htmlFor='userName' className='login_form_user-input_label'> Name: </label>
-          <input type='text' name='userName' id='userName' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
-        </div>
-        <div className='login_form_user-input'>
-          <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
-          <input type='email' name='email' id='email' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
-        </div>
-        <div className='login_form_user-input'>
-          <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
-          <input type='password' name='password' id='password' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
-        </div>
-        <div className='login_form_user-input'>
-          <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
-          <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
-            {languageList.map(language => (
-              (language === ISO6391.getName(defaultLanguage)) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
-            ))}
-          </select>
-          {/* <input type=\'text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/> */}
-        </div>
-        {errorMessage ? <span className='error-message'>{errorMessage}</span> : ''}
-        <div className="login_form_button">
-          <button type="submit" >Sign Up</button>
-        </div>
-      </form>
+    <div className='wrapper_login'>
+      { success
+        ? (
+          <>
+            <FontAwesomeIcon icon={faCheckCircle} className='success' />
+            <h3 className='success-registration'>Success!</h3>
+          </>
+        )
+        : (
+          <div className="login">
+            <img alt='polychat logo' className='login_logo' src='./polychat.png' />
+            <form onSubmit={login} className="login_form">
+              <h1 className="login_form_header">Sign Up</h1>
+              <div className='login_form_user-input'>
+                <label htmlFor='userName' className='login_form_user-input_label'> Name: </label>
+                <input type='text' name='userName' placeholder='Name' id='userName' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
+              </div>
+              <div className='login_form_user-input'>
+                <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
+                <input type='email' name='email' placeholder='Email' id='email' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
+              </div>
+              <div className='login_form_user-input'>
+                <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
+                <input type='password' name='password' placeholder='Password' id='password' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
+              </div>
+              <div className='login_form_user-input'>
+                <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
+                <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
+                  {languageList.sort().map(language => (
+                    (language === ISO6391.getName(defaultLanguage)) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
+                  ))}
+                </select>
+                {/* <input type=\'text' name='language' id='language'onChange={inputChange} className='login_form_user-input_field' required/> */}
+              </div>
+              {errorMessage ? <span className='error-message'>{errorMessage}</span> : ''}
+              <div className="login_form_button">
+                <button type="submit" >Sign Up</button>
+              </div>
+            </form>
+          </div>
+        )
+      } 
     </div>
+
   );
 }
 

@@ -49,11 +49,11 @@ function Login({ setUser, user }) {
         <h1 className="login_form_header">Sign In</h1>
         <div className='login_form_user-input'>
           <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
-          <input type='email' onClick={() => setErrorMessage('')} name='email' id='email' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='email' onClick={() => setErrorMessage('')} name='email' placeholder='Email' id='email' onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
-          <input type='password' onClick={() => setErrorMessage('')} name='password' id='password' onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='password' onClick={() => setErrorMessage('')} name='password' placeholder='Password' id='password' onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         {errorMessage ? <span className='error-message'>{errorMessage}</span> : ''}
         <div className="login_form_button">

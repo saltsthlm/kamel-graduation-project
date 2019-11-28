@@ -1,11 +1,13 @@
 import { continuousSpeechToSubtitle } from './speechToText';
 
 const Peer = require('simple-peer');
+const wrtc = require('wrtc');
 
 const newPeer = () => (
   new Peer({
     initiator: false,
     trickle: false,
+    wrtc,
   })
 );
 
@@ -13,6 +15,7 @@ const newInitiator = () => (
   new Peer({
     initiator: true,
     trickle: false,
+    wrtc,
   })
 )
 

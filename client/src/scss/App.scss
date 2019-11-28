@@ -21,6 +21,17 @@ $fontMedium: 18px;
 $fontSmall: 14px;
 $fontTiny: 11px;
 
+.translated {
+  background: $theGoodPink;
+}
+
+.wrapper_login > svg {
+  margin-top: 20px;
+  color: $highlight;
+  width: 75px !important;
+  height: 75px !important;
+}
+
 
 html, body, #root, #root>div  {
   height: 100%;
