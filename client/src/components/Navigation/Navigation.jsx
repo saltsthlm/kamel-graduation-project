@@ -4,7 +4,6 @@ import { slide as Menu } from 'react-burger-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
-
 const Navigation = ({logout}) => {
 
   return (
@@ -13,7 +12,6 @@ const Navigation = ({logout}) => {
         <FontAwesomeIcon className="menu-icon" icon={faCog}/>
       </div>
       <Menu left>
-        <Link to="/settings">Settings</Link>
         <Link to="/" onClick={logout}>Log Out</Link>
       </Menu>
     </>

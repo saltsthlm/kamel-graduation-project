@@ -65,20 +65,20 @@ function Register({ user }) {
         <h1 className="login_form_header">Sign Up</h1>
         <div className='login_form_user-input'>
           <label htmlFor='userName' className='login_form_user-input_label'> Name: </label>
-          <input type='text' name='userName' id='userName' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='text' name='userName' placeholder='Name' id='userName' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='email' className='login_form_user-input_label'> Email: </label>
-          <input type='email' name='email' id='email' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='email' name='email' placeholder='Email' id='email' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='password' className='login_form_user-input_label'> Password: </label>
-          <input type='password' name='password' id='password' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
+          <input type='password' name='password' placeholder='Password' id='password' onClick={() => setErrorMessage('')} onChange={inputChange} className='login_form_user-input_field' required/>
         </div>
         <div className='login_form_user-input'>
           <label htmlFor='language' className='login_form_user-input_label'> Language: </label>
           <select onChange={dropDownChange} className='login_form_user-input_select' name='language'>
-            {languageList.map(language => (
+            {languageList.sort().map(language => (
               (language === ISO6391.getName(defaultLanguage)) ? <option key='language' selected>{language}</option> : <option key='language'>{language}</option>
             ))}
           </select>

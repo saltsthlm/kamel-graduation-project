@@ -21,6 +21,10 @@ $fontMedium: 18px;
 $fontSmall: 14px;
 $fontTiny: 11px;
 
+.translated {
+  background: $theGoodPink;
+}
+
 
 html, body, #root, #root>div  {
   height: 100%;
